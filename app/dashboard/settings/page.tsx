@@ -52,7 +52,8 @@ export default function AccountSettingsPage() {
       if (!response.ok) throw new Error('Failed to send verification code');
       alert('Verification code sent to your email');
     } catch (error) {
-      alert('Error sending verification code: ' + error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert('Error sending verification code: ' + errorMessage);
       setIsCodeSent(false);
     }
   };
@@ -88,7 +89,8 @@ export default function AccountSettingsPage() {
       setVerificationCode('');
       setPassword(''); // Clear password field after save
     } catch (error) {
-      alert('Error saving changes: ' + error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert('Error saving changes: ' + errorMessage);
     } finally {
       setLoading(false);
     }
