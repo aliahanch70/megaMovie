@@ -104,3 +104,46 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .ml-2 {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.rtl .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+.rtl .space-x-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+.rtl .space-x-reverse > * + * {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* Add RTL support */
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Fix grid layout for RTL */
+.rtl .grid {
+  direction: rtl;
+}
+
+/* Adjust margins and paddings for RTL */
+.rtl .md\:gap-x-reverse > * + * {
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: 0;
+}

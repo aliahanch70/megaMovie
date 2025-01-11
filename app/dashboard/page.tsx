@@ -9,6 +9,7 @@ import ActivityChart from '@/components/dashboard/ActivityChart';
 import SearchBar from '@/components/dashboard/SearchBar';
 import Navigation from '@/components/dashboard/Navigation';
 import { Users, Activity, TrendingUp, Clock } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Mock data - Replace with real data from your Supabase database
 const mockActivityData = Array.from({ length: 7 }, (_, i) => ({
@@ -17,6 +18,7 @@ const mockActivityData = Array.from({ length: 7 }, (_, i) => ({
 }));
 
 export default function DashboardPage() {
+  const { isRTL } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const supabase = createClient();
@@ -41,7 +43,7 @@ export default function DashboardPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className={`min-h-screen bg-black ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="flex">
         {/* Sidebar */}
         <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-black border-r">
@@ -62,12 +64,12 @@ export default function DashboardPage() {
               <Header />
               
               {/* Search */}
-              <div className="mb-6">
+              <div className="mb-6 z-0">
                 <SearchBar onSearch={setSearchQuery} />
               </div>
 
               {/* KPIs */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+              <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8 ${isRTL ? 'md:gap-x-reverse' : ''}`}>
                 <KPICard
                   title="Total Users"
                   value="1,234"

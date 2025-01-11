@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/contexts/LanguageContext';
+
 
 export default function AccountSettingsPage() {
   const [user, setUser] = useState<any>(null);
@@ -17,6 +19,7 @@ export default function AccountSettingsPage() {
   const [generatedCode, setGeneratedCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const supabase = createClientComponentClient();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const getUser = async () => {
@@ -101,36 +104,36 @@ export default function AccountSettingsPage() {
       <div className="max-w-4xl mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle>Account Settings</CardTitle>
+            <CardTitle>{t('settings.title')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t('settings.name')}</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
+                placeholder={t('settings.enterName')}
               />
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('settings.email')}</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your new email"
+                placeholder={t('settings.enterEmail')}
               />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('settings.password')}</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your new password"
+                placeholder={t('settings.enterPassword')}
               />
             </div>
             <Button 
@@ -138,22 +141,24 @@ export default function AccountSettingsPage() {
               disabled={isCodeSent}
               className="mt-2"
             >
-              Send Verification Code
+              {t('settings.sendCode')}
             </Button>
             {isCodeSent && (
               <div className="mt-2">
-                <Label htmlFor="verificationCode">Enter verification code sent to {email}</Label>
+                <Label htmlFor="verificationCode">
+                  {t('settings.enterCodeSentTo')} {email}
+                </Label>
                 <Input
                   id="verificationCode"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
-                  placeholder="Enter 4-digit code"
+                  placeholder={t('settings.enterVerificationCode')}
                   maxLength={4}
                 />
               </div>
             )}
             <Button onClick={handleSaveChanges} disabled={loading}>
-              {loading ? 'Saving...' : 'Save Changes'}
+              {loading ? t('settings.saving') : t('settings.saveChanges')}
             </Button>
           </CardContent>
         </Card>

@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KPICardProps {
   title: string;
@@ -12,14 +13,24 @@ interface KPICardProps {
     value: number;
     isPositive: boolean;
   };
+  className?: string;
 }
 
-export default function KPICard({ title, value, icon, description, trend }: KPICardProps) {
+export default function KPICard({ title, value, icon, description, trend , className}: KPICardProps) {
+  const { isRTL } = useLanguage();
+
   return (
-    <Card className="transition-theme hover:bg-accent">
+    <Card className={cn(
+      "transition-theme hover:bg-accent",
+      isRTL ? "text-right" : "text-left",
+      className
+    )}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="text-muted-foreground">{icon}</div>
+        <div className={cn(
+          "text-muted-foreground",
+          isRTL ? "mr-auto pl-2" : "ml-auto pr-2"
+        )}>{icon}</div>
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
@@ -27,7 +38,7 @@ export default function KPICard({ title, value, icon, description, trend }: KPIC
           <p className="text-xs text-muted-foreground mt-1 flex items-center">
             {trend && (
               <span className={cn(
-                "mr-1",
+                isRTL ? "ml-1" : "mr-1",
                 trend.isPositive ? "text-emerald-500" : "text-red-500"
               )}>
                 {trend.isPositive ? "↑" : "↓"} {Math.abs(trend.value)}%
