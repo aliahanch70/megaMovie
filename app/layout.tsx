@@ -4,13 +4,19 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Navbar from '@/components/layout/Navbar';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import LoadingBar from '@/components/LoadingBar';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Dashboard App',
-  description: 'A modern dashboard application with dark theme',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: {
+      template: '%s | Dashboard App',
+      default: 'Dashboard App'
+    },
+    description: 'A modern dashboard application with dark theme',
+  };
+}
 
 export default function RootLayout({
   children,
@@ -23,6 +29,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <LanguageProvider>
             <Navbar />
+            <LoadingBar />
             {children}
           </LanguageProvider>
         </ThemeProvider>

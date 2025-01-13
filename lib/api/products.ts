@@ -62,3 +62,36 @@ export async function getAllProductIds(): Promise<string[]> {
     return [];
   }
 }
+
+export async function getRelatedProducts(productId: string, limit: number = 4): Promise<Product[]> {
+  const supabase = createClient();
+  
+  try {
+    // First get the category of the current product
+    const { data: currentProduct } = await supabase
+      .from('products')
+      .select('category')
+      .eq('id', productId)
+      .single();
+
+    if (!currentProduct) return [];
+
+    // Then fetch related products from the same category
+    const { data: relatedProducts } = await supabase
+      .from('products')
+      .select(`
+        *,
+        product_images (url, label, order),
+        product_links (title, url),
+        profiles (full_name)
+      `)
+      .eq('category', currentProduct.category)
+      .neq('id', productId)
+      .limit(limit);
+    
+    return relatedProducts || [];
+  } catch (error) {
+    console.error('Error fetching related products:', error);
+    return [];
+  }
+}

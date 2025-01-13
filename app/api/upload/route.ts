@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     // ذخیره فایل
     const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(filepath, buffer);
+    fs.writeFileSync(filepath, new Uint8Array(buffer));
 
     // بازگرداندن لینک فایل
     return NextResponse.json({ url: `/uploads/${filename}` });

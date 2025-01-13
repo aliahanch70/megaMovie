@@ -17,7 +17,7 @@ const ToggleNav = () => {
   };
 
   return (
-    <nav className="bg-black text-white p-4">
+    <nav className="bg-card text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* <Link href="/" className="text-xl font-bold">
           Logo
@@ -54,12 +54,14 @@ const ToggleNav = () => {
         </div> */}
 
         {/* Mobile menu */}
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden absolute top-16 left-0 right-0 bg-gray-800 p-4 shadow-lg`}>
+        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden absolute top-16 left-0 right-0 bg-card border-b p-4 shadow-lg z-10
+        `}>
           <div className="flex flex-col space-y-4">
             <Link href="/" className="hover:text-gray-300" onClick={handleLinkClick}>Home</Link>
             <Link href="/dashboard" className="hover:text-gray-300" onClick={handleLinkClick}>Dashboard</Link>
-            <Link href="/login" className="hover:text-gray-300" onClick={handleLinkClick}>Login</Link>
-            <Link href="/register" className="hover:text-gray-300" onClick={handleLinkClick}>Register</Link>
+            <Link href="/products/listing" className="hover:text-gray-300" onClick={handleLinkClick}>shop</Link>
+            <Link href="/auth/login" className="hover:text-gray-300" onClick={handleLinkClick}>Login</Link>
+            <Link href="/auth/register" className="hover:text-gray-300" onClick={handleLinkClick}>Register</Link>
           </div>
         </div>
       </div>

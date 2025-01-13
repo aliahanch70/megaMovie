@@ -30,7 +30,8 @@ export default function LoginPage() {
 
     try {
       await signIn(formData);
-      router.push('/dashboard');
+      window.location.reload(); // Add this line to force a complete page reload
+      await router.push('/dashboard');
       router.refresh();
     } catch (error: any) {
       setError(error.message);

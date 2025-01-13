@@ -147,3 +147,26 @@
   margin-right: calc(1.5rem * var(--tw-space-x-reverse));
   margin-left: 0;
 }
+
+/* Optimized loading animation */
+@keyframes loading {
+  0% {
+    width: 0%;
+    left: 0;
+  }
+  30% {
+    width: 60%;
+    left: 0;
+  }
+  100% {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Add performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
