@@ -30,9 +30,7 @@ export default function LoginPage() {
 
     try {
       await signIn(formData);
-      window.location.reload(); // Add this line to force a complete page reload
-      await router.push('/dashboard');
-      router.refresh();
+      window.location.href = '/dashboard'; // This will cause a full page reload and redirect to dashboard
     } catch (error: any) {
       setError(error.message);
     } finally {

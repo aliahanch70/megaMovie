@@ -24,6 +24,7 @@ export default function NavLink({ href, icon: Icon, children }: NavLinkProps) {
           ? 'bg-accent text-accent-foreground'
           : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
       )}
+      prefetch={true}
     >
       <Icon className="h-4 w-4 mr-2" />
       {children}

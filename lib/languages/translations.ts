@@ -1,3 +1,4 @@
+import ManageProductsPage from "@/app/admin/products/manage/page";
 import { title } from "node:process";
 
 export const translations = {
@@ -59,6 +60,18 @@ export const translations = {
       registrationSuccess: 'Registration successful',
       passwordMismatch: 'Passwords do not match',
       requiredField: 'This field is required'
+    },
+    ManageProductsPage: {
+      title: 'Manage Products',
+      productCount: 'Products',
+      addNewProduct: 'Add New Product',
+      productTable: {
+        name: 'Name',
+        description: 'Description',
+        price: 'Price',
+        stock: 'Stock',
+        action: 'Action'
+      }
     }
   },
   fa: {

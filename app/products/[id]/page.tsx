@@ -8,6 +8,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
 
+
 interface ProductDetailsPageProps {
   params: {
     id: string;
@@ -50,7 +51,10 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
           </Button>
         </Link>
       )}
-      <ProductPageClient id={params.id} initialData={initialData} />
+      <ProductPageClient 
+        id={params.id} 
+        initialData={initialData}
+      />
       <RelatedProducts products={relatedProducts} />
     </div>
   );

@@ -45,7 +45,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             {/* Logo */}
-            <Link href="/" className="flex items-center px-2 text-accent">
+            <Link href="/" className="flex items-center px-2 text-accent" prefetch={true}>
               <Store className="h-6 w-6" />
               <span className={`ml-2 font-bold ${isRTL ? 'mr-2 ml-0' : 'ml-2'}`}>
                 {t('nav.store')}
@@ -57,7 +57,7 @@ export default function Navbar() {
               <NavLink href="/" icon={Home}>
                 {t('nav.home')}
               </NavLink>
-              <NavLink href="/products/listing" icon={Store}>
+              <NavLink href="/products/listing" icon={Store} >
                 {t('nav.shop')}
               </NavLink>
               {isAdmin && (

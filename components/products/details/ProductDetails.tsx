@@ -25,7 +25,8 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
           .select(`
             *,
             product_images (url, label, order),
-            product_links (title, url),
+            product_links (title, url , price , city , warranty),
+            product_specifications (label, value),
             profiles (full_name)
           `)
           .eq('id', id)
@@ -35,6 +36,7 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
           console.error('Error fetching product:', error);
         } else {
           setProduct(data);
+          console.log(data)
         }
         setLoading(false);
       };
@@ -74,14 +76,16 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             <ProductInfo 
               description={product.description}
               category={product.category}
-              createdBy={product.profiles.full_name}
+              
               createdAt={product.created_at}
             />
             
             <ProductSpecs 
               category={product.category}
               status={product.status}
+              specifications={product.product_specifications}
             />
+            
             
             {product.product_links?.length > 0 && (
               <ProductLinks links={product.product_links} />

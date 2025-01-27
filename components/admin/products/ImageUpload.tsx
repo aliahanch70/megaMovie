@@ -33,6 +33,7 @@ export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadP
     }
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+      
     }
   };
 
@@ -48,7 +49,7 @@ export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadP
                 {image ? (
                   <div className="relative aspect-square rounded-lg overflow-hidden">
                     <Image
-                      src={typeof image.file === 'string' ? (image.file.startsWith('/') ? image.file : `/${image.file}`) : URL.createObjectURL(image.file)}
+                      src={typeof image.file === 'string' ? (image.file.startsWith('/products/') ? image.file : `/products/${image.file}`) : URL.createObjectURL(image.file)}
                       alt={label}
                       fill
                       className="object-cover"

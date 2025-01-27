@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Navbar from '@/components/layout/Navbar';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import LoadingBar from '@/components/LoadingBar';
+import { Toaster } from "react-hot-toast";
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,6 +35,7 @@ export default function RootLayout({
             {children}
           </LanguageProvider>
         </ThemeProvider>
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

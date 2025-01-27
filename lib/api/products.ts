@@ -9,6 +9,9 @@ export interface ProductImage {
 export interface ProductLink {
   title: string;
   url: string;
+  price: number;
+  city: string;
+  warranty: string;
 }
 
 export interface Product {
@@ -35,7 +38,7 @@ export async function getProduct(id: string): Promise<Product | null> {
       .select(`
         *,
         product_images (url, label, order),
-        product_links (title, url),
+        product_links (title, url, price, city, warranty),
         profiles (full_name)
       `)
       .eq('id', id)
@@ -82,7 +85,7 @@ export async function getRelatedProducts(productId: string, limit: number = 4): 
       .select(`
         *,
         product_images (url, label, order),
-        product_links (title, url),
+        product_links (title, url, price, city, warranty),
         profiles (full_name)
       `)
       .eq('category', currentProduct.category)

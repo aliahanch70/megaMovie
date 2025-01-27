@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import ProductForm from '@/components/admin/products/ProductForm';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'react-hot-toast';
+
 
 interface ProductEditPageProps {
   params: {
@@ -25,7 +27,8 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
         .select(`
           *,
           product_images (url, label, order),
-          product_links (title, url)
+          product_links (title, url, price, city, warranty),
+          product_specifications (category, label, value)
         `)
         .eq('id', params.id)
         .single();
@@ -66,7 +69,10 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
           links.map((link: any) => ({
             product_id: params.id,
             title: link.title,
-            url: link.url
+            url: link.url,
+            price: Number(link.price) || 0,
+            city: link.city || '',
+            warranty: link.warranty || ''
           }))
         );
       }
@@ -78,18 +84,40 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
         .delete()
         .eq('product_id', params.id);
 
-      if (images.length > 0) {
-        await supabase.from('product_images').insert(
-          images.map((image: any, index: number) => ({
+
+      await supabase.from('product_images').insert(
+        images.map((image: any, index: number) => ({
+          product_id: params.id,
+          url: image.url.startsWith('/') ? image.url.substring(1) : image.url,
+          label: image.label,
+          order: index
+        }))
+      );
+
+      // Handle specifications update
+      const specifications = JSON.parse(formData.get('specifications') as string);
+      await supabase
+        .from('product_specifications')
+        .delete()
+        .eq('product_id', params.id);
+
+      if (specifications.length > 0) {
+        await supabase.from('product_specifications').insert(
+          specifications.map((spec: any) => ({
             product_id: params.id,
-            url: image.url.startsWith('/') ? image.url.substring(1) : image.url,
-            label: image.label,
-            order: index
+            category: spec.category,
+            label: spec.label,
+            value: spec.value
           }))
         );
-      }
 
-      router.push('/admin/products/manage');
+        
+  
+      }
+      toast.success('Successfully saved!');
+      router.refresh;
+
+      
     } catch (error) {
       console.error('Error updating product:', error);
     } finally {

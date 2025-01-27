@@ -32,14 +32,17 @@ export default function AdminProductsPage() {
 
       if (error) throw error;
 
-      // Handle external links
+      // Handle external links with prices
       const links = JSON.parse(formData.get('links') as string);
       if (links.length > 0) {
         await supabase.from('product_links').insert(
           links.map((link: any) => ({
             product_id: data.id,
             title: link.title,
-            url: link.url
+            url: link.url,
+            price: Number(link.price) || 0, // Ensure price is always a valid number
+            city: link.city || '',
+            warranty: link.warranty || ''
           }))
         );
       }
@@ -53,6 +56,19 @@ export default function AdminProductsPage() {
             url: image.url.startsWith('/') ? image.url.substring(1) : image.url,
             label: image.label,
             order: index
+          }))
+        );
+      }
+
+      // Handle specifications
+      const specifications = JSON.parse(formData.get('specifications') as string);
+      if (specifications.length > 0) {
+        await supabase.from('product_specifications').insert(
+          specifications.map((spec: any) => ({
+            product_id: data.id,
+            category: spec.category,
+            label: spec.label,
+            value: spec.value
           }))
         );
       }

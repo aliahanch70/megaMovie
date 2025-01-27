@@ -44,11 +44,14 @@ export default function DashboardPage() {
 
   return (
     <div className={`min-h-screen bg-black ${isRTL ? 'rtl' : 'ltr'}`}>
-      <div className="flex">
+      {/* Header at the top */}
+      <Header />
+      
+      <div className="flex pt-16"> {/* Add padding-top to account for fixed header */}
         {/* Sidebar */}
-        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-black border-r">
+        <div className={`hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:bottom-0 lg:top-16 bg-black border-${isRTL ? 'l' : 'r'}`}>
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-            <div className="flex items-center flex-shrink-0 px-4">
+            <div className={`flex items-center flex-shrink-0 px-4 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <h1 className="text-xl font-bold">Dashboard</h1>
             </div>
             <div className="mt-8 flex-1 px-4">
@@ -58,18 +61,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Main content */}
-        <div className="lg:pl-64 flex flex-col flex-1">
+        <div className={`flex flex-col flex-1 ${isRTL ? 'lg:pr-64' : 'lg:pl-64'}`}>
           <div className="flex-1 pb-8">
             <div className="px-4 sm:px-6 lg:px-8">
-              <Header />
-              
               {/* Search */}
               <div className="mb-6 z-0">
                 <SearchBar onSearch={setSearchQuery} />
               </div>
 
               {/* KPIs */}
-              <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8 ${isRTL ? 'md:gap-x-reverse' : ''}`}>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
                 <KPICard
                   title="Total Users"
                   value="1,234"
@@ -97,7 +98,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Charts and other content */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 mb-8">
+              <div className={`grid grid-cols-1 gap-4 md:grid-cols-3 mb-8 ${isRTL ? 'md:gap-x-6' : ''}`}>
                 <ActivityChart data={mockActivityData} />
                 <UserProfile user={user} />
               </div>
