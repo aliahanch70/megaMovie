@@ -1,31 +1,77 @@
 'use client';
 
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
 
-interface ProductLink {
-  title: string;
-  url: string;
-  price: number;
-  city: string;
-  warranty: string;
-}
-
 interface ProductLinksProps {
-  links: ProductLink[];
+  links: Array<{
+    title: string;
+    url: string;
+    price: number;
+    city: string;
+    warranty: string;
+    option_values?: Record<string, string>;
+  }>;
+  options?: Array<{
+    name: string;
+    values: string[];
+  }>;
 }
 
-export default function ProductLinks({ links }: ProductLinksProps) {
-  console.log('Links data:', links); // Add this line to debug
+export default function ProductLinks({ links, options }: ProductLinksProps) {
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+
+  // Filter links based on selected options
+  const filteredLinks = links.filter(link => {
+    if (!selectedOptions || !link.option_values) return true;
+    return Object.entries(selectedOptions).every(
+      ([key, value]) => !value || link.option_values?.[key] === value
+    );
+  });
 
   return (
-    <>
-    <Card className="p-8 hover-card-effect"> {/* Increased padding from p-6 to p-8 */}
-      <h2 className="text-2xl font-semibold mb-6">External Links</h2> {/* Increased text size and margin bottom */}
-      <div className="space-y-4"> {/* Increased space between buttons from space-y-2 to space-y-4 */}
-        {links.map((link, index) => {
-          console.log('Individual link:', link); // Add this line to debug
+    <Card className="p-6 hover-card-effect">
+      {options && options.length > 0 && (
+        <div className="mb-4 space-y-4">
+          <h3 className="font-medium">Options</h3>
+          <div className="flex flex-wrap gap-4">
+            {options.map((option) => (
+              <div key={option.name} className="w-[200px]">
+                <Label>{option.name}</Label>
+                <Select
+                  value={selectedOptions[option.name] || 'all'}
+                  onValueChange={(value) => {
+                    setSelectedOptions(prev => ({
+                      ...prev,
+                      [option.name]: value === 'all' ? '' : value
+                    }));
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Select ${option.name}`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All {option.name}s</SelectItem>
+                    {option.values.map((value) => (
+                      <SelectItem key={value} value={value}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <h2 className="text-xl font-semibold mb-4">Available Offers</h2>
+      <div className="space-y-4">
+        {filteredLinks.map((link, index) => {
           return (
             <Button
               key={index}
@@ -52,6 +98,5 @@ export default function ProductLinks({ links }: ProductLinksProps) {
         })}
       </div>
     </Card>
-    </>
   );
 }

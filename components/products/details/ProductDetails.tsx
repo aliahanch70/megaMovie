@@ -25,8 +25,9 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
           .select(`
             *,
             product_images (url, label, order),
-            product_links (title, url , price , city , warranty),
+            product_links (title, url , price , city , warranty, option_values),
             product_specifications (label, value),
+            product_options (name, values),
             profiles (full_name)
           `)
           .eq('id', id)
@@ -88,7 +89,10 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             
             
             {product.product_links?.length > 0 && (
-              <ProductLinks links={product.product_links} />
+              <ProductLinks 
+                links={product.product_links} 
+                options={product.product_options}
+              />
             )}
           </div>
         </div>

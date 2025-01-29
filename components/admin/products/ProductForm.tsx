@@ -11,6 +11,8 @@ import { Plus, X, PlusCircle, Trash2 } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import { validateImageFile } from '@/lib/utils/validation';
 import { uploadImageToPublic } from '@/lib/utils/uploadImage';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 
 interface ProductFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
@@ -18,20 +20,44 @@ interface ProductFormProps {
   initialData?: any;
 }
 
+interface Option {
+  name: string;
+  values: string[];
+}
+
 export default function ProductForm({ onSubmit, loading, initialData }: ProductFormProps) {
-  const [links, setLinks] = useState<Array<{ title: string; url: string; price: number; city: string; warranty: string }>>([]);
+  const [links, setLinks] = useState<Array<{ title: string; url: string; price: number; city: string; warranty: string; optionValues?: { [key: string]: string } }>>([]);
   const [images, setImages] = useState<Array<{ file: File | string; label: string }>>([]);
   const [specifications, setSpecifications] = useState<Array<{ category: string; label: string; value: string }>>(initialData?.product_specifications || []);
+  const [options, setOptions] = useState<Option[]>(initialData?.product_options || []);
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [showOptionDialog, setShowOptionDialog] = useState(false);
+  const [newOptionName, setNewOptionName] = useState('');
+  const [newOptionValues, setNewOptionValues] = useState('');
 
   useEffect(() => {
     if (initialData) {
-      setLinks(initialData.product_links || []);
-      setImages(
-        initialData.product_images?.map((img: any) => ({
-          file: img.url,
-          label: img.label
-        })) || []
-      );
+      // Initialize images with the correct format
+      const initialImages = initialData.product_images?.map((img: any) => ({
+        file: img.url, // Use the full URL
+        label: img.label || ''
+      })) || [];
+      
+      setImages(initialImages);
+      
+      // Initialize other data
+      const initialLinks = initialData.product_links?.map((link: any) => ({
+        title: link.title,
+        url: link.url,
+        price: link.price,
+        city: link.city || '',
+        warranty: link.warranty || '',
+        optionValues: link.option_values || {}
+      })) || [];
+      
+      setLinks(initialLinks);
+
+      console.log('Initializing form with images:', initialImages);
     }
   }, [initialData]);
 
@@ -42,6 +68,7 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     
     formData.append('links', JSON.stringify(links));
     formData.append('specifications', JSON.stringify(specifications));
+    formData.append('options', JSON.stringify(options));
 
     // Handle image uploads
     const uploadedImages = await Promise.all(
@@ -120,6 +147,51 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     setSpecifications(updatedSpecs);
   };
 
+  const handleAddOption = () => {
+    if (!newOptionName || !newOptionValues) return;
+    
+    const values = newOptionValues.split(',').map(v => v.trim()).filter(v => v);
+    setOptions([...options, { name: newOptionName, values }]);
+    setShowOptionDialog(false);
+    setNewOptionName('');
+    setNewOptionValues('');
+  };
+
+  const renderLinkOptions = (link: any, linkIndex: number) => (
+    <div className="space-y-2">
+      <Label>Available for Options</Label>
+      <div className="flex flex-wrap gap-4">
+        {options.map((option) => (
+          <div key={option.name} className="w-[200px]">
+            <Label>{option.name}</Label>
+            <Select
+              value={link.optionValues?.[option.name] || ''}
+              onValueChange={(value) => {
+                const newLinks = [...links];
+                if (!newLinks[linkIndex].optionValues) {
+                  newLinks[linkIndex].optionValues = {};
+                }
+                newLinks[linkIndex].optionValues[option.name] = value;
+                setLinks(newLinks);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={`Select ${option.name}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {option.values.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-6">
       <div className="space-y-4">
@@ -185,50 +257,99 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
         </div>
       </div>
 
+      {/* Options Section */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <Label>Product Options</Label>
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowOptionDialog(true)}
+            >
+              Add Option
+            </Button>
+          </div>
+
+          <div className="space-y-4">
+            {options.map((option, index) => (
+              <div key={index} className="border p-4 rounded-lg">
+                <div className="flex justify-between items-center mb-2">
+                  <h4 className="font-medium">{option.name}</h4>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setOptions(options.filter((_, i) => i !== index));
+                    }}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {option.values.map((value, vIndex) => (
+                    <Badge key={vIndex} variant="secondary">
+                      {value}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardContent className="p-4">
           <Label>External Links ({links.length}/10)</Label>
           <div className="space-y-4 mt-2">
             {links.map((link, index) => (
-              <div key={index} className="flex gap-2">
-                <Input
-                  placeholder="Link Title"
-                  value={link.title}
-                  onChange={(e) => handleLinkChange(index, 'title', e.target.value)}
-                />
-                <Input
-                  placeholder="URL"
-                  type="url"
-                  value={link.url}
-                  onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
-                />
-                <Input
-                  type="number"
-                  placeholder="Price"
-                  step="0.01"
-                  min="0"
-                  value={link.price}
-                  onChange={(e) => handleLinkChange(index, 'price', e.target.value)}
-                  required
-                />
-                <Input
-                  placeholder="City"
-                  value={link.city}
-                  onChange={(e) => handleLinkChange(index, 'city', e.target.value)}
-                />
-                <Input
-                  placeholder="Warranty"
-                  value={link.warranty}
-                  onChange={(e) => handleLinkChange(index, 'warranty', e.target.value)}
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => removeLink(index)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+              <div key={index} className="space-y-4 border p-4 rounded-lg">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Link Title"
+                    value={link.title}
+                    onChange={(e) => handleLinkChange(index, 'title', e.target.value)}
+                  />
+                  <Input
+                    placeholder="URL"
+                    type="url"
+                    value={link.url}
+                    onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
+                  />
+                  <Input
+                    type="number"
+                    placeholder="Price"
+                    step="0.01"
+                    min="0"
+                    value={link.price}
+                    onChange={(e) => handleLinkChange(index, 'price', e.target.value)}
+                    required
+                  />
+                  <Input
+                    placeholder="City"
+                    value={link.city}
+                    onChange={(e) => handleLinkChange(index, 'city', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Warranty"
+                    value={link.warranty}
+                    onChange={(e) => handleLinkChange(index, 'warranty', e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => removeLink(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                {/* Option selection for link */}
+                {options.length > 0 && renderLinkOptions(link, index)}
               </div>
             ))}
             {links.length < 10 && (
@@ -346,6 +467,39 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
       <Button type="submit" disabled={loading}>
         {loading ? 'Saving Changes...' : 'Save Changes'}
       </Button>
+
+      {/* Option Dialog */}
+      <AlertDialog open={showOptionDialog} onOpenChange={setShowOptionDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Add Product Option</AlertDialogTitle>
+            <AlertDialogDescription>
+              <div className="space-y-4">
+                <div>
+                  <Label>Option Name (e.g., Size, Color)</Label>
+                  <Input
+                    value={newOptionName}
+                    onChange={(e) => setNewOptionName(e.target.value)}
+                    placeholder="Enter option name"
+                  />
+                </div>
+                <div>
+                  <Label>Option Values (comma-separated)</Label>
+                  <Input
+                    value={newOptionValues}
+                    onChange={(e) => setNewOptionValues(e.target.value)}
+                    placeholder="e.g., Small, Medium, Large"
+                  />
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleAddOption}>Add Option</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </form>
   );
 }

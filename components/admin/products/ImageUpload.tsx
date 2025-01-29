@@ -36,6 +36,7 @@ export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadP
       
     }
   };
+  
 
   return (
     <Card>
