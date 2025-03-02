@@ -14,6 +14,15 @@ import { uploadImageToPublic } from '@/lib/utils/uploadImage';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 
+interface ProductLink {
+  title: string;
+  url: string;
+  price: number;
+  city: string;
+  warranty: string;
+  optionValues: { [key: string]: string };
+}
+
 interface ProductFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
   loading: boolean;
@@ -26,7 +35,7 @@ interface Option {
 }
 
 export default function ProductForm({ onSubmit, loading, initialData }: ProductFormProps) {
-  const [links, setLinks] = useState<Array<{ title: string; url: string; price: number; city: string; warranty: string; optionValues?: { [key: string]: string } }>>([]);
+  const [links, setLinks] = useState<ProductLink[]>([]);
   const [images, setImages] = useState<Array<{ file: File | string; label: string }>>([]);
   const [specifications, setSpecifications] = useState<Array<{ category: string; label: string; value: string }>>(initialData?.product_specifications || []);
   const [options, setOptions] = useState<Option[]>(initialData?.product_options || []);
@@ -34,6 +43,9 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
   const [showOptionDialog, setShowOptionDialog] = useState(false);
   const [newOptionName, setNewOptionName] = useState('');
   const [newOptionValues, setNewOptionValues] = useState('');
+  const [metaTags, setMetaTags] = useState<Array<{key: string, value: string}>>(
+    initialData?.meta_tags || [{ key: '', value: '' }]
+  );
 
   useEffect(() => {
     if (initialData) {
@@ -69,6 +81,7 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     formData.append('links', JSON.stringify(links));
     formData.append('specifications', JSON.stringify(specifications));
     formData.append('options', JSON.stringify(options));
+    formData.set('meta_tags', JSON.stringify(metaTags));
 
     // Handle image uploads
     const uploadedImages = await Promise.all(
@@ -85,7 +98,14 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
   };
 
   const handleAddLink = () => {
-    setLinks([...links, { title: '', url: '', price: 0, city: '', warranty: '' }]);
+    setLinks([...links, { 
+      title: '', 
+      url: '', 
+      price: 0, 
+      city: '', 
+      warranty: '',
+      optionValues: {} // Initialize with empty object
+    }]);
   };
 
   const handleLinkChange = (index: number, field: string, value: string | number) => {
@@ -157,7 +177,33 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     setNewOptionValues('');
   };
 
-  const renderLinkOptions = (link: any, linkIndex: number) => (
+  const addMetaTag = () => {
+    setMetaTags([...metaTags, { key: '', value: '' }]);
+  };
+
+  const removeMetaTag = (index: number) => {
+    setMetaTags(metaTags.filter((_, i) => i !== index));
+  };
+
+  const updateMetaTag = (index: number, field: 'key' | 'value', value: string) => {
+    const newMetaTags = [...metaTags];
+    newMetaTags[index][field] = value;
+    setMetaTags(newMetaTags);
+  };
+
+  const handleLinkOptionChange = (linkIndex: number, optionName: string, value: string) => {
+    const newLinks = [...links];
+    newLinks[linkIndex] = {
+      ...newLinks[linkIndex],
+      optionValues: {
+        ...newLinks[linkIndex].optionValues,
+        [optionName]: value
+      }
+    };
+    setLinks(newLinks);
+  };
+
+  const renderLinkOptions = (link: ProductLink, linkIndex: number) => (
     <div className="space-y-2">
       <Label>Available for Options</Label>
       <div className="flex flex-wrap gap-4">
@@ -165,15 +211,8 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
           <div key={option.name} className="w-[200px]">
             <Label>{option.name}</Label>
             <Select
-              value={link.optionValues?.[option.name] || ''}
-              onValueChange={(value) => {
-                const newLinks = [...links];
-                if (!newLinks[linkIndex].optionValues) {
-                  newLinks[linkIndex].optionValues = {};
-                }
-                newLinks[linkIndex].optionValues[option.name] = value;
-                setLinks(newLinks);
-              }}
+              value={link.optionValues[option.name] || ''}
+              onValueChange={(value) => handleLinkOptionChange(linkIndex, option.name, value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder={`Select ${option.name}`} />
@@ -456,6 +495,42 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
             </Button>
           </div>
         ))}
+      </div>
+
+      <div className="space-y-4 p-6">
+        <h3 className="font-semibold">Meta Tags</h3>
+        {metaTags.map((tag, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Key (e.g., description)"
+              value={tag.key}
+              onChange={(e) => updateMetaTag(index, 'key', e.target.value)}
+              className="flex-1 input"
+            />
+            <input
+              type="text"
+              placeholder="Value"
+              value={tag.value}
+              onChange={(e) => updateMetaTag(index, 'value', e.target.value)}
+              className="flex-1 input"
+            />
+            <button
+              type="button"
+              onClick={() => removeMetaTag(index)}
+              className="btn-danger"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addMetaTag}
+          className="btn-secondary"
+        >
+          Add Meta Tag
+        </button>
       </div>
 
       <ImageUpload

@@ -1,3 +1,4 @@
+// app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -6,7 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import LoadingBar from '@/components/LoadingBar';
 import { Toaster } from "react-hot-toast";
-
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,9 +31,11 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <LanguageProvider>
-            <Navbar />
-            <LoadingBar />
-            {children}
+            <Suspense fallback={<div>Loading...</div>}>
+              <Navbar />
+              <LoadingBar />
+              {children}
+            </Suspense>
           </LanguageProvider>
         </ThemeProvider>
         <Toaster position="bottom-center" />

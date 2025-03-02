@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import Header from '@/components/dashboard/Header';
 import UserProfile from '@/components/dashboard/UserProfile';
@@ -17,7 +17,7 @@ const mockActivityData = Array.from({ length: 7 }, (_, i) => ({
   value: Math.floor(Math.random() * 100),
 }));
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { isRTL } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,14 +40,20 @@ export default function DashboardPage() {
     getUser();
   }, [supabase]);
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen bg-black ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header at the top */}
       <Header />
       
-      <div className="flex pt-16"> {/* Add padding-top to account for fixed header */}
+      <div className="flex pt-16">
         {/* Sidebar */}
         <div className={`hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:bottom-0 lg:top-16 bg-black border-${isRTL ? 'l' : 'r'}`}>
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -107,5 +113,13 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center">Loading dashboard...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }

@@ -23,16 +23,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
   images: {
     unoptimized: true,
   },
-  // Copy public folder to out directory during export
-  experimental: {
-    outputFileTracingIncludes: {
-      '/**': ['./public/**/*']
-    }
-  }
-}
+  outputFileTracingIncludes: {
+    '/**': ['./public/**/*'],
+  }, // این را به سطح بالا منتقل کن
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

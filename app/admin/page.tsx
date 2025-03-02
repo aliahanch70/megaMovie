@@ -63,6 +63,12 @@ export default function AdminPage() {
               </CardContent>
             </Card>
           </Link>
+          <Link href="/admin/slideshow">
+                        <Card className="p-6 hover:bg-gray-900 transition-colors">
+                            <h2 className="text-xl font-semibold mb-2">Slideshow</h2>
+                            <p className="text-gray-400">Manage homepage slideshow</p>
+                        </Card>
+                    </Link>
         </div>
       </div>
     </div>

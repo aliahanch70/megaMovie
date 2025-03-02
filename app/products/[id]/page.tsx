@@ -7,12 +7,8 @@ import { Pencil } from 'lucide-react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-
-
 interface ProductDetailsPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>; // Updated to reflect Next.js 15+ behavior
 }
 
 // Static params for build time generation
@@ -24,8 +20,9 @@ export async function generateStaticParams() {
 // Server component that fetches initial data
 export default async function ProductDetailsPage({ params }: ProductDetailsPageProps) {
   const supabase = createServerComponentClient({ cookies });
+  const { id } = await params; // Await params to get the id
   const { data: { session } } = await supabase.auth.getSession();
-  
+
   // Get user role from profiles table
   const { data: userRole } = await supabase
     .from('profiles')
@@ -36,25 +33,22 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
   const isAdmin = userRole?.role === 'admin';
 
   const [initialData, relatedProducts] = await Promise.all([
-    getProduct(params.id),
-    getRelatedProducts(params.id)
+    getProduct(id), // Use resolved id
+    getRelatedProducts(id), // Use resolved id
   ]);
 
-  console.log(isAdmin)
+  console.log('Is Admin:', isAdmin);
 
   return (
     <div>
       {isAdmin && (
-        <Link href={`/admin/products/edit/${params.id}`}>
+        <Link href={`/admin/products/edit/${id}`}>
           <Button variant="outline" size="icon">
             <Pencil className="h-4 w-4" />
           </Button>
         </Link>
       )}
-      <ProductPageClient 
-        id={params.id} 
-        initialData={initialData}
-      />
+      <ProductPageClient id={id} initialData={initialData} />
       <RelatedProducts products={relatedProducts} />
     </div>
   );

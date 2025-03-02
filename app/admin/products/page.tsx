@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import ProductForm from '@/components/admin/products/ProductForm';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/client';
 
-export default function AdminProductsPage() {
+function AdminProductsContent() {
   const router = useRouter();
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
@@ -19,14 +19,16 @@ export default function AdminProductsPage() {
 
       const { data, error } = await supabase
         .from('products')
-        .insert([{
-          name: formData.get('name'),
-          description: formData.get('description'),
-          price: parseFloat(formData.get('price') as string),
-          category: formData.get('category'),
-          status: formData.get('status'),
-          created_by: user.id
-        }])
+        .insert([
+          {
+            name: formData.get('name'),
+            description: formData.get('description'),
+            price: parseFloat(formData.get('price') as string),
+            category: formData.get('category'),
+            status: formData.get('status'),
+            created_by: user.id,
+          },
+        ])
         .select()
         .single();
 
@@ -40,9 +42,9 @@ export default function AdminProductsPage() {
             product_id: data.id,
             title: link.title,
             url: link.url,
-            price: Number(link.price) || 0, // Ensure price is always a valid number
+            price: Number(link.price) || 0,
             city: link.city || '',
-            warranty: link.warranty || ''
+            warranty: link.warranty || '',
           }))
         );
       }
@@ -55,7 +57,7 @@ export default function AdminProductsPage() {
             product_id: data.id,
             url: image.url.startsWith('/') ? image.url.substring(1) : image.url,
             label: image.label,
-            order: index
+            order: index,
           }))
         );
       }
@@ -68,7 +70,7 @@ export default function AdminProductsPage() {
             product_id: data.id,
             category: spec.category,
             label: spec.label,
-            value: spec.value
+            value: spec.value,
           }))
         );
       }
@@ -92,5 +94,13 @@ export default function AdminProductsPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading form...</div>}>
+      <AdminProductsContent />
+    </Suspense>
   );
 }

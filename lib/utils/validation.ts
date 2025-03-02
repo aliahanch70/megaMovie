@@ -14,3 +14,11 @@ export async function validateImageFile(file: File): Promise<void> {
   // Additional image validation could be added here
   // For example, checking dimensions, aspect ratio, etc.
 }
+
+export const validateEmail = (email: string): boolean => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+export const validatePassword = (password: string): boolean => {
+  return password.length >= 6;
+};

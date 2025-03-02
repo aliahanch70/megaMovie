@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { UserPlus } from 'lucide-react';
 import { signUp } from '@/lib/supabase/auth';
+import { toast } from 'react-hot-toast';
 
 interface FormData {
   email: string;
@@ -15,35 +16,50 @@ interface FormData {
   fullName: string;
 }
 
-export default function RegisterPage() {
+function RegisterContent() {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-    fullName: ''
+    fullName: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams(); // Using useSearchParams
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    // Client-side validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
+
     try {
       await signUp(formData);
+      toast.success('Account created successfully! Please log in.');
       router.push('/auth/login');
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message || 'Failed to create account');
+      toast.error('Failed to create account');
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     }));
   };
 
@@ -66,6 +82,7 @@ export default function RegisterPage() {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -77,6 +94,7 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -88,18 +106,11 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 minLength={6}
+                disabled={loading}
               />
             </div>
-            {error && (
-              <div className="text-sm text-red-500">
-                {error}
-              </div>
-            )}
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
+            {error && <div className="text-sm text-red-500">{error}</div>}
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 'Creating account...'
               ) : (
@@ -113,5 +124,13 @@ export default function RegisterPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }

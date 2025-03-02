@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,7 @@ interface FormData {
   password: string;
 }
 
-export default function LoginPage() {
+function LoginContent() {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -30,7 +30,8 @@ export default function LoginPage() {
 
     try {
       await signIn(formData);
-      window.location.href = '/dashboard'; // This will cause a full page reload and redirect to dashboard
+      router.push('/dashboard'); // Use router.push for client-side navigation
+      router.refresh(); // Refresh to ensure server state is updated
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -39,9 +40,9 @@ export default function LoginPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     }));
   };
 
@@ -65,6 +66,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -75,18 +77,11 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
-            {error && (
-              <div className="text-sm text-red-500">
-                {error}
-              </div>
-            )}
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
+            {error && <div className="text-sm text-red-500">{error}</div>}
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 'Signing in...'
               ) : (
@@ -100,5 +95,13 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading login form...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
