@@ -29,7 +29,7 @@ export default function ProductScroll({ products }: ProductScrollProps) {
 
   const getImageUrl = (url: string) => {
     if (!url) return '/placeholder.png';
-    return url.startsWith('/') ? url : `/products/${url}`;
+    return url.startsWith('https') ? url : `/products/${url}`;
   };
 
   const handleProductClick = async (product: Product) => {

@@ -30,8 +30,7 @@ function LoginContent() {
 
     try {
       await signIn(formData);
-      router.push('/dashboard'); // Use router.push for client-side navigation
-      router.refresh(); // Refresh to ensure server state is updated
+      window.location.href = '/dashboard';
     } catch (error: any) {
       setError(error.message);
     } finally {

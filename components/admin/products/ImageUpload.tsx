@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useRef } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import Image from 'next/image';
+import { useRef } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import Image from "next/image";
 
 interface ImageUploadProps {
   images: Array<{ file: File | string; label: string }>;
@@ -13,12 +13,7 @@ interface ImageUploadProps {
   onRemove: (index: number) => void;
 }
 
-const IMAGE_LABELS = [
-  'Main View',
-  'Side View',
-  'Back View',
-  'Detail View'
-];
+const IMAGE_LABELS = ["Main View", "Side View", "Back View", "Detail View"];
 
 export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,11 +27,9 @@ export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadP
       }
     }
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-      
+      fileInputRef.current.value = "";
     }
   };
-  
 
   return (
     <Card>
@@ -50,7 +43,15 @@ export default function ImageUpload({ images, onUpload, onRemove }: ImageUploadP
                 {image ? (
                   <div className="relative aspect-square rounded-lg overflow-hidden">
                     <Image
-                      src={typeof image.file === 'string' ? (image.file.startsWith('/products/') ? image.file : `/products/${image.file}`) : URL.createObjectURL(image.file)}
+                      src={
+                        typeof image.file === "string"
+                          ? image.file.startsWith("http") // URL کامل (Cloudinary)
+                            ? image.file
+                            : image.file.startsWith("/products/") // URL محلی با پیشوند درست
+                            ? image.file
+                            : `/products/${image.file}` // اضافه کردن پیشوند به URL محلی
+                          : URL.createObjectURL(image.file) // فایل جدید
+                      }
                       alt={label}
                       fill
                       className="object-cover"
