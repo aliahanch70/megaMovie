@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { getProduct, getAllProductIds, getRelatedProducts } from '@/lib/api/products';
 import ProductPageClient from '@/components/products/details/ProductPageClient';
 import RelatedProducts from '@/components/products/RelatedProducts';
