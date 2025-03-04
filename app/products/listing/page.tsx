@@ -1,9 +1,10 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import ProductGrid from '@/components/products/listing/ProductGrid';
 import ProductFilters from '@/components/products/listing/ProductFilters';
 import SearchBar from '@/components/products/listing/SearchBar';
 import { createClient } from '@/lib/supabase/client';
+import Loading from '@/components/Loading';
 
 type Product = {
   id: string;
@@ -14,7 +15,7 @@ type Product = {
   product_images: { url: string; label: string }[];
 };
 
-export default function ProductListingPage() {
+ function ProductListingContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -92,4 +93,12 @@ export default function ProductListingPage() {
       </div>
     </div>
   );
+}
+
+export default function ProductListingPage() {
+  return(
+    <Suspense fallback={<><Loading/></>}>
+      <ProductListingContent />
+    </Suspense>
+  )
 }

@@ -112,7 +112,7 @@ export default function ProductScroll({ products }: ProductScrollProps) {
               className="flex-none w-[38vw] sm:w-[200px] md:w-[250px]"
               onClick={(e: any) => handleClick(e, product.id)}
             >
-              <Card className="hover-card-effect group">
+              <Card className="  group">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg bg-white">
                   <Image
                     src={getImageUrl(product.product_images[0]?.url)}

@@ -6,6 +6,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { LogIn, UserPlus } from 'lucide-react';
 import ProductScroll from '@/components/products/ProductScroll';
 import Slideshow from '@/components/Slideshow';
+import Carousel from '@/components/Carousel';
+import Slideshow2 from '@/components/SlideShow2';
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
@@ -43,7 +45,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-4 py-8">
-        <Slideshow slides={slides || []} />
+        <Slideshow2 slides={slides || []} />
        
 
         {/* Special Offers Section */}

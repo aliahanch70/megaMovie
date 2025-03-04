@@ -46,6 +46,7 @@
     "@types/react": "18.2.22",
     "@types/react-chartjs-2": "^2.5.7",
     "@types/react-dom": "18.2.7",
+    "antd": "^5.24.2",
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.1",

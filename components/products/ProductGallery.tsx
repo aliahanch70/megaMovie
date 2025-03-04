@@ -11,7 +11,7 @@ interface ProductGalleryProps {
 
 export default function ProductGallery({ images, selected, onSelect }: ProductGalleryProps) {
   return (
-    <Card className="p-4 space-y-4 hover-card-effect">
+    <Card className="p-4 space-y-4  ">
       <div className="relative aspect-square overflow-hidden rounded-lg">
         <Image
           src={images[selected]}

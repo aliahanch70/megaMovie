@@ -33,7 +33,7 @@ export default function AdminPage() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/admin/products">
-            <Card className="hover-card-effect cursor-pointer">
+            <Card className="  cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-medium">{t('admin.productManagement')}</CardTitle>
                 <Package className="h-5 w-5 text-muted-foreground" />
@@ -50,7 +50,7 @@ export default function AdminPage() {
           </Link>
 
           <Link href="/admin/products/manage">
-            <Card className="hover-card-effect cursor-pointer">
+            <Card className="  cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-medium">{t('admin.productSettings')}</CardTitle>
                 <Settings className="h-5 w-5 text-muted-foreground" />

@@ -16,7 +16,7 @@ export default function ProductInfo({
 }: ProductInfoProps) {
   
   return (
-    <Card className="p-6 space-y-6 hover-card-effect">
+    <Card className="p-6 space-y-6  ">
       <div>
         <h2 className="text-xl font-semibold mb-3">Description</h2>
         <p className="text-muted-foreground whitespace-pre-line">{description}</p>

@@ -5,7 +5,12 @@ import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-export default function Header() {
+interface HeaderProps {
+  children?: React.ReactNode;
+}
+
+const Header = ({ children }: HeaderProps) => {
+
   const router = useRouter();
   const supabase = createClient();
 
@@ -25,3 +30,5 @@ export default function Header() {
     </div>
   );
 }
+
+export default Header;

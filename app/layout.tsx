@@ -8,6 +8,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import LoadingBar from '@/components/LoadingBar';
 import { Toaster } from "react-hot-toast";
 import { Suspense } from 'react';
+import Loading from '@/components/Loading';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <LanguageProvider>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<><Loading/></>}>
               <Navbar />
               <LoadingBar />
               {children}

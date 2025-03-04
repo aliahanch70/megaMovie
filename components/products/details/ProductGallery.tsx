@@ -19,8 +19,9 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
   const sortedImages = [...images].sort((a, b) => a.order - b.order);
 
   return (
-    <Card className="p-4 space-y-4 hover-card-effect">
-      <div className="relative aspect-square overflow-hidden rounded-lg">
+    <Card className="p-4 space-y-4   h-fit">
+      <div className="relative aspect-square overflow-hidden rounded-lg 
+">
         <Image
           src={sortedImages[selectedImage]?.url}
           alt={sortedImages[selectedImage]?.label}

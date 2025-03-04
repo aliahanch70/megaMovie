@@ -11,7 +11,7 @@ interface ProductDetailsProps {
 
 export default function ProductDetails({ description, features, warranty }: ProductDetailsProps) {
   return (
-    <Card className="p-6 space-y-6 hover-card-effect">
+    <Card className="p-6 space-y-6  ">
       <div>
         <h2 className="text-xl font-semibold mb-3">Product Description</h2>
         <p className="text-muted-foreground">{description}</p>

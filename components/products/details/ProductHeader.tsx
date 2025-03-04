@@ -12,7 +12,7 @@ interface ProductHeaderProps {
 
 export default function ProductHeader({ name, price, status }: ProductHeaderProps) {
   return (
-    <Card className="p-6 hover-card-effect">
+    <Card className="p-6  ">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold gradient-text">{name}</h1>
         <div className="flex items-center gap-4">

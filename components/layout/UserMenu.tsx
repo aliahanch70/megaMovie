@@ -41,10 +41,10 @@ export default function UserMenu() {
   if (!email) {
     return (
       <div className="flex items-center gap-4">
-        <Button variant="ghost" onClick={() => router.push('/auth/login')}>
+        <Button variant="ghost" className='hidden md:block' onClick={() => router.push('/auth/login')}>
           Sign In
         </Button>
-        <Button onClick={() => router.push('/auth/register')}>
+        <Button  onClick={() => router.push('/auth/register')}>
           Sign Up
         </Button>
       </div>

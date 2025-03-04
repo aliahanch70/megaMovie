@@ -17,7 +17,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
         <div className="flex md:grid md:grid-cols-4 gap-2  min-w-full md:min-w-0">
           {products.map((product) => (
             <Link key={product.id} href={`/products/${product.id}`}>
-              <Card className="hover-card-effect group w-[180px] shrink-0 md:w-[300px]">
+              <Card className="  group w-[180px] shrink-0 md:w-[300px]">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg">
                   <Image
                     src={product.product_images[0]?.url || '/placeholder.jpg'}

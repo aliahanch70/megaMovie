@@ -15,7 +15,7 @@ interface ProductCardProps {
 export default function ProductCard({ id, name, price, image }: ProductCardProps) {
   return (
     <Link href={`/shop/${id}`}>
-      <Card className="overflow-hidden hover-card-effect group">
+      <Card className="overflow-hidden   group">
         <div className="aspect-square relative">
           <Image
             src={image}

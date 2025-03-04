@@ -19,7 +19,7 @@ interface ProductSpecificationsProps {
 
 export default function ProductSpecifications({ specs }: ProductSpecificationsProps) {
   return (
-    <Card className="p-6 hover-card-effect">
+    <Card className="p-6  ">
       <h2 className="text-xl font-semibold mb-6">Technical Specifications</h2>
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
