@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 
 interface HeaderProps {
   children?: React.ReactNode;
+  className?: string;
 }
 
 const Header = ({ children }: HeaderProps) => {

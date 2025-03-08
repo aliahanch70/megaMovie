@@ -1,10 +1,10 @@
 'use client';
 
-import { useRef, useState, MouseEvent } from 'react';
+import { useRef, useState, MouseEvent , useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
-import { Star } from 'lucide-react';
-import { useRouter } from 'next/navigation'
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -19,13 +19,15 @@ interface ProductScrollProps {
 }
 
 export default function ProductScroll({ products }: ProductScrollProps) {
-  const router = useRouter()
+  const router = useRouter();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragStartTime, setDragStartTime] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
   const getImageUrl = (url: string) => {
     if (!url) return '/placeholder.png';
@@ -67,6 +69,7 @@ export default function ProductScroll({ products }: ProductScrollProps) {
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    updateArrowVisibility();
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -74,28 +77,80 @@ export default function ProductScroll({ products }: ProductScrollProps) {
     e.preventDefault();
     if (scrollContainerRef.current) {
       const x = e.pageX - scrollContainerRef.current.offsetLeft;
-      const walk = (x - startX) * 2; // Adjust scrolling speed
+      const walk = (x - startX) * 2;
       scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-      setDragDistance(Math.abs(x - startX)); // Track drag distance
+      setDragDistance(Math.abs(x - startX));
+      updateArrowVisibility();
     }
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    updateArrowVisibility();
   };
 
   const handleClick = (e: MouseEvent, productId: string) => {
-    // Only prevent navigation if there was significant dragging
     if (isDragging && dragDistance > 5) {
       e.preventDefault();
     } else {
-      // If it was a clean click or tiny movement, allow navigation
-      router.push(`/products/${productId}`)
+      router.push(`/products/${productId}`);
     }
   };
 
+  const scrollLeftHandler = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -300,
+        behavior: 'smooth'
+      });
+      setTimeout(updateArrowVisibility, 300); // Wait for scroll animation
+    }
+  };
+
+  const scrollRightHandler = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: 300,
+        behavior: 'smooth'
+      });
+      setTimeout(updateArrowVisibility, 300); // Wait for scroll animation
+    }
+  };
+
+  const updateArrowVisibility = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      // Show left arrow if not at start
+      setShowLeftArrow(scrollLeft > 0);
+      // Show right arrow if not at end (with small buffer)
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Initial check on mount
+  useEffect(() => {
+    updateArrowVisibility();
+    // Add scroll listener
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', updateArrowVisibility);
+      return () => container.removeEventListener('scroll', updateArrowVisibility);
+    }
+  }, []);
+
   return (
     <div className="relative overflow-hidden px-4">
+      {/* Left Arrow */}
+      {showLeftArrow && (
+        <button
+          onClick={scrollLeftHandler}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors z-10"
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      )}
+
       <div
         ref={scrollContainerRef}
         className="flex overflow-x-auto scrollbar-hide select-none -mx-4"
@@ -112,7 +167,7 @@ export default function ProductScroll({ products }: ProductScrollProps) {
               className="flex-none w-[38vw] sm:w-[200px] md:w-[250px]"
               onClick={(e: any) => handleClick(e, product.id)}
             >
-              <Card className="  group">
+              <Card className="group">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg bg-white">
                   <Image
                     src={getImageUrl(product.product_images[0]?.url)}
@@ -143,6 +198,17 @@ export default function ProductScroll({ products }: ProductScrollProps) {
           ))}
         </div>
       </div>
+
+      {/* Right Arrow */}
+      {showRightArrow && (
+        <button
+          onClick={scrollRightHandler}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors z-10"
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      )}
     </div>
   );
 }

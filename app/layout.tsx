@@ -16,9 +16,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       template: '%s | Dashboard App',
-      default: 'Dashboard App'
+      default: 'Dashboard App',
     },
     description: 'A modern dashboard application with dark theme',
+    // اضافه کردن متای سفارشی
+    other: {
+      'google-site-verification': '5C3M59mTnqop0xGg_gqVyuh1p-OTZ9hrTKGapAKDdgg',
+    },
   };
 }
 
