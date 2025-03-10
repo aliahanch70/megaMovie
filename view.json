@@ -2984,5 +2984,27 @@
     "viewedAt": "2025-03-10T06:07:06.042Z",
     "imageUrl": "uploads/1738139187800-yhze151apna.webp",
     "ipAddress": "81.19.216.5"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "5792d47e-af06-4ac8-8f54-a90db035dca9",
+    "productName": "Samsung a55",
+    "price": 360,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:14:31.104Z",
+    "imageUrl": "uploads/1736328923490-te3bsut3zo.webp",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "f2006169-0f29-4244-9267-06b436155d17",
+    "productName": "poco x3",
+    "price": 250,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:14:35.142Z",
+    "imageUrl": "uploads/1738139187800-yhze151apna.webp",
+    "ipAddress": "81.19.216.5"
   }
 ]

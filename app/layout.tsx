@@ -10,8 +10,6 @@ import { Toaster } from "react-hot-toast";
 import { Suspense } from 'react';
 import Loading from '@/components/Loading';
 import { LoginModalProvider , useLoginModal } from "@/contexts/LoginModalContext";
-import LoginPage from "@/app/auth/(..)login/page";
-import AuthModal from "@/components/layout/AuthModal";
 import LoginModalWrapper from "@/components/layout/LoginModalWrapper";
 
 
