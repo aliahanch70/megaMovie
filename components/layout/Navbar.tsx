@@ -12,11 +12,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import ToggleNav from '@/components/ToggleNav';
 
+
 export default function Navbar() {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
   const supabase = createClient();
   const { t, isRTL, language, setLanguage } = useLanguage();
+
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -87,6 +89,8 @@ export default function Navbar() {
             <UserMenu />
             <ToggleNav/>
           </div>
+          {/* مودال لاگین */}
+      
         </div>
       </div>
     </nav>

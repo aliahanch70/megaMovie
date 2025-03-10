@@ -9,6 +9,11 @@ import LoadingBar from '@/components/LoadingBar';
 import { Toaster } from "react-hot-toast";
 import { Suspense } from 'react';
 import Loading from '@/components/Loading';
+import { LoginModalProvider , useLoginModal } from "@/contexts/LoginModalContext";
+import LoginPage from "@/app/auth/(..)login/page";
+import AuthModal from "@/components/layout/AuthModal";
+import LoginModalWrapper from "@/components/layout/LoginModalWrapper";
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,11 +41,16 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <LanguageProvider>
+          <LoginModalProvider>
             <Suspense fallback={<><Loading/></>}>
               <Navbar />
               <LoadingBar />
               {children}
+              <LoginModalWrapper /> {/* حالا AuthModal در کلاینت اجرا می‌شود */}
+
+
             </Suspense>
+          </LoginModalProvider>
           </LanguageProvider>
         </ThemeProvider>
         <Toaster position="bottom-center" />
@@ -48,3 +58,4 @@ export default function RootLayout({
     </html>
   );
 }
+

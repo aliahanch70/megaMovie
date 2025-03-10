@@ -13,12 +13,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { User, LogOut } from 'lucide-react';
+import { useLoginModal } from "@/contexts/LoginModalContext"; // 🔹 این خط رو اضافه کن
+
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
+
+  const { openLogin } = useLoginModal();
+
 
   useEffect(() => {
     const getUser = async () => {
@@ -41,7 +46,7 @@ export default function UserMenu() {
   if (!email) {
     return (
       <div className="flex items-center gap-4">
-        <Button variant="ghost" className='hidden md:block' onClick={() => router.push('/auth/login')}>
+        <Button variant="ghost" className='hidden md:block' onClick={openLogin}>
           Sign In
         </Button>
         <Button  onClick={() => router.push('/auth/register')}>
@@ -71,6 +76,8 @@ export default function UserMenu() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      
     </div>
   );
 }

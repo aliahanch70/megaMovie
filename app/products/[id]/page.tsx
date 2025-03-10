@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-import { getProduct, getAllProductIds, getRelatedProducts } from '@/lib/api/products';
+import { getProduct, getRelatedProducts } from '@/lib/api/products';
 import ProductPageClient from '@/components/products/details/ProductPageClient';
 import RelatedProducts from '@/components/products/RelatedProducts';
 import Link from 'next/link';
@@ -51,41 +51,58 @@ export async function generateMetadata(
 // Server component that fetches initial data
 export default async function ProductDetailsPage({ params }: ProductDetailsPageProps) {
   const { id } = await params;
-  const supabase = createServerComponentClient({ cookies }); // cookies به صورت تابع ارسال می‌شه
+  const supabase = createServerComponentClient({ cookies });
+  // گرفتن داده‌های محصول و محصولات مرتبط بدون وابستگی به کاربر
+  const productPromise = getProduct(id);
+  const relatedPromise = getRelatedProducts(id);
 
+  let user = null;
+  let userRole = null;
+  let isAdmin = false;
+
+  // گرفتن کاربر و نقشش فقط اگه ممکن باشه
   try {
-    // گرفتن کاربر با getUser به جای getSession
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError) throw userError;
+    const { data: { user: fetchedUser }, error: userError } = await supabase.auth.getUser();
+    if (userError) {
+      console.log('No user logged in or error fetching user:', userError.message);
+    } else {
+      user = fetchedUser;
+        if(user) {
+        const { data: roleData, error: roleError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+        
+      if (roleError) {
+        console.error('Error fetching user role:', roleError.message);
+      } else {
+        userRole = roleData;
+        isAdmin = userRole?.role === 'admin';
+      }
+    }
+  }
+  } catch (error) {
+    console.log('User authentication failed, proceeding without user data:', error);
+  }
 
-    // گرفتن همه داده‌ها توی یه Promise.all
-    const productPromise = getProduct(id);
-    const relatedPromise = getRelatedProducts(id);
-    const userRolePromise = user
-      ? supabase.from('profiles').select('role').eq('id', user.id).single()
-      : Promise.resolve({ data: null, error: null }); // اگه کاربری نبود، null برگردون
+  // گرفتن داده‌های محصول و محصولات مرتبط
+  try {
+    const [productData, relatedProducts] = await Promise.all([productPromise, relatedPromise]);
 
-    const [
-      productData,
-      relatedProducts,
-      { data: userRole },
-    ] = await Promise.all([productPromise, relatedPromise, userRolePromise]);
-
-    // ثبت بازدید محصول
+    // ثبت بازدید محصول (حتی اگه کاربر نباشه)
     if (productData) {
       await trackProductView({
-        userRole: userRole?.role,
-        userId: user?.id,
+        userRole: userRole?.role || undefined,
+        userId: user?.id || undefined,
         productId: productData.id,
         productName: productData.name,
         price: productData.price,
         category: productData.category,
         viewedAt: new Date().toISOString(),
-        imageUrl: productData.product_images?.[0]?.url || undefined, // پیشوند /products/ حذف شد
+        imageUrl: productData.product_images?.[0]?.url || undefined,
       });
     }
-
-    const isAdmin = userRole?.role === 'admin';
 
     console.log('Is Admin:', isAdmin);
 
@@ -103,7 +120,6 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
       </div>
     );
   } catch (error) {
-    
     console.error('Error fetching product data:', error);
     return <div>Error loading product</div>;
   }

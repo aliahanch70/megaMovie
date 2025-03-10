@@ -2691,5 +2691,298 @@
     "viewedAt": "2025-03-08T14:04:27.705Z",
     "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
     "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "b3dd492f-46e4-44cc-b84b-0814f9a4ca82",
+    "productName": "poco x7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-09T13:47:03.035Z",
+    "imageUrl": "uploads/1736578630647-zjxw55iwlip.webp",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "b2b74146-e71b-412e-868a-126729cb03a6",
+    "productName": "Premium Wireless",
+    "price": 10,
+    "category": "clothing",
+    "viewedAt": "2025-03-09T14:32:40.040Z",
+    "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": null,
+    "userId": null,
+    "productId": "b2b74146-e71b-412e-868a-126729cb03a6",
+    "productName": "Premium Wireless",
+    "price": 10,
+    "category": "clothing",
+    "viewedAt": "2025-03-09T14:47:47.442Z",
+    "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": null,
+    "userId": null,
+    "productId": "b2b74146-e71b-412e-868a-126729cb03a6",
+    "productName": "Premium Wireless",
+    "price": 10,
+    "category": "clothing",
+    "viewedAt": "2025-03-09T14:49:32.134Z",
+    "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "userRole": null,
+    "userId": null,
+    "productId": "9e352f8b-7fc2-4e47-b370-7c02e6650438",
+    "productName": "t-shitt",
+    "price": 12,
+    "category": "clothing",
+    "viewedAt": "2025-03-09T14:49:37.092Z",
+    "imageUrl": "uploads/1737533295046-w38se96cpz.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "productId": "9e352f8b-7fc2-4e47-b370-7c02e6650438",
+    "productName": "t-shitt",
+    "price": 12,
+    "category": "clothing",
+    "viewedAt": "2025-03-09T14:52:23.345Z",
+    "imageUrl": "uploads/1737533295046-w38se96cpz.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "productId": "b3dd492f-46e4-44cc-b84b-0814f9a4ca82",
+    "productName": "poco x7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-09T14:52:42.145Z",
+    "imageUrl": "uploads/1736578630647-zjxw55iwlip.webp",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "productId": "186b5a68-4119-4546-a041-c57d8fcd6ab0",
+    "productName": "iphone 16 pro max",
+    "price": 959.99,
+    "category": "electronics",
+    "viewedAt": "2025-03-09T14:53:02.390Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1740991140/products/uploads/1740991136330-8584l5hrzqv.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "186b5a68-4119-4546-a041-c57d8fcd6ab0",
+    "productName": "iphone 16 pro max",
+    "price": 959.99,
+    "category": "electronics",
+    "viewedAt": "2025-03-09T14:54:49.898Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1740991140/products/uploads/1740991136330-8584l5hrzqv.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "f2006169-0f29-4244-9267-06b436155d17",
+    "productName": "poco x3",
+    "price": 250,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:52:54.540Z",
+    "imageUrl": "uploads/1738139187800-yhze151apna.webp",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "b2b74146-e71b-412e-868a-126729cb03a6",
+    "productName": "Premium Wireless",
+    "price": 10,
+    "category": "clothing",
+    "viewedAt": "2025-03-10T05:53:00.263Z",
+    "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "b2b74146-e71b-412e-868a-126729cb03a6",
+    "productName": "Premium Wireless",
+    "price": 10,
+    "category": "clothing",
+    "viewedAt": "2025-03-10T05:53:58.191Z",
+    "imageUrl": "uploads/1737447596014-w3ykzbeut8j.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "f2006169-0f29-4244-9267-06b436155d17",
+    "productName": "poco x3",
+    "price": 250,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:54:01.764Z",
+    "imageUrl": "uploads/1738139187800-yhze151apna.webp",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:54:55.223Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:57:29.956Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:57:53.769Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:58:10.338Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:58:23.265Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:58:26.870Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:58:35.085Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T05:59:39.759Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:00:35.412Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:00:49.786Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:00:52.009Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:01:43.555Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:01:57.635Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:02:10.153Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:02:13.972Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:02:16.588Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "769e08bb-5608-41e1-8cb0-30ec4537f782",
+    "productName": "Samsung a35",
+    "price": 310,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:07:03.392Z",
+    "imageUrl": "uploads/1736328898014-hlci1has5k7.jpg",
+    "ipAddress": "81.19.216.5"
+  },
+  {
+    "productId": "f2006169-0f29-4244-9267-06b436155d17",
+    "productName": "poco x3",
+    "price": 250,
+    "category": "electronics",
+    "viewedAt": "2025-03-10T06:07:06.042Z",
+    "imageUrl": "uploads/1738139187800-yhze151apna.webp",
+    "ipAddress": "81.19.216.5"
   }
 ]
