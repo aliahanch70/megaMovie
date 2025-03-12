@@ -1,10 +1,11 @@
 "use client"
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import ProductGrid from '@/components/products/listing/ProductGrid';
 import ProductFilters from '@/components/products/listing/ProductFilters';
 import SearchBar from '@/components/products/listing/SearchBar';
 import { createClient } from '@/lib/supabase/client';
 import Loading from '@/components/Loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Product = {
   id: string;
@@ -15,9 +16,12 @@ type Product = {
   product_images: { url: string; label: string }[];
 };
 
- function ProductListingContent() {
+function ProductListingContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const LIMIT = 16;
   const [filters, setFilters] = useState({
     category: 'all',
     minPrice: '',
@@ -26,12 +30,36 @@ type Product = {
     sort: 'newest',
   });
   const [searchQuery, setSearchQuery] = useState('');
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   const supabase = createClient();
 
+  const loadMore = useCallback(() => {
+    setLoadError(false);
+    setLoadingMore(true);
+    setTimeout(() => {
+      setOffset(prev => prev + LIMIT);
+    }, 1000);
+  }, []);
+
+  const observer = useRef<IntersectionObserver>();
+  const lastProductRef = useCallback((node: HTMLDivElement) => {
+    if (loadingMore || loadError) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMore();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loadingMore, hasMore, loadError, loadMore]);
+
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
+      if (offset === 0) {
+        setLoading(true);
+      }
       let query = supabase.from('products').select(`
         *,
         product_images (url, label)
@@ -64,14 +92,36 @@ type Product = {
           break;
       }
 
-      const { data, error } = await query;
-      if (error) console.error('Error fetching products:', error);
-      else setProducts(data || []);
-      setLoading(false);
+      query = query.range(offset, offset + LIMIT - 1);
+      
+      try {
+        const { data, error } = await query;
+        if (error) throw error;
+        
+        if (offset === 0) {
+          setProducts(data || []);
+        } else {
+          setProducts(prev => [...prev, ...(data || [])]);
+        }
+        setHasMore((data || []).length === LIMIT);
+        setLoadError(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setLoadError(true);
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
+      }
     };
 
     fetchProducts();
-  }, [filters, searchQuery, supabase]);
+  }, [filters, searchQuery, offset, supabase]);
+
+  // Reset offset when filters or search change
+  useEffect(() => {
+    setOffset(0);
+    setHasMore(true);
+  }, [filters, searchQuery]);
 
   return (
     <div className="min-h-screen bg-black">
@@ -87,7 +137,15 @@ type Product = {
           </div>
 
           <div className="flex-1">
-            <ProductGrid products={products} loading={loading} />
+            <ProductGrid 
+              products={products} 
+              loading={loading}
+              loadingMore={loadingMore}
+              lastProductRef={lastProductRef}
+              hasMore={hasMore}
+              loadError={loadError}
+              onLoadMore={loadMore}
+            />
           </div>
         </div>
       </div>

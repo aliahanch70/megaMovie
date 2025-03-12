@@ -18,10 +18,10 @@ const inter = Inter({ subsets: ['latin'] });
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
-      template: '%s | Dashboard App',
-      default: 'Dashboard App',
+      template: '%s خرید و قیمت | MegaShop',
+      default: 'MegaShop',
     },
-    description: 'A modern dashboard application with dark theme',
+    description: 'خرید آنلاین از فروشگاه مگاشاپ',
     // اضافه کردن متای سفارشی
     other: {
       'google-site-verification': '5C3M59mTnqop0xGg_gqVyuh1p-OTZ9hrTKGapAKDdgg',
