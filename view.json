@@ -3268,5 +3268,49 @@
     "viewedAt": "2025-03-12T05:50:30.093Z",
     "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1741756703/products/uploads/1741756702520-l89af8kxezl.jpg",
     "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "f6e3c800-8425-4b6c-a9bf-e5bc58c80200",
+    "productName": "Xiaomi Redmi 14C",
+    "price": 170,
+    "category": "electronics",
+    "viewedAt": "2025-03-12T06:25:53.512Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1741756723/products/uploads/1741756722048-nct9hhg0vzj.jpg",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "5792d47e-af06-4ac8-8f54-a90db035dca9",
+    "productName": "Samsung a55",
+    "price": 360,
+    "category": "electronics",
+    "viewedAt": "2025-03-12T06:25:58.795Z",
+    "imageUrl": "uploads/1736328923490-te3bsut3zo.webp",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "13d2829e-cffd-402a-bfbb-cc2a6b764a97",
+    "productName": "poco f7",
+    "price": 320,
+    "category": "electronics",
+    "viewedAt": "2025-03-12T06:26:02.672Z",
+    "imageUrl": "uploads/1735718598519-n4c0w6galvl.jpg",
+    "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "08cce462-cd75-4e3e-9847-0229a31fbea9",
+    "productId": "f2006169-0f29-4244-9267-06b436155d17",
+    "productName": "poco x3",
+    "price": 250,
+    "category": "electronics",
+    "viewedAt": "2025-03-12T06:26:10.929Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1741595398/products/uploads/1741595395666-72kcnbi424g.jpg",
+    "ipAddress": "81.19.216.3"
   }
 ]
