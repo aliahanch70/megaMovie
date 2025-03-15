@@ -4008,5 +4008,41 @@
     "viewedAt": "2025-03-15T13:46:18.938Z",
     "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
     "ipAddress": "81.19.216.4"
+  },
+  {
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T14:14:34.176Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T14:14:34.998Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "user",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T14:16:34.631Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T14:30:45.781Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
   }
 ]

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX } from 'lucide-react';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface VideoStoriesProps {
   movieId: string;
@@ -79,6 +80,14 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
       goToNextStory(); // وقتی ویدیو تموم شد، برو بعدی
     };
 
+    const checkVolume = () => {
+      if (video.volume > 0 && isMuted) {
+        setIsMuted(false); // اگه ولوم دستگاه بیشتر از 0 باشه، unmute کن
+        video.muted = false;
+      }
+    };
+
+
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleEnded);
@@ -121,13 +130,23 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
     }
   };
 
-  // تغییر وضعیت صدا
-  const toggleMute = () => {
-    setIsMuted((prev) => !prev);
-  };
 
+  // تغییر وضعیت صدا
+ const toggleMute = () => {
+    const video = videoRef.current;
+    if (video) {
+      const newMutedState = !isMuted;
+      setIsMuted(newMutedState);
+      video.muted = newMutedState;
+      // تنظیم ولوم به یه مقدار پیش‌فرض اگه unmute شد
+      if (!newMutedState && video.volume === 0) {
+        video.volume = 0.5; // یه مقدار پیش‌فرض برای صدا
+      }
+    }
+  };
+  
   if (videos.length === 0) {
-    return <div className="text-center p-4">ویدیویی برای این فیلم وجود ندارد</div>;
+    return <div className="text-center p-4"><LoadingSpinner/></div>;
   }
 
   return (
