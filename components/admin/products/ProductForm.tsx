@@ -7,26 +7,32 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, X, PlusCircle, Trash2 } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import { validateImageFile } from '@/lib/utils/validation';
 import { uploadImageToPublic } from '@/lib/utils/uploadImage';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
+import MovieSearchPopup from '@/components/MovieSearchPopup';
 
-interface ProductLink {
-  title: string;
-  url: string;
-  price: number;
-  city: string;
-  warranty: string;
-  optionValues: { [key: string]: string };
-}
-
-interface ProductFormProps {
+interface MovieFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
   loading: boolean;
   initialData?: any;
+}
+
+interface CastMember {
+  name: string;
+  role: string;
+}
+
+interface MovieLink {
+  title: string;
+  url: string;
+  quality: string;
+  size: string;
+  encode: string;
+  optionValues: { [key: string]: string };
 }
 
 interface Option {
@@ -34,42 +40,57 @@ interface Option {
   values: string[];
 }
 
-export default function ProductForm({ onSubmit, loading, initialData }: ProductFormProps) {
-  const [links, setLinks] = useState<ProductLink[]>([]);
+interface MetaTag {
+  key: string;
+  value: string;
+}
+
+export default function MovieForm({ onSubmit, loading, initialData }: MovieFormProps) {
   const [images, setImages] = useState<Array<{ file: File | string; label: string }>>([]);
-  const [specifications, setSpecifications] = useState<Array<{ category: string; label: string; value: string }>>(initialData?.product_specifications || []);
-  const [options, setOptions] = useState<Option[]>(initialData?.product_options || []);
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [cast, setCast] = useState<CastMember[]>(initialData?.cast || []);
+  const [links, setLinks] = useState<MovieLink[]>(initialData?.movie_links || []);
+  const [options, setOptions] = useState<Option[]>(initialData?.movie_options || []);
+  const [metaTags, setMetaTags] = useState<MetaTag[]>(initialData?.meta_tags || [{ key: '', value: '' }]);
   const [showOptionDialog, setShowOptionDialog] = useState(false);
   const [newOptionName, setNewOptionName] = useState('');
   const [newOptionValues, setNewOptionValues] = useState('');
-  const [metaTags, setMetaTags] = useState<Array<{key: string, value: string}>>(
-    initialData?.meta_tags || [{ key: '', value: '' }]
-  );
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(initialData?.genres || []);
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [description, setDescription] = useState(initialData?.description || '');
+  const [release, setrelease] = useState(initialData?.release || '');
+  const [director, setDirector] = useState(initialData?.director || '');
+  const [duration, setDuration] = useState(initialData?.duration || '');
+  const [language, setLanguage] = useState(initialData?.language || '');
 
   useEffect(() => {
     if (initialData) {
-      // Initialize images with the correct format
-      const initialImages = initialData.product_images?.map((img: any) => ({
-        file: img.url, // Use the full URL
-        label: img.label || ''
+      const initialImages = initialData.movie_images?.map((img: any) => ({
+        file: img.url,
+        label: img.label || '',
       })) || [];
-      
       setImages(initialImages);
-      
-      // Initialize other data
-      const initialLinks = initialData.product_links?.map((link: any) => ({
+
+      const initialLinks = initialData.movie_links?.map((link: any) => ({
         title: link.title,
         url: link.url,
-        price: link.price,
-        city: link.city || '',
-        warranty: link.warranty || '',
-        optionValues: link.option_values || {}
+        quality: link.quality || '',
+        size: link.size || '',
+        encode: link.encode || '',
+        optionValues: link.option_values || {},
       })) || [];
-      
       setLinks(initialLinks);
 
-      console.log('Initializing form with images:', initialImages);
+      setCast(initialData.cast || []);
+      setOptions(initialData.movie_options || []);
+      setMetaTags(initialData.meta_tags || [{ key: '', value: '' }]);
+      setSelectedGenres(initialData.genres || []);
+
+      setTitle(initialData.title || '');
+      setDescription(initialData.description || '');
+      setrelease(initialData.release || '');
+      setDirector(initialData.director || '');
+      setDuration(initialData.duration || '');
+      setLanguage(initialData.language || '');
     }
   }, [initialData]);
 
@@ -77,46 +98,59 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
-    formData.append('links', JSON.stringify(links));
-    formData.append('specifications', JSON.stringify(specifications));
-    formData.append('options', JSON.stringify(options));
-    formData.set('meta_tags', JSON.stringify(metaTags));
 
-    // Handle image uploads
+    formData.append('cast', JSON.stringify(cast));
+    formData.append('links', JSON.stringify(links));
+    formData.append('options', JSON.stringify(options));
+    formData.append('meta_tags', JSON.stringify(metaTags));
+    formData.append('genres', JSON.stringify(selectedGenres));
+
+    console.log('Images before upload:', images);
     const uploadedImages = await Promise.all(
-      images.map(async (img) => ({
-        label: img.label,
-        url: typeof img.file === 'string' 
-          ? img.file 
-          : await uploadImageToPublic(img.file as File)
-      }))
+      images.map(async (img) => {
+        const url = typeof img.file === 'string' ? img.file : await uploadImageToPublic(img.file as File);
+        console.log('Uploaded URL:', url);
+        return { label: img.label, url };
+      })
     );
+    console.log('Uploaded images:', uploadedImages);
     formData.append('images', JSON.stringify(uploadedImages));
 
     await onSubmit(formData);
   };
 
-  const handleAddLink = () => {
-    setLinks([...links, { 
-      title: '', 
-      url: '', 
-      price: 0, 
-      city: '', 
-      warranty: '',
-      optionValues: {} // Initialize with empty object
-    }]);
+  const handleMovieSelect = (movieData: any) => {
+    console.log('Selected movie:', movieData);
+    setDirector(movieData.director || '');
+    setTitle(movieData.title || '');
+    setrelease(movieData.release || '');
+    setDescription(movieData.description || '');
+    setSelectedGenres(movieData.genres || []);
+    setDuration(movieData.duration || '');
+    setLanguage(movieData.language || '');
   };
 
-  const handleLinkChange = (index: number, field: string, value: string | number) => {
+  const handleAddCast = () => {
+    setCast([...cast, { name: '', role: '' }]);
+  };
+
+  const handleCastChange = (index: number, field: 'name' | 'role', value: string) => {
+    const newCast = [...cast];
+    newCast[index][field] = value;
+    setCast(newCast);
+  };
+
+  const removeCast = (index: number) => {
+    setCast(cast.filter((_, i) => i !== index));
+  };
+
+  const handleAddLink = () => {
+    setLinks([...links, { title: '', url: '', quality: '', size: '', encode: '', optionValues: {} }]);
+  };
+
+  const handleLinkChange = (index: number, field: string, value: string) => {
     const newLinks = [...links];
-    if (field === 'price') {
-      // Ensure price is always a valid number
-      const numberValue = parseFloat(value as string) || 0;
-      newLinks[index] = { ...newLinks[index], [field]: numberValue };
-    } else {
-      newLinks[index] = { ...newLinks[index], [field]: value };
-    }
+    newLinks[index] = { ...newLinks[index], [field]: value };
     setLinks(newLinks);
   };
 
@@ -124,57 +158,29 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     setLinks(links.filter((_, i) => i !== index));
   };
 
-  const handleImageUpload = async (file: File, label: string) => {
-    if (images.length >= 4) return;
-    
-    try {
-      await validateImageFile(file);
-      setImages([...images, { file, label }]);
-    } catch (error) {
-      console.error('Image validation failed:', error);
-    }
-  };
-
-  const addSpecification = () => {
-    setSpecifications([...specifications, { category: '', label: '', value: '' }]);
-  };
-
-  const removeSpecification = (index: number) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
-  };
-
-  const updateSpecification = (index: number, field: string, value: string) => {
-    const updated = specifications.map((spec, i) => {
-      if (i === index) {
-        return { ...spec, [field]: value };
-      }
-      return spec;
-    });
-    setSpecifications(updated);
-  };
-
-  const handleSpecificationAdd = () => {
-    setSpecifications([...specifications, { category: '', label: '', value: '' }]);
-  };
-
-  const handleSpecificationRemove = (index: number) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
-  };
-
-  const handleSpecificationChange = (index: number, field: string, value: string) => {
-    const updatedSpecs = [...specifications];
-    updatedSpecs[index] = { ...updatedSpecs[index], [field]: value };
-    setSpecifications(updatedSpecs);
+  const handleLinkOptionChange = (linkIndex: number, optionName: string, value: string) => {
+    const newLinks = [...links];
+    newLinks[linkIndex] = {
+      ...newLinks[linkIndex],
+      optionValues: {
+        ...newLinks[linkIndex].optionValues,
+        [optionName]: value,
+      },
+    };
+    setLinks(newLinks);
   };
 
   const handleAddOption = () => {
     if (!newOptionName || !newOptionValues) return;
-    
-    const values = newOptionValues.split(',').map(v => v.trim()).filter(v => v);
+    const values = newOptionValues.split(',').map((v) => v.trim()).filter((v) => v);
     setOptions([...options, { name: newOptionName, values }]);
     setShowOptionDialog(false);
     setNewOptionName('');
     setNewOptionValues('');
+  };
+
+  const removeOption = (index: number) => {
+    setOptions(options.filter((_, i) => i !== index));
   };
 
   const addMetaTag = () => {
@@ -191,19 +197,25 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
     setMetaTags(newMetaTags);
   };
 
-  const handleLinkOptionChange = (linkIndex: number, optionName: string, value: string) => {
-    const newLinks = [...links];
-    newLinks[linkIndex] = {
-      ...newLinks[linkIndex],
-      optionValues: {
-        ...newLinks[linkIndex].optionValues,
-        [optionName]: value
-      }
-    };
-    setLinks(newLinks);
+  const handleImageUpload = async (file: File, label: string) => {
+    if (images.length >= 4) return;
+    try {
+      await validateImageFile(file);
+      setImages([...images, { file, label }]);
+    } catch (error) {
+      console.error('Image validation failed:', error);
+    }
   };
 
-  const renderLinkOptions = (link: ProductLink, linkIndex: number) => (
+  const handleGenreChange = (genre: string) => {
+    if (selectedGenres.includes(genre)) {
+      setSelectedGenres(selectedGenres.filter((g) => g !== genre));
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
+
+  const renderLinkOptions = (link: MovieLink, linkIndex: number) => (
     <div className="space-y-2">
       <Label>Available for Options</Label>
       <div className="flex flex-wrap gap-4">
@@ -234,95 +246,210 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-6">
       <div className="space-y-4">
+        <MovieSearchPopup onSelectMovie={handleMovieSelect} />
+
         <div>
-          <Label htmlFor="name">Product Name*</Label>
-          <Input 
-            id="name" 
-            name="name" 
-            required 
+          <Label htmlFor="title">Movie Title*</Label>
+          <Input
+            id="title"
+            name="title"
+            required
             maxLength={100}
-            defaultValue={initialData?.name}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
         <div>
           <Label htmlFor="description">Description*</Label>
-          <Textarea 
-            id="description" 
-            name="description" 
+          <Textarea
+            id="description"
+            name="description"
             required
-            defaultValue={initialData?.description}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div>
-          <Label htmlFor="price">Price*</Label>
-          <Input 
-            id="price" 
-            name="price" 
-            type="number" 
-            step="0.01" 
+          <Label htmlFor="release">Release Year*</Label>
+          <Input
+            id="release"
+            name="release"
+            type="number"
+            min="1888"
+            max={new Date().getFullYear()}
             required
-            defaultValue={initialData?.price}
+            value={release}
+            onChange={(e) => setrelease(e.target.value)}
           />
         </div>
 
         <div>
-          <Label htmlFor="category">Category*</Label>
-          <Select name="category" required defaultValue={initialData?.category}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="electronics">Electronics</SelectItem>
-              <SelectItem value="clothing">Clothing</SelectItem>
-              <SelectItem value="books">Books</SelectItem>
-              <SelectItem value="home">Home & Garden</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label>Genres* (Select multiple)</Label>
+          <div className="space-y-2">
+            {['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi',"Crime" ,"Mystery"].map((genre) => (
+              <div key={genre} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id={`genre-${genre}`}
+                  checked={selectedGenres.includes(genre)}
+                  onChange={() => handleGenreChange(genre)}
+                />
+                <label htmlFor={`genre-${genre}`}>{genre}</label>
+              </div>
+            ))}
+          </div>
+          <input type="hidden" name="genres" value={JSON.stringify(selectedGenres)} />
         </div>
 
         <div>
-          <Label htmlFor="status">Status*</Label>
-          <Select name="status" required defaultValue={initialData?.status}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="in_stock">In Stock</SelectItem>
-              <SelectItem value="out_of_stock">Out of Stock</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label htmlFor="director">Director*</Label>
+          <Input
+            id="director"
+            name="director"
+            required
+            value={director}
+            onChange={(e) => setDirector(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="duration">Duration (minutes)</Label>
+          <Input
+            id="duration"
+            name="duration"
+            type="number"
+            min="1"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="language">Language*</Label>
+          <Input
+            id="language"
+            name="language"
+            required
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          />
         </div>
       </div>
 
-      {/* Options Section */}
       <Card>
         <CardContent className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <Label>Product Options</Label>
-            <Button 
-              type="button" 
-              variant="outline" 
-              size="sm"
-              onClick={() => setShowOptionDialog(true)}
-            >
+            <Label>Cast ({cast.length})</Label>
+            <Button type="button" variant="outline" size="sm" onClick={handleAddCast}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Cast Member
+            </Button>
+          </div>
+          <div className="space-y-4">
+            {cast.map((member, index) => (
+              <div key={index} className="flex gap-2 items-start">
+                <Input
+                  placeholder="Name"
+                  value={member.name}
+                  onChange={(e) => handleCastChange(index, 'name', e.target.value)}
+                />
+                <Input
+                  placeholder="Role"
+                  value={member.role}
+                  onChange={(e) => handleCastChange(index, 'role', e.target.value)}
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => removeCast(index)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <Label>Download Links ({links.length}/10)</Label>
+            {links.length < 10 && (
+              <Button type="button" variant="outline" size="sm" onClick={handleAddLink}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Link
+              </Button>
+            )}
+          </div>
+          <div className="space-y-4">
+            {links.map((link, index) => (
+              <div key={index} className="space-y-4 border p-4 rounded-lg">
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    placeholder="Link Title"
+                    value={link.title}
+                    onChange={(e) => handleLinkChange(index, 'title', e.target.value)}
+                  />
+                  <Input
+                    placeholder="URL"
+                    type="url"
+                    value={link.url}
+                    onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Quality (e.g., 1080p)"
+                    value={link.quality}
+                    onChange={(e) => handleLinkChange(index, 'quality', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Size (e.g., 1.5GB)"
+                    value={link.size}
+                    onChange={(e) => handleLinkChange(index, 'size', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Encode (e.g., x264)"
+                    value={link.encode}
+                    onChange={(e) => handleLinkChange(index, 'encode', e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => removeLink(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                {options.length > 0 && renderLinkOptions(link, index)}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <Label>Movie Options</Label>
+            <Button type="button" variant="outline" size="sm" onClick={() => setShowOptionDialog(true)}>
+              <Plus className="h-4 w-4 mr-2" />
               Add Option
             </Button>
           </div>
-
           <div className="space-y-4">
             {options.map((option, index) => (
               <div key={index} className="border p-4 rounded-lg">
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-medium">{option.name}</h4>
+                  <div className="font-medium">{option.name}</div>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      setOptions(options.filter((_, i) => i !== index));
-                    }}
+                    onClick={() => removeOption(index)}
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -342,216 +469,58 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
 
       <Card>
         <CardContent className="p-4">
-          <Label>External Links ({links.length}/10)</Label>
-          <div className="space-y-4 mt-2">
-            {links.map((link, index) => (
-              <div key={index} className="space-y-4 border p-4 rounded-lg">
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Link Title"
-                    value={link.title}
-                    onChange={(e) => handleLinkChange(index, 'title', e.target.value)}
-                  />
-                  <Input
-                    placeholder="URL"
-                    type="url"
-                    value={link.url}
-                    onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
-                  />
-                  <Input
-                    type="number"
-                    placeholder="Price"
-                    step="0.01"
-                    min="0"
-                    value={link.price}
-                    onChange={(e) => handleLinkChange(index, 'price', e.target.value)}
-                    required
-                  />
-                  <Input
-                    placeholder="City"
-                    value={link.city}
-                    onChange={(e) => handleLinkChange(index, 'city', e.target.value)}
-                  />
-                  <Input
-                    placeholder="Warranty"
-                    value={link.warranty}
-                    onChange={(e) => handleLinkChange(index, 'warranty', e.target.value)}
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => removeLink(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                {/* Option selection for link */}
-                {options.length > 0 && renderLinkOptions(link, index)}
+          <div className="flex justify-between items-center mb-4">
+            <Label>Meta Tags</Label>
+            <Button type="button" variant="outline" size="sm" onClick={addMetaTag}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Meta Tag
+            </Button>
+          </div>
+          <div className="space-y-4">
+            {metaTags.map((tag, index) => (
+              <div key={index} className="flex gap-2 items-start">
+                <Input
+                  placeholder="Key (e.g., keywords)"
+                  value={tag.key}
+                  onChange={(e) => updateMetaTag(index, 'key', e.target.value)}
+                />
+                <Input
+                  placeholder="Value"
+                  value={tag.value}
+                  onChange={(e) => updateMetaTag(index, 'value', e.target.value)}
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => removeMetaTag(index)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
             ))}
-            {links.length < 10 && (
-              <Button type="button" onClick={handleAddLink} className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Link
-              </Button>
-            )}
           </div>
         </CardContent>
       </Card>
 
-      <div className="space-y-4 mt-6">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Specifications</h3>
-          <Button type="button" variant="outline" size="sm" onClick={addSpecification}>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add Specification
-          </Button>
-        </div>
-
-        {specifications.map((spec, index) => (
-          <div key={index} className="flex gap-4 items-start border p-4 rounded-lg">
-            <Select
-              value={spec.category}
-              onValueChange={(value) => updateSpecification(index, 'category', value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="technical">Technical</SelectItem>
-                <SelectItem value="physical">Physical</SelectItem>
-                <SelectItem value="performance">Performance</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Input
-              placeholder="Label"
-              value={spec.label}
-              onChange={(e) => updateSpecification(index, 'label', e.target.value)}
-              className="flex-1"
-            />
-            
-            <Input
-              placeholder="Value"
-              value={spec.value}
-              onChange={(e) => updateSpecification(index, 'value', e.target.value)}
-              className="flex-1"
-            />
-            
-            <Button 
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => removeSpecification(index)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <Label>Specifications</Label>
-          <Button 
-            type="button" 
-            variant="outline" 
-            size="sm" 
-            onClick={handleSpecificationAdd}
-          >
-            Add Specification
-          </Button>
-        </div>
-        
-        {specifications.map((spec, index) => (
-          <div key={index} className="flex gap-4 items-start">
-            <div className="grid gap-2 flex-1">
-              <Input
-                placeholder="Category"
-                value={spec.category}
-                onChange={(e) => handleSpecificationChange(index, 'category', e.target.value)}
-              />
-              <Input
-                placeholder="Label"
-                value={spec.label}
-                onChange={(e) => handleSpecificationChange(index, 'label', e.target.value)}
-              />
-              <Input
-                placeholder="Value"
-                value={spec.value}
-                onChange={(e) => handleSpecificationChange(index, 'value', e.target.value)}
-              />
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => handleSpecificationRemove(index)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
-      </div>
-
-      <div className="space-y-4 p-6">
-        <h3 className="font-semibold">Meta Tags</h3>
-        {metaTags.map((tag, index) => (
-          <div key={index} className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Key (e.g., description)"
-              value={tag.key}
-              onChange={(e) => updateMetaTag(index, 'key', e.target.value)}
-              className="flex-1 input"
-            />
-            <input
-              type="text"
-              placeholder="Value"
-              value={tag.value}
-              onChange={(e) => updateMetaTag(index, 'value', e.target.value)}
-              className="flex-1 input"
-            />
-            <button
-              type="button"
-              onClick={() => removeMetaTag(index)}
-              className="btn-danger"
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={addMetaTag}
-          className="btn-secondary"
-        >
-          Add Meta Tag
-        </button>
-      </div>
-
       <ImageUpload
         images={images}
         onUpload={handleImageUpload}
-        onRemove={(index) => setImages(images.filter((_, i) => i !== index))} 
+        onRemove={(index) => setImages(images.filter((_, i) => i !== index))}
       />
 
-      <Button type="submit" disabled={loading}>
-        {loading ? 'Saving Changes...' : 'Save Changes'}
+      <Button type="submit" disabled={loading || selectedGenres.length === 0}>
+        {loading ? 'Saving Movie...' : 'Save Movie'}
       </Button>
 
-      {/* Option Dialog */}
       <AlertDialog open={showOptionDialog} onOpenChange={setShowOptionDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Add Product Option</AlertDialogTitle>
+            <AlertDialogTitle>Add Movie Option</AlertDialogTitle>
             <AlertDialogDescription>
               <div className="space-y-4">
                 <div>
-                  <Label>Option Name (e.g., Size, Color)</Label>
+                  <Label>Option Name (e.g., Subtitle, Audio)</Label>
                   <Input
                     value={newOptionName}
                     onChange={(e) => setNewOptionName(e.target.value)}
@@ -563,7 +532,7 @@ export default function ProductForm({ onSubmit, loading, initialData }: ProductF
                   <Input
                     value={newOptionValues}
                     onChange={(e) => setNewOptionValues(e.target.value)}
-                    placeholder="e.g., Small, Medium, Large"
+                    placeholder="e.g., English, Persian"
                   />
                 </div>
               </div>

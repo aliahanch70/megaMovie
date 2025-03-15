@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import ProductGrid from '@/components/products/listing/ProductGrid';
 import ProductFilters from '@/components/products/listing/ProductFilters';
@@ -7,26 +7,26 @@ import { createClient } from '@/lib/supabase/client';
 import Loading from '@/components/Loading';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
-type Product = {
+type Movie = {
   id: string;
-  name: string;
-  price: number;
-  category: string;
+  title: string; // تغییر از name به title
+  release: number; // تغییر از price به release
+  genres: string[]; // آرایه‌ای از ژانرها
   created_at: string;
-  product_images: { url: string; label: string }[];
+  movie_images: { url: string; label: string }[];
 };
 
-function ProductListingContent() {
-  const [products, setProducts] = useState<Product[]>([]);
+function MovieListingContent() {
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
   const LIMIT = 16;
   const [filters, setFilters] = useState({
-    category: 'all',
-    minPrice: '',
-    maxPrice: '',
-    rating: 'all',
+    genres: 'all',
+    minYear: '',
+    maxYear: '',
+    rating: 'all', // می‌توانید این را بعداً با امتیاز فیلم جایگزین کنید
     sort: 'newest',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,7 +44,7 @@ function ProductListingContent() {
   }, []);
 
   const observer = useRef<IntersectionObserver>();
-  const lastProductRef = useCallback((node: HTMLDivElement) => {
+  const lastMovieRef = useCallback((node: HTMLDivElement) => {
     if (loadingMore || loadError) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
@@ -56,36 +56,40 @@ function ProductListingContent() {
   }, [loadingMore, hasMore, loadError, loadMore]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchMovies = async () => {
       if (offset === 0) {
         setLoading(true);
       }
-      let query = supabase.from('products').select(`
-        *,
-        product_images (url, label)
+      let query = supabase.from('movies').select(`
+        id,
+        title,
+        release,
+        genres,
+        created_at,
+        movie_images (url, label)
       `);
 
-      // Apply filters
-      if (filters.category && filters.category !== 'all') {
-        query = query.eq('category', filters.category);
+      // اعمال فیلترها
+      if (filters.genres && filters.genres !== 'all') {
+        query = query.contains('genres', [filters.genres]); // برای آرایه ژانرها
       }
-      if (filters.minPrice) {
-        query = query.gte('price', parseFloat(filters.minPrice));
+      if (filters.minYear) {
+        query = query.gte('release', parseInt(filters.minYear));
       }
-      if (filters.maxPrice) {
-        query = query.lte('price', parseFloat(filters.maxPrice));
+      if (filters.maxYear) {
+        query = query.lte('release', parseInt(filters.maxYear));
       }
       if (searchQuery) {
-        query = query.ilike('name', `%${searchQuery}%`);
+        query = query.ilike('title', `%${searchQuery}%`); // تغییر name به title
       }
 
-      // Apply sorting
+      // اعمال مرتب‌سازی
       switch (filters.sort) {
-        case 'price-asc':
-          query = query.order('price', { ascending: true });
+        case 'year-asc': // تغییر از price-asc به year-asc
+          query = query.order('release', { ascending: true });
           break;
-        case 'price-desc':
-          query = query.order('price', { ascending: false });
+        case 'year-desc': // تغییر از price-desc به year-desc
+          query = query.order('release', { ascending: false });
           break;
         case 'newest':
           query = query.order('created_at', { ascending: false });
@@ -93,20 +97,20 @@ function ProductListingContent() {
       }
 
       query = query.range(offset, offset + LIMIT - 1);
-      
+
       try {
         const { data, error } = await query;
         if (error) throw error;
-        
+
         if (offset === 0) {
-          setProducts(data || []);
+          setMovies(data || []);
         } else {
-          setProducts(prev => [...prev, ...(data || [])]);
+          setMovies(prev => [...prev, ...(data || [])]);
         }
         setHasMore((data || []).length === LIMIT);
         setLoadError(false);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching movies:', error);
         setLoadError(true);
       } finally {
         setLoading(false);
@@ -114,10 +118,10 @@ function ProductListingContent() {
       }
     };
 
-    fetchProducts();
+    fetchMovies();
   }, [filters, searchQuery, offset, supabase]);
 
-  // Reset offset when filters or search change
+  // ریست offset هنگام تغییر فیلترها یا جستجو
   useEffect(() => {
     setOffset(0);
     setHasMore(true);
@@ -127,7 +131,7 @@ function ProductListingContent() {
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 gradient-text">Our Products</h1>
+          <h1 className="text-4xl font-bold mb-4 gradient-text">Our Movies</h1>
           <SearchBar onSearch={setSearchQuery} />
         </div>
 
@@ -138,10 +142,10 @@ function ProductListingContent() {
 
           <div className="flex-1">
             <ProductGrid 
-              products={products} 
+              movies={movies} // تغییر از products به movies
               loading={loading}
               loadingMore={loadingMore}
-              lastProductRef={lastProductRef}
+              lastMovieRef={lastMovieRef}
               hasMore={hasMore}
               loadError={loadError}
               onLoadMore={loadMore}
@@ -153,10 +157,10 @@ function ProductListingContent() {
   );
 }
 
-export default function ProductListingPage() {
-  return(
-    <Suspense fallback={<><Loading/></>}>
-      <ProductListingContent />
+export default function MovieListingPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <MovieListingContent />
     </Suspense>
-  )
+  );
 }

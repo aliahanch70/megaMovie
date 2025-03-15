@@ -3312,5 +3312,701 @@
     "viewedAt": "2025-03-12T06:26:10.929Z",
     "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1741595398/products/uploads/1741595395666-72kcnbi424g.jpg",
     "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "viewedAt": "2025-03-15T08:23:43.354Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "viewedAt": "2025-03-15T08:24:11.000Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "viewedAt": "2025-03-15T08:30:27.304Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "viewedAt": "2025-03-15T10:08:27.121Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:08:35.115Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:09:10.777Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:09:12.436Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:13:56.633Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:14:00.479Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "61a6500f-68e8-41ba-8380-8284c668ffed",
+    "viewedAt": "2025-03-15T10:14:11.016Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "viewedAt": "2025-03-15T10:18:44.636Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:18:55.698Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:21:09.918Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:21:38.562Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:22:17.122Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:23:21.431Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:24:58.436Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:27:35.781Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:28:00.698Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:29:12.894Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:29:21.842Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:29:59.397Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:25.101Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:31.831Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:41.045Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:42.208Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:44.334Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:30:46.810Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:31:00.703Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:31:27.029Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:32:02.443Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:32:07.221Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:34:26.709Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:36:46.534Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:41:05.117Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:41:23.907Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T10:53:00.345Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:53:52.524Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T10:53:57.171Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "viewedAt": "2025-03-15T10:54:19.263Z",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T10:55:47.455Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T10:58:05.289Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:05:42.548Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:05:46.623Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:05:49.070Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:11:25.248Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:11:37.425Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:15:21.689Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:16:51.462Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:20:27.874Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "productName": "Daredevil: Born Again",
+    "category": "Action, Crime, Drama",
+    "viewedAt": "2025-03-15T11:23:32.476Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742025431/products/uploads/1742025427247-ksh4sutjeg.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "b138de64-2fcb-4d2c-810a-8349960bea05",
+    "productName": "Daredevil: Born Again",
+    "category": "Action, Crime, Drama",
+    "viewedAt": "2025-03-15T11:24:01.734Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742025431/products/uploads/1742025427247-ksh4sutjeg.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:30:17.084Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:30:40.168Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:31:51.159Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:33:46.412Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:34:52.106Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:35:33.089Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:35:41.563Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:36:17.756Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:39:25.492Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:54:20.319Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T11:54:44.067Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:05:18.094Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:05:34.701Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:09:23.933Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:19:01.824Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:25:39.624Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:25:48.430Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T12:26:29.703Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:19:29.430Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:20:31.043Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:20:42.935Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:21:14.662Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:21:17.079Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:24:49.903Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:29:57.206Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:29:59.382Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:32:58.689Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:41:56.609Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "041e6a89-ffe1-43aa-8eb0-c711cb0400e8",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-03-15T13:46:18.938Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
   }
 ]

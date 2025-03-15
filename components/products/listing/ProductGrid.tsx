@@ -7,32 +7,33 @@ import Link from 'next/link';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from "@/components/ui/button";
 
-interface Product {
+interface Movie {
   id: string;
-  name: string;
-  price: number;
-  product_images: Array<{ url: string; label: string }>;
+  title: string; // تغییر از name به title
+  release: number; // تغییر از price به release
+  genres: string[]; // اضافه کردن ژانرها
+  movie_images: Array<{ url: string; label: string }>;
 }
 
-interface ProductGridProps {
-  products: Product[];
+interface MovieGridProps {
+  movies: Movie[]; // تغییر از products به movies
   loading: boolean;
   loadingMore: boolean;
-  lastProductRef?: (node: HTMLDivElement) => void;
+  lastMovieRef?: (node: HTMLDivElement) => void;
   hasMore: boolean;
   loadError: boolean;
   onLoadMore: () => void;
 }
 
-export default function ProductGrid({ 
-  products, 
+export default function MovieGrid({ 
+  movies, 
   loading, 
   loadingMore, 
-  lastProductRef,
+  lastMovieRef,
   hasMore,
   loadError,
   onLoadMore 
-}: ProductGridProps) {
+}: MovieGridProps) {
   if (loading && !loadingMore) {
     return (
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -52,24 +53,22 @@ export default function ProductGrid({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product, index) => (
-          <div key={product.id} ref={index === products.length - 1 ? lastProductRef : undefined}>
-            <Link href={`/products/${product.id}`}>
+        {movies.map((movie, index) => (
+          <div key={movie.id} ref={index === movies.length - 1 ? lastMovieRef : undefined}>
+            <Link href={`/movie/${movie.id}`}> {/* تغییر مسیر به /movies */}
               <Card className="group">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg">
                   <Image
-                    src={product.product_images[0]?.url || '/placeholder.jpg'}
-                    alt={product.name}
+                    src={movie.movie_images[0]?.url || '/placeholder.jpg'}
+                    alt={movie.title}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold truncate">{product.name}</h3>
+                  <h3 className="font-semibold truncate">{movie.title} {` (${movie.release})`}</h3>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-lg font-bold">
-                      ${product.price.toLocaleString()}
-                    </span>
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <Star
@@ -78,7 +77,12 @@ export default function ProductGrid({
                         />
                       ))}
                     </div>
+                    </span>
+                    
                   </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {movie.genres.join(', ')} {/* نمایش ژانرها */}
+                  </p>
                 </div>
               </Card>
             </Link>
@@ -87,20 +91,26 @@ export default function ProductGrid({
       </div>
       
       {hasMore && (
-        <div className="mt-4">
+        <div className="mt-4 flex justify-center">
           {loadingMore ? (
             <LoadingSpinner />
           ) : loadError ? (
-            <div className="flex justify-center">
-              <Button 
-                onClick={onLoadMore}
-                variant="outline"
-                className="px-8"
-              >
-                Load More
-              </Button>
-            </div>
-          ) : null}
+            <Button 
+              onClick={onLoadMore}
+              variant="outline"
+              className="px-8"
+            >
+              Load More
+            </Button>
+          ) : (
+            <Button 
+              onClick={onLoadMore}
+              variant="outline"
+              className="px-8"
+            >
+              Load More
+            </Button>
+          )}
         </div>
       )}
     </div>

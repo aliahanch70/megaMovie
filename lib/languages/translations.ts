@@ -6,7 +6,7 @@ export const translations = {
     nav: {
       store: 'Store',
       home: 'Home',
-      shop: 'Shop',
+      movie: 'movie',
       dashboard: 'Dashboard',
       admin: 'Admin',
       profile: 'Profile',
@@ -78,7 +78,7 @@ export const translations = {
     nav: {
       store: 'فروشگاه',
       home: 'خانه',
-      shop: 'فروشگاه',
+      movie: 'فیلم ',
       dashboard: 'داشبورد',
       admin: 'مدیریت',
       profile: 'پروفایل',

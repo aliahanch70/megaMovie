@@ -8,149 +8,158 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 
 interface ProductEditPageProps {
-  params: Promise<{ id: string }>; // Updated to reflect Next.js 15+ behavior
+  params: Promise<{ id: string }>; // سازگار با Next.js 15+
 }
 
-interface ProductData {
+interface MovieData {
   id: string;
-  name: string;
+  title: string; // به جای name
   description: string;
-  price: number;
-  category: string;
-  status: string;
-  product_images: { url: string; label: string; order: number }[];
-  product_specifications: { category: string; label: string; value: string }[];
-  product_options: { name: string; values: string[] }[];
-  product_links: {
+  director: string;
+  genres: string[]; // به جای category
+  release: string; // جایگزین price
+  duration: number | null;
+  language: string;
+  movie_images: { url: string; label: string; order: number }[];
+  movie_options: { name: string; values: string[] }[];
+  movie_links: {
     title: string;
     url: string;
-    price: number;
-    city: string;
-    warranty: string;
-    optionValues: any; // Consider defining a more specific type if possible
+    quality: string;
+    size: string;
+    encode: string;
+    optionValues: { [key: string]: string }; // تغییر نام از option_values
   }[];
 }
 
 export default function ProductEditPage({ params }: ProductEditPageProps) {
   const [loading, setLoading] = useState(false);
-  const [initialData, setInitialData] = useState<ProductData | null>(null);
+  const [initialData, setInitialData] = useState<MovieData | null>(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchMovie = async () => {
       try {
-        // Resolve the params Promise
         const { id } = await params;
-        console.log('Product ID:', id);
+        console.log('شناسه فیلم:', id);
 
-        // Fetch the product with all related data
-        const { data: productData, error: productError } = await supabase
-          .from('products')
+        // گرفتن اطلاعات فیلم
+        const { data: movieData, error: movieError } = await supabase
+          .from('movies')
           .select(`
-            *,
-            product_images (url, label, order),
-            product_specifications (category, label, value),
-            product_options (name, values)
+            id,
+            title,
+            description,
+            director,
+            genres,
+            release,
+            duration,
+            language,
+            movie_images (url, label, order),
+            movie_options (name, values)
           `)
           .eq('id', id)
           .single();
 
-        if (productError) throw productError;
+        if (movieError) throw movieError;
 
-        // Fetch links with their option values
+        // گرفتن لینک‌ها
         const { data: linksData, error: linksError } = await supabase
-          .from('product_links')
+          .from('movie_links')
           .select(`
-            *,
+            title,
+            url,
+            quality,
+            size,
+            encode,
             option_values
           `)
-          .eq('product_id', id);
+          .eq('movie_id', id);
 
         if (linksError) throw linksError;
 
-        if (productData && linksData) {
-          // Combine the data
-          const combinedData: ProductData = {
-            ...productData,
-            product_links: linksData.map(link => ({
+        if (movieData && linksData) {
+          const combinedData: MovieData = {
+            ...movieData,
+            movie_links: linksData.map((link) => ({
               ...link,
-              optionValues: link.option_values, // Map option_values to optionValues
+              optionValues: link.option_values || {}, // تطبیق نام
             })),
           };
           setInitialData(combinedData);
-          console.log('Fetched data:', {
-            product: productData,
+          console.log('داده‌های دریافت‌شده:', {
+            movie: movieData,
             links: linksData,
           });
         }
       } catch (error) {
-        console.error('Error fetching product:', error);
-        toast.error('Failed to load product data');
+        console.error('خطا در دریافت اطلاعات فیلم:', error);
+        toast.error('خطا در بارگذاری اطلاعات فیلم');
       }
     };
 
-    fetchProduct();
-  }, [params, supabase]); // Dependencies updated to include params and supabase
+    fetchMovie();
+  }, [params, supabase]);
 
   const handleSubmit = async (formData: FormData) => {
     setLoading(true);
     try {
-      const { id } = await params; // Resolve params here too for consistency
+      const { id } = await params;
 
-      const { error } = await supabase
-        .from('products')
+      // آپدیت اطلاعات اصلی فیلم
+      const { error: updateError } = await supabase
+        .from('movies')
         .update({
-          name: formData.get('name') as string,
+          title: formData.get('title') as string,
           description: formData.get('description') as string,
-          price: parseFloat(formData.get('price') as string),
-          category: formData.get('category') as string,
-          status: formData.get('status') as string,
+          genres: JSON.parse(formData.get('genres') as string),
+          release: formData.get('release') as string,
+          director: formData.get('description') as string,
+          duration: formData.get('duration') ? parseInt(formData.get('duration') as string) : null,
+          language: formData.get('language') as string,
         })
         .eq('id', id);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
-      // Handle options update
+      // آپدیت گزینه‌ها
       const options = JSON.parse(formData.get('options') as string);
-      await supabase.from('product_options').delete().eq('product_id', id);
-
+      await supabase.from('movie_options').delete().eq('movie_id', id);
       if (options.length > 0) {
-        await supabase.from('product_options').insert(
+        await supabase.from('movie_options').insert(
           options.map((option: any) => ({
-            product_id: id,
+            movie_id: id,
             name: option.name,
             values: option.values,
           }))
         );
       }
 
-      // Handle links with options
+      // آپدیت لینک‌ها
       const links = JSON.parse(formData.get('links') as string);
-      await supabase.from('product_links').delete().eq('product_id', id);
-
+      await supabase.from('movie_links').delete().eq('movie_id', id);
       if (links.length > 0) {
-        await supabase.from('product_links').insert(
+        await supabase.from('movie_links').insert(
           links.map((link: any) => ({
-            product_id: id,
+            movie_id: id,
             title: link.title,
             url: link.url,
-            price: Number(link.price) || 0,
-            city: link.city || '',
-            warranty: link.warranty || '',
-            option_values: link.optionValues || null,
+            quality: link.quality || '',
+            size: link.size || '',
+            encode: link.encode || '',
+            option_values: link.optionValues || {},
           }))
         );
       }
 
-      // Handle images update
+      // آپدیت تصاویر
       const images = JSON.parse(formData.get('images') as string);
-      await supabase.from('product_images').delete().eq('product_id', id);
-
+      await supabase.from('movie_images').delete().eq('movie_id', id);
       if (images.length > 0) {
-        await supabase.from('product_images').insert(
+        await supabase.from('movie_images').insert(
           images.map((image: any, index: number) => ({
-            product_id: id,
+            movie_id: id,
             url: image.url.startsWith('/') ? image.url.substring(1) : image.url,
             label: image.label,
             order: index,
@@ -158,26 +167,24 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
         );
       }
 
-      // Handle specifications update
-      const specifications = JSON.parse(formData.get('specifications') as string);
-      await supabase.from('product_specifications').delete().eq('product_id', id);
+      // آپدیت مشخصات
+      // const specifications = JSON.parse(formData.get('specifications') as string);
+      // await supabase.from('movie_specifications').delete().eq('movie_id', id);
+      // if (specifications.length > 0) {
+      //   await supabase.from('movie_specifications').insert(
+      //     specifications.map((spec: any) => ({
+      //       movie_id: id,
+      //       label: spec.label,
+      //       value: spec.value,
+      //     }))
+      //   );
+      // }
 
-      if (specifications.length > 0) {
-        await supabase.from('product_specifications').insert(
-          specifications.map((spec: any) => ({
-            product_id: id,
-            category: spec.category,
-            label: spec.label,
-            value: spec.value,
-          }))
-        );
-      }
-
-      toast.success('Successfully saved!');
+      toast.success('با موفقیت ذخیره شد!');
       router.refresh();
     } catch (error) {
-      console.error('Error updating product:', error);
-      toast.error('Failed to save changes');
+      console.error('خطا در آپدیت فیلم:', error);
+      toast.error('خطا در ذخیره تغییرات');
     } finally {
       setLoading(false);
     }
@@ -189,7 +196,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
         <div className="max-w-4xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Loading...</CardTitle>
+              <CardTitle>در حال بارگذاری...</CardTitle>
             </CardHeader>
           </Card>
         </div>
@@ -202,7 +209,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
       <div className="max-w-4xl mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle>Edit Product</CardTitle>
+            <CardTitle>ویرایش فیلم</CardTitle>
           </CardHeader>
           <ProductForm onSubmit={handleSubmit} loading={loading} initialData={initialData} />
         </Card>

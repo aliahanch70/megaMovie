@@ -6,9 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 
 interface FiltersState {
-  category: string;
-  minPrice: string;
-  maxPrice: string;
+  genres: string;
+  minYear: string;
+  maxYear: string;
   rating: string;
   sort: string;
 }
@@ -28,18 +28,19 @@ export default function ProductFilters({ filters, onChange }: ProductFiltersProp
       <div>
         <Label>Category</Label>
         <Select
-          value={filters.category}
-          onValueChange={(value) => handleChange('category', value)}
+          value={filters.genres}
+          onValueChange={(value) => handleChange('genres', value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="All Categories" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="electronics">Electronics</SelectItem>
-            <SelectItem value="clothing">Clothing</SelectItem>
-            <SelectItem value="books">Books</SelectItem>
-            <SelectItem value="home">Home & Garden</SelectItem>
+            <SelectItem value="all">All Genres</SelectItem>
+            <SelectItem value="Action">Action</SelectItem>
+            <SelectItem value="Drama">Drama</SelectItem>
+            <SelectItem value="Horror">Horror</SelectItem>
+            <SelectItem value="Comedy">Comedy</SelectItem>
+            <SelectItem value="Sci-Fi">Sci-Fi</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -50,14 +51,14 @@ export default function ProductFilters({ filters, onChange }: ProductFiltersProp
           <Input
             type="number"
             placeholder="Min"
-            value={filters.minPrice}
-            onChange={(e) => handleChange('minPrice', e.target.value)}
+            value={filters.minYear}
+            onChange={(e) => handleChange('minYear', e.target.value)}
           />
           <Input
             type="number"
             placeholder="Max"
-            value={filters.maxPrice}
-            onChange={(e) => handleChange('maxPrice', e.target.value)}
+            value={filters.maxYear}
+            onChange={(e) => handleChange('maxYear', e.target.value)}
           />
         </div>
       </div>

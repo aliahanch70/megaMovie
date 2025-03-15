@@ -1,100 +1,139 @@
 import { createClient } from '@/lib/supabase/client';
 
-export interface ProductImage {
+export interface MovieImage {
   url: string;
   label: string;
   order: number;
 }
 
-export interface ProductLink {
+export interface MovieLink {
   title: string;
   url: string;
-  price: number;
-  city: string;
-  warranty: string;
+  quality: string;
+  size: string;
+  encode: string;
+  option_values: { [key: string]: string };
 }
 
-export interface Product {
+export interface Movie {
   id: string;
-  name: string;
+  title: string;
   description: string;
-  price: number;
-  category: string;
-  status: 'in_stock' | 'out_of_stock';
+  genres: string[];
+  release: string;
+  duration: number | null;
+  language: string;
   created_at: string;
-  product_images: ProductImage[];
-  product_links: ProductLink[];
-  profiles: {
-    full_name: string;
-  };
+  movie_images: MovieImage[];
+  movie_links: MovieLink[];
+  price: number;
+  
 }
 
-export async function getProduct(id: string): Promise<Product | null> {
+export async function getProduct(id: string): Promise<Movie | null> {
   const supabase = createClient();
-  
+
   try {
-    const { data } = await supabase
-      .from('products')
+    const { data, error } = await supabase
+      .from('movies')
       .select(`
-        *,
-        product_images (url, label, order),
-        product_links (title, url, price, city, warranty),
-        profiles (full_name)
+        id,
+        title,
+        description,
+        genres,
+        release,
+        duration,
+        language,
+        created_at,
+        movie_images (url, label, order),
+        movie_links (title, url, quality, size, encode, option_values)
       `)
       .eq('id', id)
       .single();
-    
-    return data;
+
+    if (error) {
+      console.error('خطای Supabase:', error.message, error.details, error.hint);
+      return null;
+    }
+
+    console.log('داده دریافت‌شده:', data);
+    return data as Movie | null;
   } catch (error) {
-    console.error('Error fetching product:', error);
+    console.error('خطا در فچ کردن فیلم:', error);
     return null;
   }
 }
 
 export async function getAllProductIds(): Promise<string[]> {
   const supabase = createClient();
-  
+
   try {
-    const { data } = await supabase
-      .from('products')
-      .select('id');
-    
-    return (data || []).map(product => product.id);
+    const { data } = await supabase.from('movies').select('id');
+    return (data || []).map((movie) => movie.id);
   } catch (error) {
-    console.error('Error fetching product IDs:', error);
+    console.error('خطا در دریافت IDهای فیلم‌ها:', error);
     return [];
   }
 }
 
-export async function getRelatedProducts(productId: string, limit: number = 4): Promise<Product[]> {
+export async function getRelatedProducts(
+  movieId: string,
+  limit: number = 4
+): Promise<Movie[]> {
   const supabase = createClient();
-  
+
   try {
-    // First get the category of the current product
-    const { data: currentProduct } = await supabase
-      .from('products')
-      .select('category')
-      .eq('id', productId)
+    // گرفتن ژانرهای فیلم فعلی
+    const { data: currentMovie, error: currentError } = await supabase
+      .from('movies')
+      .select('genres')
+      .eq('id', movieId)
       .single();
 
-    if (!currentProduct) return [];
+    if (currentError) {
+      console.error('خطا در گرفتن ژانرهای فیلم فعلی:', currentError);
+      return [];
+    }
 
-    // Then fetch related products from the same category
-    const { data: relatedProducts } = await supabase
-      .from('products')
+    if (!currentMovie || !currentMovie.genres?.length) {
+      console.log('فیلم فعلی ژانری ندارد یا پیدا نشد:', movieId);
+      return [];
+    }
+
+    console.log('ژانرهای فیلم فعلی:', currentMovie.genres);
+
+    // پیدا کردن فیلم‌هایی با حداقل یک ژانر مشترک
+    const { data: relatedMovies, error: relatedError } = await supabase
+      .from('movies')
       .select(`
-        *,
-        product_images (url, label, order),
-        product_links (title, url, price, city, warranty),
-        profiles (full_name)
+        id,
+        title,
+        description,
+        genres,
+        release,
+        duration,
+        language,
+        created_at,
+        movie_images (url, label, order),
+        movie_links (title, url, quality, size, encode, option_values)
       `)
-      .eq('category', currentProduct.category)
-      .neq('id', productId)
+      .neq('id', movieId)
+      .or(
+        currentMovie.genres
+          .map((genre : any) => `genres.cs.{${genre}}`) // هر ژانر رو جداگانه چک می‌کنه
+          .join(',')
+      )
       .limit(limit);
-    
-    return relatedProducts || [];
+
+    if (relatedError) {
+      console.error('خطا در گرفتن فیلم‌های مرتبط:', relatedError);
+      throw relatedError;
+    }
+
+    console.log('فیلم‌های مرتبط پیدا‌شده:', relatedMovies);
+    return (relatedMovies as Movie[]) || [];
   } catch (error) {
-    console.error('Error fetching related products:', error);
+    console.error('خطا در دریافت فیلم‌های مرتبط:', error);
     return [];
   }
 }

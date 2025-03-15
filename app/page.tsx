@@ -8,6 +8,7 @@ import ProductScroll from '@/components/products/ProductScroll';
 import Slideshow from '@/components/Slideshow';
 import Carousel from '@/components/Carousel';
 import Slideshow2 from '@/components/SlideShow2';
+import VideoStories from '@/components/story/VideoStories';
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
@@ -71,6 +72,7 @@ export default async function Home() {
           <h2 className="text-2xl font-semibold mb-4">Books</h2>
           <ProductScroll products={books || []} />
         </section>
+        <VideoStories />
 
         
       </div>

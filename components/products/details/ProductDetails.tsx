@@ -11,39 +11,50 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 interface ProductDetailsProps {
   id: string;
-  initialData: any;
+  initialData: any; // داده‌های اولیه که ممکنه از SSR بیاد
 }
 
 export default function ProductDetails({ id, initialData }: ProductDetailsProps) {
   const [product, setProduct] = useState(initialData);
-  const [loading, setLoading] = useState(!initialData);
+  const [loading, setLoading] = useState(!initialData); // اگر initialData نباشه، لودینگ شروع می‌شه
   const supabase = createClient();
+
   useEffect(() => {
+    // فقط اگر initialData نباشه یا نیاز به رفرش دیتا باشه، فچ می‌کنیم
+    if (!initialData || !product) {
       const fetchProduct = async () => {
+        setLoading(true);
         const { data, error } = await supabase
-          .from('products')
+          .from('movies')
           .select(`
-            *,
-            product_images (url, label, order),
-            product_links (title, url , price , city , warranty, option_values),
-            product_specifications (label, value),
-            product_options (name, values),
+            id,
+            title,
+            description,
+            genres,
+            release,
+            duration,
+            language,
+            created_at,
+            movie_images (url, label, order),
+            movie_links (title, url, quality, size, encode, option_values),
+            movie_specifications (label, value),
+            movie_options (name, values),
             profiles (full_name)
           `)
           .eq('id', id)
           .single();
 
         if (error) {
-          console.error('Error fetching product:', error);
+          console.error('خطا در دریافت اطلاعات فیلم:', error);
         } else {
           setProduct(data);
-          console.log(data)
+          console.log('داده‌های دریافت‌شده:', data);
         }
         setLoading(false);
       };
 
       fetchProduct();
-    
+    }
   }, [id, supabase, initialData]);
 
   if (loading) {
@@ -54,8 +65,8 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
-          <p className="text-muted-foreground">The requested product does not exist.</p>
+          <h1 className="text-2xl font-bold mb-2">فیلم یافت نشد</h1>
+          <p className="text-muted-foreground">فیلم درخواست‌شده وجود ندارد.</p>
         </div>
       </div>
     );
@@ -64,34 +75,33 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <ProductHeader 
-          name={product.name} 
-          price={product.price}
-          status={product.status}
+        <ProductHeader
+          name={product.title} // استفاده از title به جای name
+          price={product.price || 'رایگان'} // اگر price تعریف نشده باشه
+          release={product.release}
+          status={product.status || 'موجود'} // مقدار پیش‌فرض برای status
         />
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-          <ProductGallery images={product.product_images} />
-          
+          <ProductGallery images={product.movie_images || []} />
+
           <div className="space-y-8">
-            <ProductInfo 
+            <ProductInfo
               description={product.description}
-              category={product.category}
-              
+              category={product.genres?.join(', ') || 'نامشخص'} // ژانرها رو به string تبدیل می‌کنیم
               createdAt={product.created_at}
             />
-            
-            <ProductSpecs 
-              category={product.category}
-              status={product.status}
-              specifications={product.product_specifications}
+
+            <ProductSpecs
+              category={product.genres?.join(', ') || 'نامشخص'}
+              status={product.status || 'موجود'}
+              specifications={product.movie_specifications || []}
             />
-            
-            
-            {product.product_links?.length > 0 && (
-              <ProductLinks 
-                links={product.product_links} 
-                options={product.product_options}
+
+            {product.movie_links?.length > 0 && (
+              <ProductLinks
+                links={product.movie_links}
+                options={product.movie_options || []}
               />
             )}
           </div>

@@ -59,8 +59,8 @@ export default function Navbar() {
               <NavLink href="/" icon={Home}>
                 {t('nav.home')}
               </NavLink>
-              <NavLink href="/products/listing" icon={Store} >
-                {t('nav.shop')}
+              <NavLink href="/movie/listing" icon={Store} >
+                {t('nav.movie')}
               </NavLink>
               {isAdmin && (
                 <>
