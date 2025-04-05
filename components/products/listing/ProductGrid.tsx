@@ -13,7 +13,17 @@ interface Movie {
   release: number; // تغییر از price به release
   genres: string[]; // اضافه کردن ژانرها
   movie_images: Array<{ url: string; label: string }>;
+  imdb: number | null; // اضافه کردن imdb
 }
+
+const getRatingColor = (imdb: number | null): string => {
+  if (imdb === null) return 'text-gray-500'; // اگه imdb null باشه، خاکستری
+  if (imdb >= 7.5) return 'text-green-500';
+  if (imdb >= 5) return 'text-yellow-500';
+  return 'text-red-500';
+};
+
+
 
 interface MovieGridProps {
   movies: Movie[]; // تغییر از products به movies
@@ -50,37 +60,38 @@ export default function MovieGrid({
     );
   }
 
+  
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {movies.map((movie, index) => (
           <div key={movie.id} ref={index === movies.length - 1 ? lastMovieRef : undefined}>
             <Link href={`/movie/${movie.id}`}> {/* تغییر مسیر به /movies */}
-              <Card className="group">
-                <div className="aspect-square relative overflow-hidden rounded-t-lg">
+              <Card className="group hover:bg-neutral-900 duration-300">
+                <div className="aspect-[0.8] relative overflow-hidden rounded-t-lg">
                   <Image
                     src={movie.movie_images[0]?.url || '/placeholder.png'}
                     alt={movie.title}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className="object-cover transition-transform group-hover:scale-3d
+"
                   />
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold truncate">{movie.title} {` (${movie.release})`}</h3>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-lg font-bold">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 fill-accent text-accent"
-                        />
-                      ))}
+                  <span className="text-lg font-bold">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span className={getRatingColor(movie.imdb)}>
+                        {movie.imdb !== null ? movie.imdb.toFixed(1) : 'N/A'}
+                      </span>
                     </div>
-                    </span>
+                  </span>
                     
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-muted-foreground mt-1 truncate">
                     {movie.genres.join(', ')} {/* نمایش ژانرها */}
                   </p>
                 </div>

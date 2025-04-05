@@ -17,14 +17,24 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils/format';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface Product {
+  url: string;
   id: string;
-  name: string;
+  title: string;
   price: number;
   category: string;
   status: string;
   created_at: string;
+  realase: string;
+  description: string;
+  images: string[];
+  genres: string[];
+  director: string;
+  imdb: number | null;
+  type: string | null;
+  
 }
 
 function ManageProductsContent() {
@@ -56,7 +66,7 @@ function ManageProductsContent() {
         }
 
         const { data, error } = await supabase
-          .from('products')
+          .from('movies')
           .select('*')
           .order('created_at', { ascending: false });
 
@@ -82,7 +92,7 @@ function ManageProductsContent() {
     // Optimistic update
     setProducts(products.filter((product) => product.id !== id));
 
-    const { error } = await supabase.from('products').delete().eq('id', id);
+    const { error } = await supabase.from('movies').delete().eq('id', id);
 
     if (error) {
       console.error('Error deleting product:', error);
@@ -97,6 +107,9 @@ function ManageProductsContent() {
       toast.success('Product deleted successfully');
     }
   };
+
+  console.log('Products:', products
+  );
 
   return (
     <div className="min-h-screen bg-black p-8">
@@ -122,19 +135,27 @@ function ManageProductsContent() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Price</TableHead>
+                    <TableHead>Rate</TableHead>
                     <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>type</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {products.map((product) => (
                     <TableRow key={product.id}>
-                      <TableCell className="font-medium">{product.name}</TableCell>
-                      <TableCell>{formatPrice(product.price)}</TableCell>
-                      <TableCell className="capitalize">{product.category}</TableCell>
-                      <TableCell className="capitalize">{product.status}</TableCell>
+                      {/* <TableCell className="font-medium">
+                        <Image
+                                src={product.images[0]?.url || '/placeholder.png'}
+                                alt={product.title || 'Product image'}
+                                fill
+                                className="object-cover"
+                                priority
+                              /></TableCell> */}
+                      <TableCell className="font-medium">{product.title}</TableCell>
+                      <TableCell>{product.imdb}</TableCell>
+                      <TableCell className="capitalize">{product.genres?.join(', ')}</TableCell>
+                      <TableCell className="capitalize">{product.type}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Link href={`/admin/products/edit/${product.id}`}>

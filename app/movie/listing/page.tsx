@@ -9,11 +9,13 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Movie = {
   id: string;
-  title: string; // تغییر از name به title
-  release: number; // تغییر از price به release
-  genres: string[]; // آرایه‌ای از ژانرها
+  title: string;
+  release: number;
+  genres: string[];
   created_at: string;
   movie_images: { url: string; label: string }[];
+  imdb: number | null;
+  type: string | null;
 };
 
 function MovieListingContent() {
@@ -26,7 +28,7 @@ function MovieListingContent() {
     genres: 'all',
     minYear: '',
     maxYear: '',
-    rating: 'all', // می‌توانید این را بعداً با امتیاز فیلم جایگزین کنید
+    rating: 'all',
     sort: 'newest',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,12 +68,14 @@ function MovieListingContent() {
         release,
         genres,
         created_at,
-        movie_images (url, label)
+        movie_images (url, label),
+        imdb,
+        type
       `);
 
       // اعمال فیلترها
       if (filters.genres && filters.genres !== 'all') {
-        query = query.contains('genres', [filters.genres]); // برای آرایه ژانرها
+        query = query.contains('genres', [filters.genres]);
       }
       if (filters.minYear) {
         query = query.gte('release', parseInt(filters.minYear));
@@ -80,15 +84,15 @@ function MovieListingContent() {
         query = query.lte('release', parseInt(filters.maxYear));
       }
       if (searchQuery) {
-        query = query.ilike('title', `%${searchQuery}%`); // تغییر name به title
+        query = query.ilike('title', `%${searchQuery}%`);
       }
 
       // اعمال مرتب‌سازی
       switch (filters.sort) {
-        case 'year-asc': // تغییر از price-asc به year-asc
+        case 'year-asc':
           query = query.order('release', { ascending: true });
           break;
-        case 'year-desc': // تغییر از price-desc به year-desc
+        case 'year-desc':
           query = query.order('release', { ascending: false });
           break;
         case 'newest':
@@ -102,12 +106,15 @@ function MovieListingContent() {
         const { data, error } = await query;
         if (error) throw error;
 
+        // تایپ صریح برای data
+        const moviesData = (data as Movie[]) || [];
+        
         if (offset === 0) {
-          setMovies(data || []);
+          setMovies(moviesData);
         } else {
-          setMovies(prev => [...prev, ...(data || [])]);
+          setMovies(prev => [...prev, ...moviesData]);
         }
-        setHasMore((data || []).length === LIMIT);
+        setHasMore(moviesData.length === LIMIT);
         setLoadError(false);
       } catch (error) {
         console.error('Error fetching movies:', error);
@@ -142,7 +149,7 @@ function MovieListingContent() {
 
           <div className="flex-1">
             <ProductGrid 
-              movies={movies} // تغییر از products به movies
+              movies={movies}
               loading={loading}
               loadingMore={loadingMore}
               lastMovieRef={lastMovieRef}

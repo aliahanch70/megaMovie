@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import ProductForm from '@/components/admin/products/ProductForm'; // تغییر مسیر به MovieForm
+import ProductForm from '@/components/admin/products/ProductForm';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/client';
 
@@ -17,19 +17,25 @@ function AdminMoviesContent() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      // درج اطلاعات اصلی فیلم
+      const imdbValue = formData.get('imdb') ? formData.get('imdb') as string : null;
+      const imdb = imdbValue ? parseFloat(imdbValue) : null;
+
+      console.log('Form data:', { ...Object.fromEntries(formData), imdbId: formData.get('imdbId') });
       const { data, error } = await supabase
-        .from('movies') // تغییر به جدول movies
+        .from('movies')
         .insert([
           {
             title: formData.get('title'),
             description: formData.get('description'),
             release: parseInt(formData.get('release') as string),
-            genres: JSON.parse(formData.get('genres') as string), // آرایه ژانرها
+            genres: JSON.parse(formData.get('genres') as string),
             director: formData.get('director'),
             duration: formData.get('duration') ? parseInt(formData.get('duration') as string) : null,
+            imdb: imdb,
             language: formData.get('language'),
+            type: formData.get('type'), // اضافه کردن type
             created_by: user.id,
+            imdb_id: formData.get('imdbId'), // اضافه کردن imdb_id
           },
         ])
         .select()
@@ -39,7 +45,6 @@ function AdminMoviesContent() {
 
       const movieId = data.id;
 
-      // درج بازیگران (cast)
       const cast = JSON.parse(formData.get('cast') as string);
       if (cast.length > 0) {
         await supabase.from('movie_cast').insert(
@@ -51,7 +56,6 @@ function AdminMoviesContent() {
         );
       }
 
-      // درج لینک‌های دانلود
       const links = JSON.parse(formData.get('links') as string);
       if (links.length > 0) {
         await supabase.from('movie_links').insert(
@@ -62,12 +66,11 @@ function AdminMoviesContent() {
             quality: link.quality,
             size: link.size,
             encode: link.encode,
-            option_values: link.optionValues || {}, // گزینه‌های مرتبط با لینک
+            option_values: link.optionValues || {},
           }))
         );
       }
 
-      // درج گزینه‌ها (options)
       const options = JSON.parse(formData.get('options') as string);
       if (options.length > 0) {
         await supabase.from('movie_options').insert(
@@ -79,7 +82,6 @@ function AdminMoviesContent() {
         );
       }
 
-      // درج متاتگ‌ها
       const metaTags = JSON.parse(formData.get('meta_tags') as string);
       if (metaTags.length > 0) {
         await supabase.from('movie_meta_tags').insert(
@@ -91,7 +93,6 @@ function AdminMoviesContent() {
         );
       }
 
-      // درج تصاویر
       const images = JSON.parse(formData.get('images') as string);
       if (images.length > 0) {
         await supabase.from('movie_images').insert(
@@ -104,6 +105,7 @@ function AdminMoviesContent() {
         );
       }
 
+    
     } catch (error) {
       console.error('Error creating movie:', error);
     } finally {

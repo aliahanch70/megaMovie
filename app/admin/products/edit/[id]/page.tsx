@@ -30,6 +30,9 @@ interface MovieData {
     encode: string;
     optionValues: { [key: string]: string }; // تغییر نام از option_values
   }[];
+  imdb?: number | null; // اضافه کردن imdb
+  type?: string; // اضافه کردن type
+  imdb_id?: string; // اضافه کردن imdb_id
 }
 
 export default function ProductEditPage({ params }: ProductEditPageProps) {
@@ -57,7 +60,10 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             duration,
             language,
             movie_images (url, label, order),
-            movie_options (name, values)
+            movie_options (name, values),
+            imdb,
+            type,
+            imdb_id
           `)
           .eq('id', id)
           .single();
@@ -115,9 +121,12 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
           description: formData.get('description') as string,
           genres: JSON.parse(formData.get('genres') as string),
           release: formData.get('release') as string,
-          director: formData.get('description') as string,
+          director: formData.get('director') as string,
           duration: formData.get('duration') ? parseInt(formData.get('duration') as string) : null,
           language: formData.get('language') as string,
+          imdb: formData.get('imdb') ? parseFloat(formData.get('imdb') as string) : null,
+          type: formData.get('type') as string,
+          imdb_id: formData.get('imdbId') as string,
         })
         .eq('id', id);
 

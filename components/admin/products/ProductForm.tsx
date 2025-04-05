@@ -14,6 +14,7 @@ import { uploadImageToPublic } from '@/lib/utils/uploadImage';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import MovieSearchPopup from '@/components/MovieSearchPopup';
+import { set } from 'lodash';
 
 interface MovieFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
@@ -55,12 +56,15 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   const [newOptionName, setNewOptionName] = useState('');
   const [newOptionValues, setNewOptionValues] = useState('');
   const [selectedGenres, setSelectedGenres] = useState<string[]>(initialData?.genres || []);
+  const [imdb, setImdb] = useState(initialData?.imdb || '');
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [release, setrelease] = useState(initialData?.release || '');
+  const [release, setRelease] = useState(initialData?.release || '');
   const [director, setDirector] = useState(initialData?.director || '');
   const [duration, setDuration] = useState(initialData?.duration || '');
   const [language, setLanguage] = useState(initialData?.language || '');
+  const [type, setType] = useState<string>(initialData?.type || 'Movie'); // مقدار پیش‌فرض "Movie"
+  const [imdbId, setImdbId] = useState(initialData?.imdb_id || '');
 
   useEffect(() => {
     if (initialData) {
@@ -87,10 +91,14 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
 
       setTitle(initialData.title || '');
       setDescription(initialData.description || '');
-      setrelease(initialData.release || '');
+      setRelease(initialData.release || '');
       setDirector(initialData.director || '');
       setDuration(initialData.duration || '');
       setLanguage(initialData.language || '');
+      setImdb(initialData.imdb || '');
+      setType(initialData.type || 'Movie'); // تنظیم مقدار اولیه type
+      setImdbId(initialData.imdbId || '');
+      console.log('Initial data loaded:', initialData);
     }
   }, [initialData]);
 
@@ -104,6 +112,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
     formData.append('options', JSON.stringify(options));
     formData.append('meta_tags', JSON.stringify(metaTags));
     formData.append('genres', JSON.stringify(selectedGenres));
+    formData.append('type', type); // اضافه کردن type به formData
 
     console.log('Images before upload:', images);
     const uploadedImages = await Promise.all(
@@ -123,11 +132,14 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
     console.log('Selected movie:', movieData);
     setDirector(movieData.director || '');
     setTitle(movieData.title || '');
-    setrelease(movieData.release || '');
+    setRelease(movieData.release || '');
     setDescription(movieData.description || '');
     setSelectedGenres(movieData.genres || []);
     setDuration(movieData.duration || '');
     setLanguage(movieData.language || '');
+    setImdb(movieData.imdb || '');
+    setType(movieData.type || 'Movie'); // تنظیم type از داده‌های انتخاب‌شده
+    setImdbId(movieData.imdbId || '');
   };
 
   const handleAddCast = () => {
@@ -281,14 +293,28 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
             max={new Date().getFullYear()}
             required
             value={release}
-            onChange={(e) => setrelease(e.target.value)}
+            onChange={(e) => setRelease(e.target.value)}
           />
+        </div>
+
+        <div>
+          <Label htmlFor="type">Type*</Label>
+          <Select value={type} onValueChange={setType} required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Movie">Movie</SelectItem>
+              <SelectItem value="Series">Series</SelectItem>
+            </SelectContent>
+          </Select>
+          <input type="hidden" name="type" value={type} />
         </div>
 
         <div>
           <Label>Genres* (Select multiple)</Label>
           <div className="space-y-2">
-            {['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi',"Crime" ,"Mystery"].map((genre) => (
+            {['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Crime', 'Mystery'].map((genre) => (
               <div key={genre} className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -304,13 +330,36 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         </div>
 
         <div>
-          <Label htmlFor="director">Director*</Label>
+          <Label htmlFor="director">Director</Label>
           <Input
             id="director"
             name="director"
-            required
             value={director}
             onChange={(e) => setDirector(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="imdb">IMDB Rating</Label>
+          <Input
+            id="imdb"
+            name="imdb"
+            type="number"
+            min="1"
+            max="10"
+            step="0.1"
+            value={imdb}
+            onChange={(e) => setImdb(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="imdbId">IMDB ID</Label>
+          <Input
+            id="imdbId"
+            name="imdbId"
+            type="text"
+            value={imdbId}
+            onChange={(e) => setImdbId(e.target.value)}
           />
         </div>
 

@@ -152,11 +152,11 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
   return (
     <div className="relative w-full max-w-md mx-auto h-[80vh] bg-black">
       {/* نوار پیشرفت */}
-      <div className="absolute top-0 left-0 w-full flex gap-1 p-2">
+      <div className="absolute top-0 left-0 w-full flex gap-1 p-2 ">
         {videos.map((_, index) => (
-          <div key={index} className="flex-1 h-1 bg-gray-300">
+          <div key={index} className="flex-1 h-1 bg-gray-400 rounded">
             <div
-              className="h-full bg-white transition-all"
+              className="h-full bg-white transition-all rounded"
               style={{
                 width: `${
                   index < currentIndex

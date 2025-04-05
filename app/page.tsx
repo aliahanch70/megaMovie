@@ -9,6 +9,7 @@ import Slideshow from '@/components/Slideshow';
 import Carousel from '@/components/Carousel';
 import Slideshow2 from '@/components/SlideShow2';
 import VideoStories from '@/components/story/VideoStories';
+import ColorExtractor from '@/components/ColorExtractor';
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
@@ -74,6 +75,28 @@ export default async function Home() {
         </section>
         
         <VideoStories />
+
+        {/* <input
+          type="text"
+          placeholder="Enter image URL"
+          className="border p-2 mb-4"
+          onChange={(e) => {
+            const url = e.target.value;
+            // Handle the URL change here
+            console.log('Image URL:', url);
+          }}
+        />
+        <button
+          className="bg-blue-500 text-white p-2 rounded"
+          onClick={() => {
+            // Handle the button click here
+            console.log('Button clicked');
+          }}
+        >
+          Extract Colors
+        </button> */}
+
+        <ColorExtractor imageUrl='https://res.cloudinary.com/dxldyoda8/image/upload/v1743831528/products/uploads/1743831524216-v9hj2gvcb4.jpg' />
 
         
       </div>

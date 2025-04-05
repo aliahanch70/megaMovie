@@ -17,6 +17,9 @@ interface Movie {
   description: string; // توضیحات
   runtimeMinutes: number | null; // مدت زمان
   spokenLanguages: string[]; // زبان‌ها
+  averageRating: number; // امتیاز میانگین
+  type: string; // نوع فیلم
+  
   // می‌توانید فیلدهای دیگر را هم اضافه کنید
 }
 
@@ -74,6 +77,11 @@ export default function MovieSearchPopup({ onSelectMovie }: MovieSearchPopupProp
       genres: movie.genres || [],
       duration: movie.runtimeMinutes || '',
       language: movie.spokenLanguages?.[0] || '', // اولین زبان
+      image: movie.primaryImage,
+      imdbId: movie.id,
+      imdb:movie.averageRating,
+      type: movie.type
+
     });
     setIsOpen(false);
     setSearchQuery('');
@@ -112,7 +120,7 @@ export default function MovieSearchPopup({ onSelectMovie }: MovieSearchPopupProp
                     <p className="font-semibold">{movie.primaryTitle || 'No title'}</p>
                     <p className="text-sm text-muted-foreground">{movie.startYear || 'N/A'}</p>
                     <Image
-                      src={movie.primaryImage}
+                      src={movie.primaryImage || '/placeholder.png'}
                       alt={movie.primaryTitle}
                       
                       height={100}

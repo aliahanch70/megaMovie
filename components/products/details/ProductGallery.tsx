@@ -3,15 +3,21 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
+import ColorExtractor from '@/components/ColorExtractor';
 
 interface ProductImage {
   url: string;
   label: string;
   order: number;
+  
 }
 
 interface ProductGalleryProps {
   images: ProductImage[];
+}
+
+interface ColorExtractorProps {
+  imageUrl: ProductImage;
 }
 
 export default function ProductGallery({ images }: ProductGalleryProps) {
@@ -19,9 +25,9 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
   const sortedImages = [...images].sort((a, b) => a.order - b.order);
 
   return (
+    
     <Card className="p-4 space-y-4   h-fit">
-      <div className="relative aspect-square overflow-hidden rounded-lg 
-">
+      <div className="relative aspect-square overflow-hidden rounded-lg ">
         <Image
           src={sortedImages[selectedImage]?.url || '/placeholder.png'}
           alt={sortedImages[selectedImage]?.label || 'Product image'}
@@ -50,6 +56,8 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
           </button>
         ))}
       </div>
+      <ColorExtractor  imageUrl={sortedImages[selectedImage].url}/>
+
     </Card>
   );
 }

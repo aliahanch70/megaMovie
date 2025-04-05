@@ -26,8 +26,9 @@ export interface Movie {
   created_at: string;
   movie_images: MovieImage[];
   movie_links: MovieLink[];
-  price: number;
-  
+  imdb: number | null;
+  type: string | null;
+  imdb_id: string | null;  
 }
 
 export async function getProduct(id: string): Promise<Movie | null> {
@@ -46,7 +47,10 @@ export async function getProduct(id: string): Promise<Movie | null> {
         language,
         created_at,
         movie_images (url, label, order),
-        movie_links (title, url, quality, size, encode, option_values)
+        movie_links (title, url, quality, size, encode, option_values),
+        imdb,
+        type,
+        imdb_id
       `)
       .eq('id', id)
       .single();

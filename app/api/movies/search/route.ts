@@ -17,24 +17,24 @@ export async function GET(request: Request) {
     },
   };
 
-  const url = `https://imdb236.p.rapidapi.com/imdb/search?originalTitle=${encodeURIComponent(query)}&rows=5&sortOrder=DESC&sortField=averageRating`;
+  const url = `https://imdb236.p.rapidapi.com/imdb/search?originalTitle=${encodeURIComponent(query)}&rows=15&sortOrder=DESC&sortField=numVotes`;
   console.log('Requesting URL:', url);
 
   try {
     const response = await fetch(url, options);
     const text = await response.text();
-    console.log('Raw API response:', text);
+    // console.log('Raw API response:', text);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch movie data: ${response.status} ${response.statusText}`);
     }
 
     const data = JSON.parse(text);
-    console.log('Parsed API response:', data);
+    // console.log('Parsed API response:', data);
 
     // بررسی ساختار داده و ارسال آرایه نتایج
     const results = data.data || data.results || data || []; // تطبیق با ساختارهای مختلف
-    console.log('Results to send:', results);
+    // console.log('Results to send:', results);
 
     return NextResponse.json(results, { status: 200 });
   } catch (error) {

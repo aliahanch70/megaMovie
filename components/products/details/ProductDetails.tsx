@@ -39,7 +39,9 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             movie_links (title, url, quality, size, encode, option_values),
             movie_specifications (label, value),
             movie_options (name, values),
-            profiles (full_name)
+            profiles (full_name),
+            imdb,
+            type
           `)
           .eq('id', id)
           .single();
@@ -71,15 +73,16 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
       </div>
     );
   }
+  console.log('Product:', product);
 
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <ProductHeader
           name={product.title} // استفاده از title به جای name
-          price={product.price || 'رایگان'} // اگر price تعریف نشده باشه
+          imdb={product.imdb } // اگر price تعریف نشده باشه
           release={product.release}
-          status={product.status || 'موجود'} // مقدار پیش‌فرض برای status
+          images={product.movie_images[0]?.url || []}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">

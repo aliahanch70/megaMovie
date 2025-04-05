@@ -50,6 +50,7 @@ export default function ProductPageClient({
   if (!product) {
     return <ProductNotFound />;
   }
+  console.log('ProductPageClient', product);
 
   return (
     <div className="p-4">
@@ -77,6 +78,7 @@ export default function ProductPageClient({
       >
         نمایش ویدیوهای کوتاه
       </Button>
+      
 
       <ProductDetails id={id} initialData={product} />
       <RelatedProducts products={relatedProducts} />
