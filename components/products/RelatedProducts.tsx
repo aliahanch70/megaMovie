@@ -19,7 +19,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
               <Card className="group w-[180px] shrink-0 md:w-[300px]">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg">
                   <Image
-                    src={product.movie_images[0]?.url || '/placeholder.jpg'}
+                    src={product.movie_images[0]?.url || '/placeholder.png'}
                     alt={product.title}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"

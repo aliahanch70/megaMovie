@@ -20,7 +20,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
     <Card className="p-4 space-y-4">
       <div className="relative aspect-square overflow-hidden rounded-lg">
         <Image
-          src={images[selectedImage]?.url || '/products/uploads/placeholder.jpg'}
+          src={images[selectedImage]?.url || '/placeholder.png'}
           alt={images[selectedImage]?.label || 'Product image'}
           fill
           className="object-cover"

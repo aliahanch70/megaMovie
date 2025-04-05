@@ -59,7 +59,7 @@ export default function MovieGrid({
               <Card className="group">
                 <div className="aspect-square relative overflow-hidden rounded-t-lg">
                   <Image
-                    src={movie.movie_images[0]?.url || '/placeholder.jpg'}
+                    src={movie.movie_images[0]?.url || '/placeholder.png'}
                     alt={movie.title}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"

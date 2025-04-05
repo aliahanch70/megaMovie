@@ -23,8 +23,8 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
       <div className="relative aspect-square overflow-hidden rounded-lg 
 ">
         <Image
-          src={sortedImages[selectedImage]?.url}
-          alt={sortedImages[selectedImage]?.label}
+          src={sortedImages[selectedImage]?.url || '/placeholder.png'}
+          alt={sortedImages[selectedImage]?.label || 'Product image'}
           fill
           className="object-cover"
           priority
