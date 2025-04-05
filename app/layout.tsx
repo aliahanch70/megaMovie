@@ -18,10 +18,12 @@ const inter = Inter({ subsets: ['latin'] });
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
-      template: '%s خرید و قیمت | MegaShop',
-      default: 'MegaShop',
+      template: '%s دانلود | MegaMovie',
+      default: 'MegaMovie',
     },
-    description: 'خرید آنلاین از فروشگاه مگاشاپ',
+    description: 'بهترین و جدیدترین فیلم‌ها و سریال‌ها را با کیفیت عالی دانلود کنید',
+    keywords: 'دانلود فیلم, دانلود سریال, MegaMovie, فیلم جدید, سریال جدید',
+    
     // اضافه کردن متای سفارشی
     other: {
       'google-site-verification': '5C3M59mTnqop0xGg_gqVyuh1p-OTZ9hrTKGapAKDdgg',
