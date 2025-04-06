@@ -1,8 +1,6 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { formatPrice } from '@/lib/utils/format';
 import { Star } from 'lucide-react';
 import ColorExtractor from '@/components/ColorExtractor';
 
@@ -47,7 +45,7 @@ export default function ProductHeader({ name, imdb ,images,  release }: ProductH
        
   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
   <h1 
-  className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[var(--from-color)] to-primary transition-all duration-1000 ease-out" 
+  className="text-xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[var(--from-color)] to-primary transition-all duration-1000 ease-out" 
   style={{ backgroundImage: 'linear-gradient(to right, var(--from-color), hsl(var(--primary)))' }}
 >
         {name} ({release})      
@@ -61,8 +59,8 @@ export default function ProductHeader({ name, imdb ,images,  release }: ProductH
 
     <div className="flex items-center gap-4">
       <span className="text-lg font-bold">
-        <div className="flex items-center gap-1 text-2xl">
-          <Star className="w-4 h-5 fill-yellow-400 text-yellow-400 " />
+        <div className="flex items-center gap-1 text-xl md:text-3xl">
+          <Star className="w-5 h-5 fill-yellow-400 text-yellow-400 " />
           <span className={getRatingColor(imdb)}>
             {imdb !== null ? imdb: 'N/A'}
           </span>

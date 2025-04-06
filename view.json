@@ -4326,5 +4326,115 @@
     "category": "Comedy, Romance",
     "viewedAt": "2025-03-28T19:37:47.820Z",
     "ipAddress": "81.19.216.3"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "80fde9a2-c198-47e3-8cfb-1a2f9462a2dd",
+    "productName": "The Walking Dead: The Ones Who Live",
+    "category": "Drama, Horror, Thriller",
+    "viewedAt": "2025-04-05T14:50:20.514Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840558/products/uploads/1743840554491-r44szjy9fii.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "80fde9a2-c198-47e3-8cfb-1a2f9462a2dd",
+    "productName": "The Walking Dead: The Ones Who Live",
+    "category": "Drama, Horror, Thriller",
+    "viewedAt": "2025-04-05T14:50:21.559Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840558/products/uploads/1743840554491-r44szjy9fii.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "80fde9a2-c198-47e3-8cfb-1a2f9462a2dd",
+    "productName": "The Walking Dead: The Ones Who Live",
+    "category": "Drama, Horror, Thriller",
+    "viewedAt": "2025-04-05T14:50:22.242Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840558/products/uploads/1743840554491-r44szjy9fii.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "80fde9a2-c198-47e3-8cfb-1a2f9462a2dd",
+    "productName": "The Walking Dead: The Ones Who Live",
+    "category": "Drama, Horror, Thriller",
+    "viewedAt": "2025-04-05T14:50:22.609Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840558/products/uploads/1743840554491-r44szjy9fii.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "80fde9a2-c198-47e3-8cfb-1a2f9462a2dd",
+    "productName": "The Walking Dead: The Ones Who Live",
+    "category": "Drama, Horror, Thriller",
+    "viewedAt": "2025-04-05T14:55:31.004Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840558/products/uploads/1743840554491-r44szjy9fii.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "277137aa-b8fc-40cc-a7cd-4e9fef7c6fed",
+    "productName": "Dexter",
+    "category": "Crime, Drama, Mystery",
+    "viewedAt": "2025-04-05T14:57:37.050Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1742032328/products/uploads/1742032321431-ckmvgpcc8sd.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "440194b0-e901-4080-8e10-16ae71cc1ca3",
+    "productName": "Euphoria",
+    "category": "Drama",
+    "viewedAt": "2025-04-05T14:57:42.793Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743840958/products/uploads/1743840954233-jd5d2fbonic.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "6c7b5796-0f89-4ad8-ba22-8169a6ab1d34",
+    "productName": "How to Lose a Guy in 10 Days",
+    "category": "Comedy, Romance",
+    "viewedAt": "2025-04-05T14:59:03.929Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743841543/products/uploads/1743841539276-epokb4a15nj.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "690f6fed-3527-4b90-860b-c142cdab0f2e",
+    "productName": "You",
+    "category": "Crime, Drama, Romance",
+    "viewedAt": "2025-04-05T14:59:12.087Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743831528/products/uploads/1743831524216-v9hj2gvcb4.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "8378adad-19d6-4a7a-a0f4-a2bc882abb96",
+    "productName": "500 Days of Summer",
+    "category": "Comedy, Drama, Romance",
+    "viewedAt": "2025-04-05T14:59:23.178Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743841073/products/uploads/1743841069219-6e6p4kp6gx7.jpg",
+    "ipAddress": "81.19.216.4"
+  },
+  {
+    "userRole": "admin",
+    "userId": "18c70979-5cf2-4cbe-8560-eed1022971dc",
+    "productId": "0febb86a-9289-425e-bda9-b6e90df4f86e",
+    "productName": "Arcane",
+    "category": "Action, Adventure, Animation",
+    "viewedAt": "2025-04-05T14:59:45.332Z",
+    "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1743841290/products/uploads/1743841285415-vx0s9lw8oh.jpg",
+    "ipAddress": "81.19.216.4"
   }
 ]
