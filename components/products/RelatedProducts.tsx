@@ -13,7 +13,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
     <section className="m-2 md:mx-12">
       <h2 className="text-2xl font-bold mb-6">فیلم‌های مرتبط</h2>
       <div className="overflow-x-auto pb-4">
-        <div className="flex md:grid md:grid-cols-4 gap-2 min-w-full md:min-w-0">
+        <div className="flex  gap-2 min-w-full md:min-w-0">
           {products.map((product) => (
             <Link key={product.id} href={`/movie/${product.id}`}>
               <Card className="group w-[180px] shrink-0 md:w-[250px] gap-1 ">

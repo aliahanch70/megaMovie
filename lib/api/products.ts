@@ -82,7 +82,7 @@ export async function getAllProductIds(): Promise<string[]> {
 
 export async function getRelatedProducts(
   movieId: string,
-  limit: number = 4
+  limit: number = 6
 ): Promise<Movie[]> {
   const supabase = createClient();
 

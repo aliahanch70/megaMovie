@@ -5,6 +5,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX } from 'lucide-react';
 import LoadingSpinner from '../LoadingSpinner';
+import  useSWR  from 'swr'; // ایمپورت SWR
 
 interface VideoStoriesProps {
   movieId: string;
@@ -19,52 +20,81 @@ interface Video {
   movie_title: string;
 }
 
+// تابع واکشی داده برای SWR
+const fetchVideos = async (supabase: any, movieId: string): Promise<Video[]> => {
+  const { data, error } = await supabase
+    .from('movie_stories')
+    .select('*')
+    .eq('movie_id', movieId)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    console.error('خطا در گرفتن ویدیوها:', error);
+    throw error; // برای اینکه SWR خطا را مدیریت کند، باید آن را throw کنیم
+  }
+
+  console.log('ویدیوهای دریافت شده:', data);
+  return data || [];
+};
+
 export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps) {
-  const [videos, setVideos] = useState<Video[]>([]); // تغییر تایپ به آرایه‌ای از Video
-  const [currentIndex, setCurrentIndex] = useState(0); // شاخص ویدیوی فعلی
-  const [progress, setProgress] = useState(0); // پیشرفت نوار
-  const [isMuted, setIsMuted] = useState(true); // وضعیت صدا (پیش‌فرض بی‌صدا)
-  const videoRef = useRef<HTMLVideoElement>(null); // رفرنس ویدیو
-  const supabase = createClientComponentClient(); // کلاینت Supabase
-  const MAX_DURATION = 60; // حداکثر 1 دقیقه (ثانیه)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const supabase = createClientComponentClient();
+  const MAX_DURATION = 60;
+  const [isAdmin, setIsAdmin] = useState(false); // وضعیت برای نشان دادن ادمین بودن کاربر
 
-  // گرفتن لیست ویدیوها از جدول movie_stories در Supabase
+  // بررسی نقش کاربر برای نمایش دکمه‌های ویرایش و حذف
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('movie_stories')
-          .select('*')
-          .eq('movie_id', movieId)
-          .order('created_at', { ascending: true });
+    const checkAdminRole = async () => {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.log('کاربری وارد نشده یا خطا در گرفتن کاربر:', userError.message);
+        return;
+      }
+      if (user) {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
 
-        if (error) {
-          console.error('خطا در گرفتن ویدیوها:', error);
-          return;
+        if (profileError) {
+          console.error('خطا در گرفتن نقش کاربر:', profileError.message);
+        } else {
+          setIsAdmin(profile?.role === 'admin');
         }
-
-        console.log('ویدیوهای دریافت شده:', data);
-        setVideos(data || []);
-      } catch (error) {
-        console.error('خطا در فچ کردن ویدیوها:', error);
+      } else {
+        setIsAdmin(false); // اگر کاربری وارد نشده باشد، ادمین نیست
       }
     };
 
-    fetchVideos();
-  }, [supabase, movieId]);
+    checkAdminRole();
+  }, [supabase]);
 
-  // مدیریت پخش ویدیو
+  // استفاده از useSWR برای واکشی ویدیوها
+  const { data: videos, error, isLoading, mutate } = useSWR<Video[], Error>(
+    movieId ? ['movie_stories', movieId] : null, // کلید SWR، اگر movieId وجود داشته باشد
+    () => fetchVideos(supabase, movieId),
+    {
+      revalidateOnFocus: false, // عدم واکشی مجدد هنگام فوکوس شدن
+      // می‌توانید تنظیمات کش و revalidation دیگری را در اینجا اضافه کنید
+    }
+  );
+
+  // مدیریت پخش ویدیو (بدون تغییرات عمده)
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || videos.length === 0) return;
+    if (!video || !videos || videos.length === 0) return;
 
-    // تنظیم وضعیت صدا
     video.muted = isMuted;
 
     const handleLoadedMetadata = () => {
-      const duration = video.duration; // مدت زمان ویدیو (ثانیه)
+      const duration = video.duration;
       if (duration > MAX_DURATION) {
-        goToNextStory(); // اگر بیشتر از 1 دقیقه بود، برو بعدی
+        goToNextStory();
       } else {
         video.play().catch((err) => console.error('Error playing video:', err));
       }
@@ -73,20 +103,19 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
     const handleTimeUpdate = () => {
       const currentTime = video.currentTime;
       const duration = video.duration;
-      setProgress((currentTime / duration) * 100); // پیشرفت بر اساس زمان واقعی
+      setProgress((currentTime / duration) * 100);
     };
 
     const handleEnded = () => {
-      goToNextStory(); // وقتی ویدیو تموم شد، برو بعدی
+      goToNextStory();
     };
 
     const checkVolume = () => {
       if (video.volume > 0 && isMuted) {
-        setIsMuted(false); // اگه ولوم دستگاه بیشتر از 0 باشه، unmute کن
+        setIsMuted(false);
         video.muted = false;
       }
     };
-
 
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('timeupdate', handleTimeUpdate);
@@ -99,18 +128,16 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
     };
   }, [currentIndex, videos, isMuted]);
 
-  // رفتن به ویدیوی بعدی
   const goToNextStory = () => {
-    if (currentIndex < videos.length - 1) {
+    if (videos && currentIndex < videos.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setProgress(0);
-    } else {
-      setCurrentIndex(0); // برگشت به اول
+    } else if (videos) {
+      setCurrentIndex(0);
       setProgress(0);
     }
   };
 
-  // رفتن به ویدیوی قبلی
   const goToPrevStory = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
@@ -118,7 +145,6 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
     }
   };
 
-  // کلیک روی صفحه برای جابجایی
   const handleScreenClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const screenWidth = e.currentTarget.offsetWidth;
     const clickX = e.clientX - e.currentTarget.getBoundingClientRect().left;
@@ -130,23 +156,65 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
     }
   };
 
-
-  // تغییر وضعیت صدا
- const toggleMute = () => {
+  const toggleMute = () => {
     const video = videoRef.current;
     if (video) {
       const newMutedState = !isMuted;
       setIsMuted(newMutedState);
       video.muted = newMutedState;
-      // تنظیم ولوم به یه مقدار پیش‌فرض اگه unmute شد
       if (!newMutedState && video.volume === 0) {
-        video.volume = 0.5; // یه مقدار پیش‌فرض برای صدا
+        video.volume = 0.5;
       }
     }
   };
-  
-  if (videos.length === 0) {
-    return <div className="text-center p-4"><LoadingSpinner/></div>;
+
+  const handleEditStory = (storyId: string) => {
+    console.log(`ویرایش استوری با ID: ${storyId}`);
+    // در اینجا می‌توانید منطق ویرایش استوری را پیاده‌سازی کنید
+    // احتمالاً باز کردن یک مودال یا رفتن به یک صفحه ویرایش
+  };
+
+  const handleDeleteStory = async (storyId: string) => {
+    const confirmDelete = window.confirm('آیا مطمئن هستید که می‌خواهید این استوری را حذف کنید؟');
+    if (confirmDelete) {
+      try {
+        const { error: deleteError } = await supabase
+          .from('movie_stories')
+          .delete()
+          .eq('id', storyId);
+
+        if (deleteError) {
+          console.error('خطا در حذف استوری:', deleteError);
+          // نمایش پیام خطا به کاربر
+        } else {
+          console.log('استوری با موفقیت حذف شد.');
+          // واکشی مجدد لیست ویدیوها برای به‌روزرسانی UI
+          mutate();
+          // اگر استوری حذف شده، ممکن است نیاز به تنظیم currentIndex باشد
+          if (videos && videos.length > 1 && currentIndex >= videos.length - 1) {
+            setCurrentIndex(videos.length - 2);
+          } else if (videos && videos.length === 1) {
+            // اگر آخرین استوری حذف شد، ممکن است نیاز به هندل کردن این وضعیت باشد
+          }
+        }
+      } catch (error) {
+        console.error('خطا در حذف استوری:', error);
+        // نمایش پیام خطای کلی به کاربر
+      }
+    }
+  };
+
+  if (isLoading) {
+    return <div className="text-center p-4"><LoadingSpinner /></div>;
+  }
+
+  if (error) {
+    console.error('خطا در بارگیری ویدیوها:', error);
+    return <div className="text-center p-4">خطا در بارگیری ویدیوها.</div>;
+  }
+
+  if (!videos || videos.length === 0) {
+    return <div className="text-center p-4">ویدیویی برای این فیلم وجود ندارد.</div>;
   }
 
   return (
@@ -178,17 +246,27 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
       >
         <video
           ref={videoRef}
-          src={videos[currentIndex]?.url} 
+          src={videos[currentIndex]?.url}
           className="w-full h-full object-cover"
           playsInline
         />
       </div>
 
-      {/* نمایش نام ویدیو */}
-      <div className="absolute top-6 left-0 right-0 text-center text-white p-2">
+      {/* نمایش نام ویدیو و دکمه‌های مدیریت */}
+      <div className="absolute top-6 left-0 right-0 text-center text-white p-2 flex flex-col items-center">
         <span className="bg-black bg-opacity-50 px-2 py-1 rounded">
           {videos[currentIndex]?.name}
         </span>
+        {isAdmin && videos[currentIndex]?.id && (
+          <div className="mt-2 flex gap-2">
+            <Button size="sm" onClick={() => handleEditStory(videos[currentIndex].id)}>
+              ویرایش
+            </Button>
+            <Button size="sm" variant="destructive" onClick={() => handleDeleteStory(videos[currentIndex].id)}>
+              حذف
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* دکمه‌های ناوبری */}
@@ -207,7 +285,7 @@ export default function VideoStories({ movieId, movieTitle }: VideoStoriesProps)
         )}
       </div>
       <div className="absolute inset-y-0 right-0 flex items-center">
-        {currentIndex < videos.length - 1 && (
+        {videos && currentIndex < videos.length - 1 && (
           <Button
             variant="ghost"
             className="text-white"

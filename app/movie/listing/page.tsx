@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
+import useSWRInfinite from 'swr/infinite';
 import ProductGrid from '@/components/products/listing/ProductGrid';
 import ProductFilters from '@/components/products/listing/ProductFilters';
 import SearchBar from '@/components/products/listing/SearchBar';
 import { createClient } from '@/lib/supabase/client';
 import Loading from '@/components/Loading';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
+// تعریف نوع Movie مثل قبل
 type Movie = {
   id: string;
   title: string;
@@ -18,121 +19,137 @@ type Movie = {
   type: string | null;
 };
 
+// --- تعریف نوع برای فیلترها ---
+type FilterState = {
+  genres: string;
+  minYear: string;
+  maxYear: string;
+  rating: string;
+  sort: string;
+  imdb: string;
+  type: string;
+};
+
+const LIMIT = 16;
+const supabase = createClient();
+
+// --- Fetcher function با نوع FilterState ---
+const fetcher = async ([_key, pageIndex, filters, searchQuery]: [string, number, FilterState, string]): Promise<Movie[]> => {
+  let query = supabase.from('movies').select(`
+    id,
+    title,
+    release,
+    genres,
+    created_at,
+    movie_images (url, label),
+    imdb,
+    type
+  `);
+
+  // اعمال فیلترها
+  if (filters.genres && filters.genres !== 'all') {
+    query = query.contains('genres', [filters.genres]);
+  }
+  if (filters.imdb) {
+    query = query.gte('imdb', parseFloat(filters.imdb));
+  }
+
+  
+  if (filters.minYear) {
+    query = query.gte('release', parseInt(filters.minYear));
+  }
+  if (filters.maxYear) {
+    query = query.lte('release', parseInt(filters.maxYear));
+  }
+  if (searchQuery) {
+    query = query.ilike('title', `%${searchQuery}%`);
+  }
+  if (filters.type && filters.type !== 'all') {
+    query = query.eq('type', filters.type);
+  }
+
+  // اعمال مرتب‌سازی
+  switch (filters.sort) {
+    case 'year-asc':
+      query = query.order('release', { ascending: true });
+      break;
+    case 'imdb-desc':
+        query = query.order('imdb', { ascending: false });
+        break;
+    case 'year-desc':
+      query = query.order('release', { ascending: false });
+      break;
+    case 'newest':
+    default:
+      query = query.order('created_at', { ascending: false });
+      break;
+  }
+
+  const offset = pageIndex * LIMIT;
+  query = query.range(offset, offset + LIMIT - 1);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching movies:', error);
+    throw error;
+  }
+
+  return (data as Movie[]) || [];
+};
+
+
 function MovieListingContent() {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [offset, setOffset] = useState(0);
-  const LIMIT = 16;
-  const [filters, setFilters] = useState({
+  // --- استفاده از نوع FilterState در useState ---
+  const [filters, setFilters] = useState<FilterState>({
     genres: 'all',
     minYear: '',
     maxYear: '',
     rating: 'all',
     sort: 'newest',
+    imdb: '0',
+    type: 'all',
   });
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [loadError, setLoadError] = useState(false);
 
-  const supabase = createClient();
+  // --- استفاده از نوع FilterState در getKey ---
+  const getKey = (pageIndex: number, previousPageData: Movie[] | null): [string, number, FilterState, string] | null => {
+    if (previousPageData && previousPageData.length < LIMIT) return null;
+    // کلید شامل نوع صریح FilterState می‌شود
+    return ['movies', pageIndex, filters, searchQuery];
+  };
+
+  const { data, error, size, setSize, isLoading, isValidating } = useSWRInfinite<Movie[]>(
+    getKey,
+    fetcher,
+    {
+      revalidateFirstPage: false,
+      // revalidateOnFocus: false,
+    }
+  );
+
+  const movies: Movie[] = data ? data.flat() : [];
+  const isLoadingInitialData = isLoading;
+  const isLoadingMore = isValidating && !!data && data.length > 0 && size > 1;
+  const hasMore = !!data && data[data.length - 1]?.length === LIMIT;
+  const loadError = !!error;
 
   const loadMore = useCallback(() => {
-    setLoadError(false);
-    setLoadingMore(true);
-    setTimeout(() => {
-      setOffset(prev => prev + LIMIT);
-    }, 1000);
-  }, []);
+    if (!isLoadingMore) {
+        setSize(size + 1);
+    }
+  }, [isLoadingMore, setSize, size]);
 
   const observer = useRef<IntersectionObserver>();
   const lastMovieRef = useCallback((node: HTMLDivElement) => {
-    if (loadingMore || loadError) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        loadMore();
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loadingMore, hasMore, loadError, loadMore]);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      if (offset === 0) {
-        setLoading(true);
-      }
-      let query = supabase.from('movies').select(`
-        id,
-        title,
-        release,
-        genres,
-        created_at,
-        movie_images (url, label),
-        imdb,
-        type
-      `);
-
-      // اعمال فیلترها
-      if (filters.genres && filters.genres !== 'all') {
-        query = query.contains('genres', [filters.genres]);
-      }
-      if (filters.minYear) {
-        query = query.gte('release', parseInt(filters.minYear));
-      }
-      if (filters.maxYear) {
-        query = query.lte('release', parseInt(filters.maxYear));
-      }
-      if (searchQuery) {
-        query = query.ilike('title', `%${searchQuery}%`);
-      }
-
-      // اعمال مرتب‌سازی
-      switch (filters.sort) {
-        case 'year-asc':
-          query = query.order('release', { ascending: true });
-          break;
-        case 'year-desc':
-          query = query.order('release', { ascending: false });
-          break;
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-      }
-
-      query = query.range(offset, offset + LIMIT - 1);
-
-      try {
-        const { data, error } = await query;
-        if (error) throw error;
-
-        // تایپ صریح برای data
-        const moviesData = (data as Movie[]) || [];
-        
-        if (offset === 0) {
-          setMovies(moviesData);
-        } else {
-          setMovies(prev => [...prev, ...moviesData]);
-        }
-        setHasMore(moviesData.length === LIMIT);
-        setLoadError(false);
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-        setLoadError(true);
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
-      }
-    };
-
-    fetchMovies();
-  }, [filters, searchQuery, offset, supabase]);
-
-  // ریست offset هنگام تغییر فیلترها یا جستجو
-  useEffect(() => {
-    setOffset(0);
-    setHasMore(true);
-  }, [filters, searchQuery]);
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting && hasMore && !isValidating) {
+              loadMore();
+          }
+      });
+      if (node) observer.current.observe(node);
+  }, [hasMore, isValidating, loadMore]);
 
   return (
     <div className="min-h-screen bg-black">
@@ -141,17 +158,16 @@ function MovieListingContent() {
           <h1 className="text-4xl font-bold mb-4 gradient-text">Our Movies</h1>
           <SearchBar onSearch={setSearchQuery} />
         </div>
-
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-64">
+            {/* Pass filters and onChange to ProductFilters */}
             <ProductFilters filters={filters} onChange={setFilters} />
           </div>
-
           <div className="flex-1">
-            <ProductGrid 
+            <ProductGrid
               movies={movies}
-              loading={loading}
-              loadingMore={loadingMore}
+              loading={isLoadingInitialData}
+              loadingMore={isLoadingMore}
               lastMovieRef={lastMovieRef}
               hasMore={hasMore}
               loadError={loadError}
