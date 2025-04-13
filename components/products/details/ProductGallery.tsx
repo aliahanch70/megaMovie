@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
-import ColorExtractor from '@/components/ColorExtractor';
 
 interface ProductImage {
   url: string;
@@ -16,9 +15,6 @@ interface ProductGalleryProps {
   images: ProductImage[];
 }
 
-interface ColorExtractorProps {
-  imageUrl: ProductImage;
-}
 
 export default function ProductGallery({ images }: ProductGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -27,7 +23,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
   return (
     
     <Card className="p-4 space-y-4   h-fit">
-      <div className="relative aspect-square overflow-hidden rounded-lg ">
+      <div className="relative aspect-[0.8] overflow-hidden rounded-lg ">
         <Image
           src={sortedImages[selectedImage]?.url || '/placeholder.png'}
           alt={sortedImages[selectedImage]?.label || 'Product image'}
@@ -37,7 +33,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
         />
       </div>
       <div className="grid grid-cols-4 gap-2">
-        {sortedImages.map((image, index) => (
+        {/* {sortedImages.map((image, index) => (
           <button
             key={index}
             onClick={() => setSelectedImage(index)}
@@ -54,9 +50,8 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
               className="object-cover"
             />
           </button>
-        ))}
+        ))} */}
       </div>
-      <ColorExtractor  imageUrl={sortedImages[selectedImage].url}/>
 
     </Card>
   );

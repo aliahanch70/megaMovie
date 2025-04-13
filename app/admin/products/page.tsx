@@ -67,6 +67,7 @@ function AdminMoviesContent() {
             size: link.size,
             encode: link.encode,
             option_values: link.optionValues || {},
+            website: link.website,
           }))
         );
       }

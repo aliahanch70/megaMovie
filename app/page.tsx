@@ -8,29 +8,45 @@ import ProductScroll from '@/components/products/ProductScroll';
 import Slideshow from '@/components/Slideshow';
 import Carousel from '@/components/Carousel';
 import Slideshow2 from '@/components/SlideShow2';
-import VideoStories from '@/components/story/VideoStories';
+import VideoStories from '@/components/story/videoStories3';
 import ColorExtractor from '@/components/ColorExtractor';
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
 
-  // const { data: slides } = await supabase
-  //   .from('slides')
-  //   .select('*')
-  //   .order('order_number');
+  const { data: slides } = await supabase
+    .from('slides')
+    .select('*')
+    .order('order_number');
 
-  // // Fetch products for each category
-  // const { data: offers } = await supabase
-  //   .from('products')
-  //   .select('id, name, price, category, product_images (url, label)')  // Add category here
-  //   .order('created_at', { ascending: false })
-  //   .limit(10);
+  // Fetch products for each category
+// 1. دریافت سال جاری
+const currentYear = new Date().getFullYear(); // مقدار این متغیر در حال حاضر 2025 خواهد بود
 
-  // const { data: electronics } = await supabase
-  //   .from('products')
-  //   .select('id, name, price, category, product_images(url)')  // Add category here
-  //   .eq('category', 'electronics')
-  //   .limit(10);
+
+  // 2. ساخت کوئری Supabase با فیلتر سال جاری
+  const {  data: offers, error } = await supabase
+    .from('movies') // نام جدول شما
+    .select('id, title, release, genres, movie_images (url),imdb') // فیلدهایی که نیاز دارید
+    .eq('release', currentYear) // فیلتر کردن: فقط فیلم‌هایی که فیلد release برابر با currentYear است
+    .order('created_at', { ascending: false }) // اختیاری: مرتب‌سازی فیلم‌های امسال بر اساس تاریخ ایجاد رکورد
+    .limit(20) // اختیاری: محدود کردن تعداد نتایج
+
+
+
+  const { data: series } = await supabase
+    .from('movies')
+    .select('id, title, release, genres, movie_images (url),imdb , type')  // Add category here
+    .eq('type', 'Series')
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+    const { data: movies } = await supabase
+    .from('movies')
+    .select('id, title, release, genres, movie_images (url),imdb , type')  // Add category here
+    .eq('type', 'Movie')
+    .order('created_at', { ascending: false })
+    .limit(10);
 
   // const { data: clothing } = await supabase
   //   .from('products')
@@ -46,57 +62,38 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-8">
-        {/* <Slideshow2 slides={slides || []} /> */}
+      <div className="container mx-auto py-8">
+        <Slideshow2 slides={slides || []} />
        
 
-        {/* Special Offers Section */}
+        {/* New movies */}
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-4">Special Offers</h2>
-          {/* <ProductScroll products={offers || []} /> */}
+          <h2 className="text-xl font-semibold mb-4 px-4">New Release</h2>
+          <ProductScroll products={offers || []} />
         </section>
 
         {/* Electronics Section */}
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-4">Electronics</h2>
-          {/* <ProductScroll products={electronics || []} /> */}
+          <h2 className="text-xl font-semibold mb-4 px-4">Series</h2>
+          <ProductScroll products={series || []} />
         </section>
 
         {/* Clothing Section */}
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-4">Clothing</h2>
-          {/* <ProductScroll products={clothing || []} /> */}
+          <h2 className="text-xl font-semibold mb-4 px-4">Movies</h2>
+          <ProductScroll products={movies || []} />
         </section>
 
         {/* Books Section */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-4">Books</h2>
+        <section className="mb-12 ">
+          {/* <h2 className="text-2xl font-semibold mb-4">Books</h2> */}
           {/* <ProductScroll products={books || []} /> */}
         </section>
         
-        <VideoStories />
+        {/* <VideoStories /> */}
 
-        {/* <input
-          type="text"
-          placeholder="Enter image URL"
-          className="border p-2 mb-4"
-          onChange={(e) => {
-            const url = e.target.value;
-            // Handle the URL change here
-            console.log('Image URL:', url);
-          }}
-        />
-        <button
-          className="bg-blue-500 text-white p-2 rounded"
-          onClick={() => {
-            // Handle the button click here
-            console.log('Button clicked');
-          }}
-        >
-          Extract Colors
-        </button> */}
+        
 
-        <ColorExtractor imageUrl='https://res.cloudinary.com/dxldyoda8/image/upload/v1743831528/products/uploads/1743831524216-v9hj2gvcb4.jpg' />
 
         
       </div>

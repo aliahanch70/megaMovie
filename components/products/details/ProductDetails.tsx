@@ -36,7 +36,7 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             language,
             created_at,
             movie_images (url, label, order),
-            movie_links (title, url, quality, size, encode, option_values),
+            movie_links (title, url, quality, size, encode,website, option_values),
             movie_specifications (label, value),
             movie_options (name, values),
             profiles (full_name),
@@ -79,8 +79,8 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <ProductHeader
-          name={product.title} // استفاده از title به جای name
-          imdb={product.imdb } // اگر price تعریف نشده باشه
+          name={product.title} 
+          imdb={product.imdb } 
           release={product.release}
           images={product.movie_images[0]?.url || []}
         />
@@ -91,13 +91,13 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
           <div className="space-y-8">
             <ProductInfo
               description={product.description}
-              category={product.genres?.join(', ') || 'نامشخص'} // ژانرها رو به string تبدیل می‌کنیم
+              category={product.genres?.join(', ') || 'نامشخص'} 
               createdAt={product.created_at}
             />
 
             <ProductSpecs
               category={product.genres?.join(', ') || 'نامشخص'}
-              status={product.status || 'موجود'}
+              duration={product.duration || 'n/a'}
               specifications={product.movie_specifications || []}
             />
 

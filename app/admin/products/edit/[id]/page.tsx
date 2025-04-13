@@ -29,6 +29,7 @@ interface MovieData {
     size: string;
     encode: string;
     optionValues: { [key: string]: string }; // تغییر نام از option_values
+    website?: string; // اضافه کردن website
   }[];
   imdb?: number | null; // اضافه کردن imdb
   type?: string; // اضافه کردن type
@@ -79,6 +80,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             quality,
             size,
             encode,
+            website,
             option_values
           `)
           .eq('movie_id', id);
@@ -158,6 +160,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             size: link.size || '',
             encode: link.encode || '',
             option_values: link.optionValues || {},
+            website: link.website || '', // اضافه کردن website
           }))
         );
       }

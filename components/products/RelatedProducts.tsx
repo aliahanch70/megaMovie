@@ -17,7 +17,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
           {products.map((product) => (
             <Link key={product.id} href={`/movie/${product.id}`}>
               <Card className="group w-[180px] shrink-0 md:w-[250px] gap-1 ">
-                <div className="aspect-square relative overflow-hidden rounded-t-lg">
+                <div className="aspect-[0.8] relative overflow-hidden rounded-t-lg">
                   <Image
                     src={product.movie_images[0]?.url || '/placeholder.png'}
                     alt={product.title}
@@ -26,21 +26,17 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold truncate">{product.title}</h3>
+                  <h3 className="font-semibold truncate">{product.title} ({product.release || 'نامشخص'})</h3>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-lg font-bold">
-                      {product.release || 'نامشخص'}
-                    </span>
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 fill-accent text-accent"
-                        />
-                      ))}
+                    
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 md:w-5 md:h-5" />
+                      <span className="text-yellow-400 text-xs md:text-lg ">
+                        {product.imdb !== null ? product.imdb.toFixed(1) : 'N/A'}
+                      </span>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-muted-foreground truncate mt-1">
                     {product.genres?.join(', ') || 'بدون ژانر'}
                   </p>
                 </div>

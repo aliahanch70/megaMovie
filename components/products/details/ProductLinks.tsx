@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface ProductLinksProps {
   links: Array<{
@@ -15,6 +16,10 @@ interface ProductLinksProps {
     city: string;
     warranty: string;
     option_values?: Record<string, string>;
+    quality?: string;
+    size?: string;
+    encode?: string;
+    website?: string;
   }>;
   options?: Array<{
     name: string;
@@ -34,7 +39,7 @@ export default function ProductLinks({ links, options }: ProductLinksProps) {
   });
 
   // گروه‌بندی لینک‌ها بر اساس یه option خاص (مثلاً اولین option یا city)
-  const groupByOption = options?.[0]?.name || "city"; // می‌تونی این رو تغییر بدی
+  const groupByOption = options?.[0]?.name || "city";
   const groupedLinks = filteredLinks.reduce((acc, link) => {
     const key = link.option_values?.[groupByOption] || (groupByOption === 'city' ? link.city : "Unknown");
     if (!acc[key]) acc[key] = [];
@@ -42,11 +47,17 @@ export default function ProductLinks({ links, options }: ProductLinksProps) {
     return acc;
   }, {} as Record<string, typeof filteredLinks>);
 
+  console.log("Grouped Links:", groupedLinks);
+  console.log("Selected Options:", selectedOptions);
+  console.log("Filtered Links:", filteredLinks);
+  console.log("Options:", options);
+  console.log("Links:", links);
+
   return (
-    <Card className="p-6  ">
+    <Card className="p-6">
+      <Label className="text-lg font-medium">Download Box</Label>
       {options && options.length > 0 && (
         <div className="mb-4 space-y-4">
-          <h3 className="font-medium">Options</h3>
           <div className="flex flex-wrap gap-4">
             {options.map((option) => (
               <div key={option.name} className="w-[200px]">
@@ -78,43 +89,78 @@ export default function ProductLinks({ links, options }: ProductLinksProps) {
         </div>
       )}
 
-      <h2 className="text-xl font-semibold mb-4">Available Offers</h2>
+      
       <div className="space-y-6">
-        {Object.entries(groupedLinks).map(([groupKey, groupLinks], index) => (
-          <div key={groupKey}>
-            {/* خط جداکننده و عنوان */}
-            {index > 0 && <hr className="my-4 border-gray-200" />}
-            <h3 className="text-lg font-medium mb-2">
-              {groupByOption.charAt(0).toUpperCase() + groupByOption.slice(1)}: {groupKey}
-            </h3>
-            {/* لینک‌ها */}
-            <div className="space-y-4">
-              {groupLinks.map((link, linkIndex) => (
-                <Button
-                  key={linkIndex}
-                  variant="outline"
-                  className="w-full justify-between py-6"
-                  asChild
-                >
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-lg justify-between w-full"
+        {options && options.length > 0 ? (
+          // وقتی options وجود دارد، از Accordion استفاده کن
+          Object.entries(groupedLinks).map(([groupKey, groupLinks], index) => (
+            <div key={groupKey}>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value={groupKey}>
+                  <AccordionTrigger
+                    className="text-lg font-medium"
                   >
-                    <div className="flex flex-col">
-                      <span>{link.title} - ${Number(link.price).toFixed(2)}</span>
-                      <span className="text-sm text-gray-500">
-                        {link.city} • {link.warranty}
-                      </span>
+                    {groupByOption.charAt(0).toUpperCase() + groupByOption.slice(1)}: {groupKey} ({groupLinks.length})
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-4">
+                      {groupLinks.map((link, linkIndex) => (
+                        <Button
+                          key={linkIndex}
+                          variant="outline"
+                          className="w-full justify-between py-6"
+                          asChild
+                        >
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-lg justify-between w-full"
+                          >
+                            <div className="flex flex-col">
+                              <span>{link.title} - {link.website}</span>
+                              <span className="text-sm text-gray-500">
+                                {link.quality} • {link.size} • {link.encode}
+                              </span>
+                            </div>
+                            <ExternalLink className="h-4 w-4 ml-2" />
+                          </a>
+                        </Button>
+                      ))}
                     </div>
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </a>
-                </Button>
-              ))}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
+          ))
+        ) : (
+          // وقتی options وجود ندارد، همه لینک‌ها را نمایش بده
+          <div className="space-y-4">
+            {filteredLinks.map((link, linkIndex) => (
+              <Button
+                key={linkIndex}
+                variant="outline"
+                className="w-full justify-between py-6"
+                asChild
+              >
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-lg justify-between w-full"
+                >
+                  <div className="flex flex-col">
+                    <span>{link.title} - {link.website}</span>
+                    <span className="text-sm text-gray-500">
+                      {link.quality} • {link.size} • {link.encode}
+                    </span>
+                  </div>
+                  <ExternalLink className="h-4 w-4 ml-2" />
+                </a>
+              </Button>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </Card>
   );

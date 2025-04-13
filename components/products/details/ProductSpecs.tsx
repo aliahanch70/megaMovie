@@ -1,3 +1,4 @@
+// components/products/ProductSpecs.tsx
 'use client';
 
 import { Card } from '@/components/ui/card';
@@ -10,21 +11,32 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 interface ProductSpecsProps {
-  category: string;
-  status: 'in_stock' | 'out_of_stock';
+  category: string; // مثلاً "action,drama"
+  duration: number;
   specifications?: { 
     label: string;
     value: string 
   }[];
 }
 
-export default function ProductSpecs({ category, status, specifications }: ProductSpecsProps) {
+export default function ProductSpecs({ category, duration, specifications }: ProductSpecsProps) {
+  const router = useRouter();
+
+  // تبدیل رشته دسته‌بندی به آرایه
+  const categories = category.split(',').map((cat) => cat.trim().toLowerCase());
+
+  // تابع برای هدایت به صفحه دسته‌بندی
+  const handleCategoryClick = (cat: string) => {
+    router.push(`/movie/${cat}`);
+  };
+
   return (
-    <Card className="p-6  ">
+    <Card className="p-6">
       <div className="flex justify-between items-start mb-4">
         <h2 className="text-xl font-semibold">Specifications</h2>
         {specifications && specifications.length > 0 && (
@@ -62,15 +74,24 @@ export default function ProductSpecs({ category, status, specifications }: Produ
         <div className="flex items-center gap-2">
           <Tag className="h-4 w-4 text-muted-foreground" />
           <span className="text-muted-foreground">Category:</span>
-          <Badge variant="secondary" className="capitalize">
-            {category}
-          </Badge>
+          <div className="flex gap-2 flex-wrap">
+            {categories.map((cat, index) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className="capitalize cursor-pointer hover:bg-gray-700 transition-colors"
+                onClick={() => handleCategoryClick(cat)}
+              >
+                {cat}
+              </Badge>
+            ))}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Package2 className="h-4 w-4 text-muted-foreground" />
-          <span className="text-muted-foreground">Status:</span>
-          <Badge variant={status === 'in_stock' ? 'default' : 'destructive'}>
-            {status === 'in_stock' ? 'In Stock' : 'Out of Stock'}
+          <span className="text-muted-foreground">Duration:</span>
+          <Badge variant="default">
+            {duration} minutes
           </Badge>
         </div>
 

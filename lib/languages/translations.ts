@@ -4,7 +4,7 @@ import { title } from "node:process";
 export const translations = {
   en: {
     nav: {
-      store: 'Store',
+      store: 'MegaMovie',
       home: 'Home',
       movie: 'movie',
       dashboard: 'Dashboard',
@@ -76,7 +76,7 @@ export const translations = {
   },
   fa: {
     nav: {
-      store: 'فروشگاه',
+      store: 'MegaMovie',
       home: 'خانه',
       movie: 'فیلم ',
       dashboard: 'داشبورد',

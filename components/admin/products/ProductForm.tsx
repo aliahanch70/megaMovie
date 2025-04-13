@@ -14,7 +14,6 @@ import { uploadImageToPublic } from '@/lib/utils/uploadImage';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import MovieSearchPopup from '@/components/MovieSearchPopup';
-import { set } from 'lodash';
 
 interface MovieFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
@@ -33,6 +32,7 @@ interface MovieLink {
   quality: string;
   size: string;
   encode: string;
+  website?: string;  // Add this line
   optionValues: { [key: string]: string };
 }
 
@@ -80,6 +80,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         quality: link.quality || '',
         size: link.size || '',
         encode: link.encode || '',
+        website: link.website || '', // Add this line
         optionValues: link.option_values || {},
       })) || [];
       setLinks(initialLinks);
@@ -157,7 +158,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   };
 
   const handleAddLink = () => {
-    setLinks([...links, { title: '', url: '', quality: '', size: '', encode: '', optionValues: {} }]);
+    setLinks([...links, { title: '', url: '', quality: '', size: '', encode: '', website: '', optionValues: {} }]);
   };
 
   const handleLinkChange = (index: number, field: string, value: string) => {
@@ -314,7 +315,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         <div>
           <Label>Genres* (Select multiple)</Label>
           <div className="space-y-2">
-            {['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Crime', 'Mystery'].map((genre) => (
+            {['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Crime', 'Mystery' , 'Adventure', 'Fantasy'].map((genre) => (
               <div key={genre} className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -426,13 +427,13 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
       <Card>
         <CardContent className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <Label>Download Links ({links.length}/10)</Label>
-            {links.length < 10 && (
+            <Label>Download Links ({links.length})</Label>
+            
               <Button type="button" variant="outline" size="sm" onClick={handleAddLink}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Link
               </Button>
-            )}
+            
           </div>
           <div className="space-y-4">
             {links.map((link, index) => (
@@ -442,6 +443,11 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
                     placeholder="Link Title"
                     value={link.title}
                     onChange={(e) => handleLinkChange(index, 'title', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Website Name"
+                    value={link.website || ''}
+                    onChange={(e) => handleLinkChange(index, 'website', e.target.value)}
                   />
                   <Input
                     placeholder="URL"

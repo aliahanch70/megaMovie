@@ -56,6 +56,21 @@
   }
 }
 
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.scrollbar-hide {
+  scroll-behavior: smooth;
+}
+.touch-pan-x {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch; /* بهبود اسکرول در iOS */
+}
+
 @layer base {
   * {
     @apply border-border;

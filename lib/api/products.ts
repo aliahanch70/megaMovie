@@ -12,6 +12,7 @@ export interface MovieLink {
   quality: string;
   size: string;
   encode: string;
+  website: string;
   option_values: { [key: string]: string };
 }
 
@@ -47,7 +48,8 @@ export async function getProduct(id: string): Promise<Movie | null> {
         language,
         created_at,
         movie_images (url, label, order),
-        movie_links (title, url, quality, size, encode, option_values),
+        movie_links (title, url, quality, size, encode,website, option_values),
+        movie_options (name, values),
         imdb,
         type,
         imdb_id
@@ -113,13 +115,14 @@ export async function getRelatedProducts(
         id,
         title,
         description,
+        imdb,
         genres,
         release,
         duration,
         language,
         created_at,
         movie_images (url, label, order),
-        movie_links (title, url, quality, size, encode, option_values)
+        movie_links (title, url, quality, size, encode,website, option_values)
       `)
       .neq('id', movieId)
       .or(
