@@ -27,6 +27,7 @@ export interface Movie {
   created_at: string;
   movie_images: MovieImage[];
   movie_links: MovieLink[];
+  movie_options?: { name: string; values: string[] }[];
   imdb: number | null;
   type: string | null;
   imdb_id: string | null;  
@@ -49,7 +50,6 @@ export async function getProduct(id: string): Promise<Movie | null> {
         created_at,
         movie_images (url, label, order),
         movie_links (title, url, quality, size, encode,website, option_values),
-        movie_options (name, values),
         imdb,
         type,
         imdb_id
@@ -62,8 +62,21 @@ export async function getProduct(id: string): Promise<Movie | null> {
       return null;
     }
 
-    console.log('داده دریافت‌شده:', data);
-    return data as Movie | null;
+    const movie = data as Movie;
+
+    const { data: optionsData, error: optionsError } = await supabase
+      .from('movie_options')
+      .select('name, values')
+      .eq('movie_id', id);
+
+    if (optionsError) {
+      console.warn('خطای Supabase در دریافت movie_options:', optionsError.message);
+    } else if (optionsData) {
+      movie.movie_options = optionsData as { name: string; values: string[] }[];
+    }
+
+    console.log('داده دریافت‌شده:', movie);
+    return movie;
   } catch (error) {
     console.error('خطا در فچ کردن فیلم:', error);
     return null;
@@ -127,7 +140,7 @@ export async function getRelatedProducts(
       .neq('id', movieId)
       .or(
         currentMovie.genres
-          .map((genre : any) => `genres.cs.{${genre}}`) // هر ژانر رو جداگانه چک می‌کنه
+          .map((genre: any) => `genres.cs.${JSON.stringify([genre])}`)
           .join(',')
       )
       .limit(limit);

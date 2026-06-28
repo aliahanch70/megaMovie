@@ -16,7 +16,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter } from 'next/navigation';
 
 interface ProductSpecsProps {
-  category: string; // مثلاً "action,drama"
+  category: string; 
   duration: number;
   specifications?: { 
     label: string;
@@ -67,6 +67,7 @@ export default function ProductSpecs({ category, duration, specifications }: Pro
               </ScrollArea>
             </DialogContent>
           </Dialog>
+          
         )}
       </div>
 

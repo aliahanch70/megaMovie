@@ -48,7 +48,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
         const { id } = await params;
         console.log('شناسه فیلم:', id);
 
-        // گرفتن اطلاعات فیلم
+        // گرفتن اطلاعات فیلم بدون movie_options به خاطر نبود رابطه‌ی foreign key
         const { data: movieData, error: movieError } = await supabase
           .from('movies')
           .select(`
@@ -61,7 +61,6 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             duration,
             language,
             movie_images (url, label, order),
-            movie_options (name, values),
             imdb,
             type,
             imdb_id
@@ -70,6 +69,17 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
           .single();
 
         if (movieError) throw movieError;
+
+        const { data: optionsData, error: optionsError } = await supabase
+          .from('movie_options')
+          .select('name, values')
+          .eq('movie_id', id);
+
+        if (optionsError) throw optionsError;
+
+        const movieDataWithOptions = movieData
+          ? { ...movieData, movie_options: (optionsData as { name: string; values: string[] }[]) }
+          : movieData;
 
         // گرفتن لینک‌ها
         const { data: linksData, error: linksError } = await supabase
@@ -89,7 +99,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
 
         if (movieData && linksData) {
           const combinedData: MovieData = {
-            ...movieData,
+            ...movieDataWithOptions,
             movie_links: linksData.map((link) => ({
               ...link,
               optionValues: link.option_values || {}, // تطبیق نام
@@ -97,7 +107,7 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
           };
           setInitialData(combinedData);
           console.log('داده‌های دریافت‌شده:', {
-            movie: movieData,
+            movie: movieDataWithOptions,
             links: linksData,
           });
         }

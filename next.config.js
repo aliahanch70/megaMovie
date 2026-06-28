@@ -28,9 +28,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https', // پروتکل مورد استفاده (معمولا https)
-        hostname: 'res.cloudinary.com', // دامنه‌ای که می‌خواهید مجاز کنید
+        hostname: 'res.cloudinary.com,', // دامنه‌ای که می‌خواهید مجاز کنید
         // port: '', // اختیاری: اگر پورت خاصی نیاز است
         // pathname: '/your-account-path/**', // اختیاری: برای محدود کردن به مسیر خاصی در دامنه
+      },
+      {
+        protocol: 'https',
+        hostname: 'm.media-amazon.com', // دامنه اول
       },
     ]
   },

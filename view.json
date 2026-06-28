@@ -6928,5 +6928,325 @@
     "viewedAt": "2025-04-13T07:58:46.838Z",
     "imageUrl": "https://res.cloudinary.com/dxldyoda8/image/upload/v1744190039/products/uploads/1744190037572-j10mareidhe.jpg",
     "ipAddress": "138.68.74.212"
+  },
+  {
+    "productId": "d3e87332-3c11-473e-9039-14afcf68039a",
+    "productName": "From",
+    "price": "2022",
+    "category": [
+      "Drama",
+      "Horror",
+      "Mystery"
+    ],
+    "viewedAt": "2026-06-28T11:09:14.104Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "d3e87332-3c11-473e-9039-14afcf68039a",
+    "productName": "From",
+    "price": "2022",
+    "category": [
+      "Drama",
+      "Horror",
+      "Mystery"
+    ],
+    "viewedAt": "2026-06-28T11:13:18.959Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "d3e87332-3c11-473e-9039-14afcf68039a",
+    "productName": "From",
+    "price": "2022",
+    "category": [
+      "Drama",
+      "Horror",
+      "Mystery"
+    ],
+    "viewedAt": "2026-06-28T11:13:23.880Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "00f1b47a-02c1-462f-adc9-1553d5b2a2cb",
+    "productName": "From",
+    "price": "2022",
+    "category": [
+      "Drama",
+      "Horror",
+      "Mystery"
+    ],
+    "viewedAt": "2026-06-28T11:13:59.925Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "00f1b47a-02c1-462f-adc9-1553d5b2a2cb",
+    "productName": "From",
+    "price": "2022",
+    "category": [
+      "Drama",
+      "Horror",
+      "Mystery"
+    ],
+    "viewedAt": "2026-06-28T11:18:26.749Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "00f1b47a-02c1-462f-adc9-1553d5b2a2cb",
+    "productName": "From",
+    "category": "Drama, Horror, Mystery",
+    "viewedAt": "2026-06-28T11:18:28.116Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "00f1b47a-02c1-462f-adc9-1553d5b2a2cb",
+    "productName": "From",
+    "category": "Drama, Horror, Mystery",
+    "viewedAt": "2026-06-28T11:19:50.179Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "cf9798a8-e1d6-43f0-9427-d66ddba05170",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:20:23.469Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "adc5fea7-f6d0-4c76-888c-e12fde295109",
+    "productName": "Widow's Bay",
+    "price": "2026",
+    "category": [
+      "Comedy",
+      "Drama",
+      "Horror"
+    ],
+    "viewedAt": "2026-06-28T11:20:33.967Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "adc5fea7-f6d0-4c76-888c-e12fde295109",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:20:34.966Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "adc5fea7-f6d0-4c76-888c-e12fde295109",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:21:29.192Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "cf9798a8-e1d6-43f0-9427-d66ddba05170",
+    "productName": "Widow's Bay",
+    "price": "2026",
+    "category": [
+      "Comedy",
+      "Drama",
+      "Horror"
+    ],
+    "viewedAt": "2026-06-28T11:21:34.539Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "cf9798a8-e1d6-43f0-9427-d66ddba05170",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:21:35.566Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "cf9798a8-e1d6-43f0-9427-d66ddba05170",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:23:15.371Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "5a377a69-0410-45a6-8fa4-8783c0adc8ea",
+    "productName": "Widow's Bay",
+    "price": "2026",
+    "category": [
+      "Comedy",
+      "Drama",
+      "Horror"
+    ],
+    "viewedAt": "2026-06-28T11:23:36.456Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "5a377a69-0410-45a6-8fa4-8783c0adc8ea",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:23:37.509Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "5a377a69-0410-45a6-8fa4-8783c0adc8ea",
+    "productName": "Widow's Bay",
+    "category": "Comedy, Drama, Horror",
+    "viewedAt": "2026-06-28T11:25:16.025Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BYzE4ZDNkZWQtYTNmNy00MjQwLTk0ODItN2YyYWUwYzEzNzk2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "fe876ac9-acb8-4111-b7ee-fc53f4708186",
+    "productName": "Project Hail Mary",
+    "category": "Comedy, Horror, Thriller",
+    "viewedAt": "2026-06-28T11:28:57.692Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BZTM3N2EyMTEtNDhkMi00ZjNiLWI0MWUtOGViMjExODY3YTJhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "d6633712-150e-4b79-a40b-61171ab29b88",
+    "productName": "Ready or Not 2: Here I Come",
+    "price": "2026",
+    "category": [
+      "Comedy",
+      "Horror",
+      "Thriller"
+    ],
+    "viewedAt": "2026-06-28T11:30:04.028Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BZTM3N2EyMTEtNDhkMi00ZjNiLWI0MWUtOGViMjExODY3YTJhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "d6633712-150e-4b79-a40b-61171ab29b88",
+    "productName": "Ready or Not 2: Here I Come",
+    "category": "Comedy, Horror, Thriller",
+    "viewedAt": "2026-06-28T11:30:05.348Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BZTM3N2EyMTEtNDhkMi00ZjNiLWI0MWUtOGViMjExODY3YTJhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "60f77347-7350-44c0-b582-f8287073ab2a",
+    "productName": "Ready or Not",
+    "category": "Action, Comedy, Horror",
+    "viewedAt": "2026-06-28T11:30:24.161Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BMTViMDA4YjgtZDQ4NC00ZDk2LTg0MWItOTc4MTkwMmVkZWRmXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "5ad90b21-7e51-4b7e-8238-e1ad6b5ff521",
+    "productName": "Project Hail Mary",
+    "category": "Adventure, Comedy, Drama",
+    "viewedAt": "2026-06-28T11:30:29.531Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "751d3fe4-a0aa-46b2-9fa9-0a80a5d9d3d6",
+    "productName": "The Grand Tour",
+    "price": "2016",
+    "category": [
+      "Adventure",
+      "Comedy",
+      "Sport"
+    ],
+    "viewedAt": "2026-06-28T11:37:19.039Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOGQ1M2Y4ZjMtNWRiNS00YTUzLTkxMzEtZjgzYmZjMGVlMzY5XkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "751d3fe4-a0aa-46b2-9fa9-0a80a5d9d3d6",
+    "productName": "The Grand Tour",
+    "category": "Adventure, Comedy, Sport",
+    "viewedAt": "2026-06-28T11:37:20.524Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOGQ1M2Y4ZjMtNWRiNS00YTUzLTkxMzEtZjgzYmZjMGVlMzY5XkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "eb5b9d94-6860-4181-9c9a-c2cd33fa9387",
+    "productName": "Little Brother",
+    "category": "Comedy",
+    "viewedAt": "2026-06-28T11:37:23.958Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOWM1NTExYzEtNzY4YS00MjkzLTkxMzctOWJmMzM3ZDI0ZmIwXkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "60f77347-7350-44c0-b582-f8287073ab2a",
+    "productName": "Ready or Not",
+    "category": "Action, Comedy, Horror",
+    "viewedAt": "2026-06-28T11:37:28.119Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BMTViMDA4YjgtZDQ4NC00ZDk2LTg0MWItOTc4MTkwMmVkZWRmXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "d6633712-150e-4b79-a40b-61171ab29b88",
+    "productName": "Ready or Not 2: Here I Come",
+    "category": "Comedy, Horror, Thriller",
+    "viewedAt": "2026-06-28T11:37:31.973Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BZTM3N2EyMTEtNDhkMi00ZjNiLWI0MWUtOGViMjExODY3YTJhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "9b543b86-031b-4135-8ec2-2bcbdf47dd36",
+    "productName": "Now You See Me 2",
+    "category": "Action, Adventure, Comedy",
+    "viewedAt": "2026-06-28T11:37:39.449Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "5ad90b21-7e51-4b7e-8238-e1ad6b5ff521",
+    "productName": "Project Hail Mary",
+    "category": "Adventure, Comedy, Drama",
+    "viewedAt": "2026-06-28T11:37:48.040Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
   }
 ]

@@ -32,7 +32,7 @@ interface MovieLink {
   quality: string;
   size: string;
   encode: string;
-  website?: string;  // Add this line
+  website?: string;
   optionValues: { [key: string]: string };
 }
 
@@ -55,6 +55,8 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   const [showOptionDialog, setShowOptionDialog] = useState(false);
   const [newOptionName, setNewOptionName] = useState('');
   const [newOptionValues, setNewOptionValues] = useState('');
+  
+  // State Fields
   const [selectedGenres, setSelectedGenres] = useState<string[]>(initialData?.genres || []);
   const [imdb, setImdb] = useState(initialData?.imdb || '');
   const [title, setTitle] = useState(initialData?.title || '');
@@ -63,33 +65,17 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   const [director, setDirector] = useState(initialData?.director || '');
   const [duration, setDuration] = useState(initialData?.duration || '');
   const [language, setLanguage] = useState(initialData?.language || '');
-  const [type, setType] = useState<string>(initialData?.type || 'Movie'); // مقدار پیش‌فرض "Movie"
-  const [imdbId, setImdbId] = useState(initialData?.imdb_id || '');
+  const [type, setType] = useState<string>(initialData?.type || 'Movie');
+  const [imdbId, setImdbId] = useState(initialData?.imdbId || '');
 
   useEffect(() => {
     if (initialData) {
-      const initialImages = initialData.movie_images?.map((img: any) => ({
-        file: img.url,
-        label: img.label || '',
-      })) || [];
-      setImages(initialImages);
-
-      const initialLinks = initialData.movie_links?.map((link: any) => ({
-        title: link.title,
-        url: link.url,
-        quality: link.quality || '',
-        size: link.size || '',
-        encode: link.encode || '',
-        website: link.website || '', // Add this line
-        optionValues: link.option_values || {},
-      })) || [];
-      setLinks(initialLinks);
-
+      setImages(initialData.movie_images?.map((img: any) => ({ file: img.url, label: img.label || '' })) || []);
+      setLinks(initialData.movie_links?.map((link: any) => ({ ...link, optionValues: link.option_values || {} })) || []);
       setCast(initialData.cast || []);
       setOptions(initialData.movie_options || []);
       setMetaTags(initialData.meta_tags || [{ key: '', value: '' }]);
       setSelectedGenres(initialData.genres || []);
-
       setTitle(initialData.title || '');
       setDescription(initialData.description || '');
       setRelease(initialData.release || '');
@@ -97,136 +83,72 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
       setDuration(initialData.duration || '');
       setLanguage(initialData.language || '');
       setImdb(initialData.imdb || '');
-      setType(initialData.type || 'Movie'); // تنظیم مقدار اولیه type
+      setType(initialData.type || 'Movie');
       setImdbId(initialData.imdbId || '');
-      console.log('Initial data loaded:', initialData);
     }
   }, [initialData]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
+    const formData = new FormData(e.currentTarget);
     formData.append('cast', JSON.stringify(cast));
     formData.append('links', JSON.stringify(links));
     formData.append('options', JSON.stringify(options));
     formData.append('meta_tags', JSON.stringify(metaTags));
     formData.append('genres', JSON.stringify(selectedGenres));
-    formData.append('type', type); // اضافه کردن type به formData
+    formData.append('type', type);
 
-    console.log('Images before upload:', images);
     const uploadedImages = await Promise.all(
       images.map(async (img) => {
         const url = typeof img.file === 'string' ? img.file : await uploadImageToPublic(img.file as File);
-        console.log('Uploaded URL:', url);
         return { label: img.label, url };
       })
     );
-    console.log('Uploaded images:', uploadedImages);
     formData.append('images', JSON.stringify(uploadedImages));
-
     await onSubmit(formData);
   };
 
-  const handleMovieSelect = (movieData: any) => {
-    console.log('Selected movie:', movieData);
-    setDirector(movieData.director || '');
-    setTitle(movieData.title || '');
-    setRelease(movieData.release || '');
-    setDescription(movieData.description || '');
-    setSelectedGenres(movieData.genres || []);
-    setDuration(movieData.duration || '');
-    setLanguage(movieData.language || '');
-    setImdb(movieData.imdb || '');
-    setType(movieData.type || 'Movie'); // تنظیم type از داده‌های انتخاب‌شده
-    setImdbId(movieData.imdbId || '');
-  };
+const handleMovieSelect = (movieData: any) => {
+  setTitle(movieData.title || '');
+  setRelease(movieData.release || '');
+  setDescription(movieData.description || '');
+  setSelectedGenres(movieData.genres || []);
+  setDuration(movieData.duration || '');
+  setLanguage(movieData.language || '');
+  setImdb(movieData.imdb || '');
+  setImdbId(movieData.imdbId || '');
+  setType(movieData.type || 'Movie');
+  setDirector(movieData.director || '');
 
-  const handleAddCast = () => {
-    setCast([...cast, { name: '', role: '' }]);
-  };
+  // تبدیل بازیگران (Actors) رشته‌ای به فرمت CastMember
+  if (movieData.actors) {
+    const castArray = movieData.actors.split(', ').map((name: string) => ({
+      name: name,
+      role: 'Actor' // چون API فقط نام را می‌دهد
+    }));
+    setCast(castArray);
+  }
 
-  const handleCastChange = (index: number, field: 'name' | 'role', value: string) => {
-    const newCast = [...cast];
-    newCast[index][field] = value;
-    setCast(newCast);
-  };
-
-  const removeCast = (index: number) => {
-    setCast(cast.filter((_, i) => i !== index));
-  };
-
-  const handleAddLink = () => {
-    setLinks([...links, { title: '', url: '', quality: '', size: '', encode: '', website: '', optionValues: {} }]);
-  };
-
-  const handleLinkChange = (index: number, field: string, value: string) => {
-    const newLinks = [...links];
-    newLinks[index] = { ...newLinks[index], [field]: value };
-    setLinks(newLinks);
-  };
-
-  const removeLink = (index: number) => {
-    setLinks(links.filter((_, i) => i !== index));
-  };
-
-  const handleLinkOptionChange = (linkIndex: number, optionName: string, value: string) => {
-    const newLinks = [...links];
-    newLinks[linkIndex] = {
-      ...newLinks[linkIndex],
-      optionValues: {
-        ...newLinks[linkIndex].optionValues,
-        [optionName]: value,
-      },
-    };
-    setLinks(newLinks);
-  };
-
-  const handleAddOption = () => {
-    if (!newOptionName || !newOptionValues) return;
-    const values = newOptionValues.split(',').map((v) => v.trim()).filter((v) => v);
-    setOptions([...options, { name: newOptionName, values }]);
-    setShowOptionDialog(false);
-    setNewOptionName('');
-    setNewOptionValues('');
-  };
-
-  const removeOption = (index: number) => {
-    setOptions(options.filter((_, i) => i !== index));
-  };
-
-  const addMetaTag = () => {
-    setMetaTags([...metaTags, { key: '', value: '' }]);
-  };
-
-  const removeMetaTag = (index: number) => {
-    setMetaTags(metaTags.filter((_, i) => i !== index));
-  };
-
-  const updateMetaTag = (index: number, field: 'key' | 'value', value: string) => {
-    const newMetaTags = [...metaTags];
-    newMetaTags[index][field] = value;
-    setMetaTags(newMetaTags);
-  };
-
-  const handleImageUpload = async (file: File, label: string) => {
-    if (images.length >= 4) return;
-    try {
-      await validateImageFile(file);
-      setImages([...images, { file, label }]);
-    } catch (error) {
-      console.error('Image validation failed:', error);
-    }
-  };
-
-  const handleGenreChange = (genre: string) => {
-    if (selectedGenres.includes(genre)) {
-      setSelectedGenres(selectedGenres.filter((g) => g !== genre));
-    } else {
-      setSelectedGenres([...selectedGenres, genre]);
-    }
-  };
+  // اضافه کردن پوستر به لیست تصاویر
+  if (movieData.image) {
+    setImages([{ file: movieData.image, label: 'Poster' }]);
+  }
+};
+  // ... سایر توابع (handleAddCast, handleLinkChange, etc.) بدون تغییر باقی می‌مانند
+  const handleAddCast = () => setCast([...cast, { name: '', role: '' }]);
+  const handleCastChange = (index: number, field: 'name' | 'role', value: string) => { const newCast = [...cast]; newCast[index][field] = value; setCast(newCast); };
+  const removeCast = (index: number) => setCast(cast.filter((_, i) => i !== index));
+  const handleAddLink = () => setLinks([...links, { title: '', url: '', quality: '', size: '', encode: '', website: '', optionValues: {} }]);
+  const handleLinkChange = (index: number, field: string, value: string) => { const newLinks = [...links]; newLinks[index] = { ...newLinks[index], [field]: value }; setLinks(newLinks); };
+  const removeLink = (index: number) => setLinks(links.filter((_, i) => i !== index));
+  const handleLinkOptionChange = (linkIndex: number, optionName: string, value: string) => { const newLinks = [...links]; newLinks[linkIndex] = { ...newLinks[linkIndex], optionValues: { ...newLinks[linkIndex].optionValues, [optionName]: value } }; setLinks(newLinks); };
+  const handleAddOption = () => { if (!newOptionName || !newOptionValues) return; const values = newOptionValues.split(',').map((v) => v.trim()).filter((v) => v); setOptions([...options, { name: newOptionName, values }]); setShowOptionDialog(false); setNewOptionName(''); setNewOptionValues(''); };
+  const removeOption = (index: number) => setOptions(options.filter((_, i) => i !== index));
+  const addMetaTag = () => setMetaTags([...metaTags, { key: '', value: '' }]);
+  const removeMetaTag = (index: number) => setMetaTags(metaTags.filter((_, i) => i !== index));
+  const updateMetaTag = (index: number, field: 'key' | 'value', value: string) => { const newMetaTags = [...metaTags]; newMetaTags[index][field] = value; setMetaTags(newMetaTags); };
+  const handleImageUpload = async (file: File, label: string) => { if (images.length >= 4) return; try { await validateImageFile(file); setImages([...images, { file, label }]); } catch (e) { console.error(e); } };
+  const handleGenreChange = (genre: string) => setSelectedGenres(selectedGenres.includes(genre) ? selectedGenres.filter((g) => g !== genre) : [...selectedGenres, genre]);
 
   const renderLinkOptions = (link: MovieLink, linkIndex: number) => (
     <div className="space-y-2">
@@ -235,20 +157,9 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         {options.map((option) => (
           <div key={option.name} className="w-[200px]">
             <Label>{option.name}</Label>
-            <Select
-              value={link.optionValues[option.name] || ''}
-              onValueChange={(value) => handleLinkOptionChange(linkIndex, option.name, value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={`Select ${option.name}`} />
-              </SelectTrigger>
-              <SelectContent>
-                {option.values.map((value) => (
-                  <SelectItem key={value} value={value}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+            <Select value={link.optionValues[option.name] || ''} onValueChange={(value) => handleLinkOptionChange(linkIndex, option.name, value)}>
+              <SelectTrigger><SelectValue placeholder={`Select ${option.name}`} /></SelectTrigger>
+              <SelectContent>{option.values.map((value) => <SelectItem key={value} value={value}>{value}</SelectItem>)}</SelectContent>
             </Select>
           </div>
         ))}
