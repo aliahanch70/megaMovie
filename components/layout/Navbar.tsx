@@ -12,6 +12,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import ToggleNav from '@/components/ToggleNav';
 
+interface Profile {
+  role: string;
+}
+
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -30,7 +34,7 @@ export default function Navbar() {
           .from('profiles')
           .select('role')
           .eq('id', user.id)
-          .single();
+          .single<Profile>();
         
         setIsAdmin(profile?.role === 'admin');
       } else {
