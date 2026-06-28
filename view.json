@@ -7266,5 +7266,21 @@
     "viewedAt": "2026-06-28T11:41:17.224Z",
     "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "bab5ff68-26b7-45f7-86d9-0c5982432fd9",
+    "productName": "Mr. Robot",
+    "category": "Crime, Drama, Thriller",
+    "viewedAt": "2026-06-28T12:38:36.521Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOTg4NTBiZDAtZTc0YS00NzZlLTg4Y2ItNGQ3M2ZlMDM5MWQzXkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "81.19.216.6"
+  },
+  {
+    "productId": "751d3fe4-a0aa-46b2-9fa9-0a80a5d9d3d6",
+    "productName": "The Grand Tour",
+    "category": "Adventure, Comedy, Sport",
+    "viewedAt": "2026-06-28T13:19:44.001Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BOGQ1M2Y4ZjMtNWRiNS00YTUzLTkxMzEtZjgzYmZjMGVlMzY5XkEyXkFqcGc@._V1_SX300.jpg",
+    "ipAddress": "81.19.216.6"
   }
 ]
