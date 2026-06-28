@@ -23,27 +23,26 @@ function AdminMoviesContent() {
       console.log('Form data:', { ...Object.fromEntries(formData), imdbId: formData.get('imdbId') });
       const { data, error } = await supabase
         .from('movies')
-        .insert([
-          {
-            title: formData.get('title'),
-            description: formData.get('description'),
-            release: parseInt(formData.get('release') as string),
-            genres: JSON.parse(formData.get('genres') as string),
-            director: formData.get('director'),
-            duration: formData.get('duration') ? parseInt(formData.get('duration') as string) : null,
-            imdb: imdb,
-            language: formData.get('language'),
-            type: formData.get('type'), // اضافه کردن type
-            created_by: user.id,
-            imdb_id: formData.get('imdbId'), // اضافه کردن imdb_id
-          },
-        ])
+        .insert({
+          title: formData.get('title') as string,
+          description: formData.get('description') as string,
+          release: parseInt(formData.get('release') as string),
+          genres: JSON.parse(formData.get('genres') as string),
+          director: formData.get('director') as string,
+          duration: formData.get('duration') ? parseInt(formData.get('duration') as string) : null,
+          imdb: imdb,
+          language: formData.get('language') as string,
+          type: formData.get('type') as string,
+          created_by: user.id,
+          imdb_id: formData.get('imdbId') as string,
+        } as any)
         .select()
         .single();
 
       if (error) throw error;
+      if (!data) throw new Error('No data returned');
 
-      const movieId = data.id;
+      const movieId = (data as any).id;
 
       const cast = JSON.parse(formData.get('cast') as string);
       if (cast.length > 0) {

@@ -12,6 +12,7 @@ import { Pencil } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import VideoStories from '@/components/story/VideoStories2';
 import VideoUpload from '@/components/VideoUpload';
+import FavoriteButton from '@/components/FavoriteButton';
 
 interface ProductPageClientProps {
   id: string;
@@ -54,30 +55,32 @@ export default function ProductPageClient({
 
   return (
     <div className="p-4">
-      {isAdmin && (
-        <>
-          <Link href={`/admin/products/edit/${id}`}>
-            <Button variant="outline" size="icon" className="mb-4">
-              <Pencil className="h-4 w-4" />
+      <div className="flex items-center gap-2 mb-4">
+        {isAdmin && (
+          <>
+            <Link href={`/admin/products/edit/${id}`}>
+              <Button variant="outline" size="icon">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              onClick={() => setUploadOpen(true)}
+            >
+              آپلود ویدیو
             </Button>
-          </Link>
-          <Button
-            variant="outline"
-            onClick={() => setUploadOpen(true)}
-            className="mb-4 ml-2"
-          >
-            آپلود ویدیو
-          </Button>
-        </>
-      )}
+          </>
+        )}
 
-      <Button
-        variant="outline"
-        onClick={() => setOpen(true)}
-        className="mb-4 ml-2"
-      >
-        نمایش ویدیوهای کوتاه
-      </Button>
+        <Button
+          variant="outline"
+          onClick={() => setOpen(true)}
+        >
+          نمایش ویدیوهای کوتاه
+        </Button>
+
+        <FavoriteButton movieId={id} variant="outline" showText />
+      </div>
       
 
       <ProductDetails id={id} initialData={product} />

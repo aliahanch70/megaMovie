@@ -16,6 +16,7 @@ import ToggleNav from '@/components/ToggleNav';
 export default function Navbar() {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const supabase = createClient();
   const { t, isRTL, language, setLanguage } = useLanguage();
 
@@ -24,6 +25,7 @@ export default function Navbar() {
     const checkAdminStatus = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
+        setIsLoggedIn(true);
         const { data: profile } = await supabase
           .from('profiles')
           .select('role')
@@ -31,6 +33,8 @@ export default function Navbar() {
           .single();
         
         setIsAdmin(profile?.role === 'admin');
+      } else {
+        setIsLoggedIn(false);
       }
     };
 
@@ -62,15 +66,15 @@ export default function Navbar() {
               <NavLink href="/movie/listing" icon={Store} >
                 {t('nav.movie')}
               </NavLink>
+              {isLoggedIn && (
+                <NavLink href="/dashboard" icon={Activity}>
+                  {t('nav.dashboard')}
+                </NavLink>
+              )}
               {isAdmin && (
-                <>
-                  <NavLink href="/dashboard" icon={Activity}>
-                    {t('nav.dashboard')}
-                  </NavLink>
-                  <NavLink href="/admin" icon={Shield}>
-                    {t('nav.admin')}
-                  </NavLink>
-                </>
+                <NavLink href="/admin" icon={Shield}>
+                  {t('nav.admin')}
+                </NavLink>
               )}
             </div>
           </div>

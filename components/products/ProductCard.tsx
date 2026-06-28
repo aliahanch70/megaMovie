@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
+import FavoriteButton from '@/components/FavoriteButton';
 
 
 export default function ProductCard( { product }: { product: any }) {
@@ -16,8 +17,9 @@ export default function ProductCard( { product }: { product: any }) {
                     draggable={false}
                     style={{ userSelect: 'none', pointerEvents: 'none' }}
                   />
-
-                  
+                  <div className="absolute top-2 right-2 z-10">
+                    <FavoriteButton movieId={product.id} size="sm" variant="ghost" />
+                  </div>
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold truncate text-white text-xs md:text-lg">

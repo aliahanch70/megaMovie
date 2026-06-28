@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, X, Link2, ChevronDown, ChevronUp, Loader2, ClipboardList } from 'lucide-react';
+import { Plus, X, Link2, ChevronDown, ChevronUp, Loader2, ClipboardList, RefreshCw, Save, Clock } from 'lucide-react';
 import ImageUpload from './ImageUpload';
 import { validateImageFile } from '@/lib/utils/validation';
 import { uploadImageToPublic } from '@/lib/utils/uploadImage';
@@ -23,6 +23,12 @@ interface MovieFormProps {
 }
 
 interface CastMember { name: string; role: string; }
+
+interface MovieDataFromDB {
+  id: string;
+  title: string;
+  release: number;
+}
 
 interface MovieLink {
   title: string; url: string; quality: string; size: string; encode: string;
@@ -130,7 +136,7 @@ function SeasonGroup({ label, indices, links, type, options, fetchingSizeIndex, 
   onRemove: (i: number) => void;
   onOptionChange: (li: number, name: string, v: string) => void;
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div className="rounded-xl border border-white/10 overflow-hidden">
       <button type="button" onClick={() => setOpen((v) => !v)}
@@ -168,8 +174,14 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   const [bulkText, setBulkText] = useState('');
   const [showBulk, setShowBulk] = useState(false);
   const [bulkDupWarning, setBulkDupWarning] = useState<{ newOnes: MovieLink[]; dupes: MovieLink[] } | null>(null);
+  const [refreshReport, setRefreshReport] = useState<{ updated: string[]; estimated: string[]; failed: string[] } | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const [dupMovieWarning, setDupMovieWarning] = useState<{ msg: string; existingId: string } | null>(null);
   const [pendingSubmitData, setPendingSubmitData] = useState<FormData | null>(null);
+  const [draftTime, setDraftTime] = useState<string | null>(null);
+  const [showDraftDialog, setShowDraftDialog] = useState(false);
+  const [draftData, setDraftData] = useState<any>(null);
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>(initialData?.genres || []);
   const [imdb, setImdb] = useState(initialData?.imdb || '');
@@ -183,6 +195,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   const [imdbId, setImdbId] = useState(initialData?.imdbId || '');
 
   const linksEndRef = useRef<HTMLDivElement>(null);
+  const draftKey = initialData?.id ? `draft_movie_${initialData.id}` : 'draft_movie_new';
 
   useEffect(() => {
     if (initialData) {
@@ -202,7 +215,24 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
       setType(initialData.type || 'Movie');
       setImdbId(initialData.imdbId || '');
     }
-  }, [initialData]);
+    const saved = localStorage.getItem(draftKey);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setDraftTime(new Date(parsed.timestamp).toLocaleString('fa-IR'));
+    }
+  }, [initialData, draftKey]);
+
+  useEffect(() => {
+    const saveDraft = () => {
+      if (!title && !description && links.length === 0) return;
+      const draft = { title, description, release, director, duration, language, imdb, imdbId, type, selectedGenres, cast, links, options, metaTags, timestamp: Date.now() };
+      localStorage.setItem(draftKey, JSON.stringify(draft));
+      setDraftTime(new Date().toLocaleString('fa-IR'));
+    };
+    if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+    autoSaveTimerRef.current = setTimeout(saveDraft, 10000);
+    return () => { if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current); };
+  }, [title, description, release, director, duration, language, imdb, imdbId, type, selectedGenres, cast, links, options, metaTags, draftKey]);
 
   const buildFormData = async (form: HTMLFormElement): Promise<FormData> => {
     const formData = new FormData(form);
@@ -234,7 +264,7 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         .select('id, title, release')
         .ilike('title', title.trim())
         .eq('release', parseInt(release))
-        .maybeSingle();
+        .maybeSingle<MovieDataFromDB>();
 
       if (data) {
         const fd = await buildFormData(e.currentTarget);
@@ -249,20 +279,20 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   };
 
   const handleMovieSelect = (movieData: any) => {
-    setTitle(movieData.title || '');
-    setRelease(movieData.release || '');
-    setDescription(movieData.description || '');
-    setSelectedGenres(movieData.genres || []);
-    setDuration(movieData.duration || '');
-    setLanguage(movieData.language || '');
-    setImdb(movieData.imdb || '');
-    setImdbId(movieData.imdbId || '');
-    setType(movieData.type || 'Movie');
-    setDirector(movieData.director || '');
-    if (movieData.actors) {
+    setTitle(movieData?.title || '');
+    setRelease(movieData?.release || '');
+    setDescription(movieData?.description || '');
+    setSelectedGenres(movieData?.genres || []);
+    setDuration(movieData?.duration || '');
+    setLanguage(movieData?.language || '');
+    setImdb(movieData?.imdb || '');
+    setImdbId(movieData?.imdbId || '');
+    setType(movieData?.type || 'Movie');
+    setDirector(movieData?.director || '');
+    if (movieData?.actors) {
       setCast(movieData.actors.split(', ').map((name: string) => ({ name, role: 'Actor' })));
     }
-    if (movieData.image) setImages([{ file: movieData.image, label: 'Poster' }]);
+    if (movieData?.image) setImages([{ file: movieData.image, label: 'Poster' }]);
   };
 
   const parseLink = (url: string): Partial<MovieLink> => {
@@ -319,9 +349,75 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
     return null;
   };
 
+  const sizeToMB = (s: string): number | null => {
+    if (!s) return null;
+    const n = parseFloat(s.replace(/[^\d.]/g, ''));
+    return isNaN(n) ? null : (/gb/i.test(s) ? n * 1024 : n);
+  };
+  const mbToSize = (mb: number): string => mb >= 1024 ? `${(mb / 1024).toFixed(2)} GB` : `${Math.round(mb)} MB`;
+
   const handleAddLink = () => {
     setLinks((prev) => [...prev, { title: '', url: '', quality: '', size: '', encode: '', website: '', optionValues: {}, season: '', episode: '', subtitle: false, subtitleType: '' }]);
     setTimeout(() => linksEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+  };
+
+  const handleRefreshAllSizes = async () => {
+    setRefreshing(true);
+    const updated: string[] = [], estimated: string[] = [], failed: string[] = [];
+    const updatedLinks = [...links];
+
+    await Promise.all(updatedLinks.map(async (link, i) => {
+      if (!link.url) return;
+      try {
+        const res = await fetch(`/api/file-size?url=${encodeURIComponent(link.url)}`);
+        const { size } = await res.json();
+        if (size) {
+          updatedLinks[i] = { ...updatedLinks[i], size };
+          const label = link.episode ? `S${link.season}E${link.episode}` : link.title || `Link ${i+1}`;
+          updated.push(label);
+        } else {
+          const label = link.episode ? `S${link.season}E${link.episode}` : link.title || `Link ${i+1}`;
+          failed.push(label);
+        }
+      } catch {
+        const label = link.episode ? `S${link.season}E${link.episode}` : link.title || `Link ${i+1}`;
+        failed.push(label);
+      }
+    }));
+
+    updatedLinks.forEach((link, i) => {
+      if (link.size) return;
+      const ep = parseInt(link.episode || '0');
+      const sameGroup = updatedLinks.filter((l, j) =>
+        j !== i && l.size && l.season === link.season && l.quality === link.quality
+      );
+      if (sameGroup.length === 0) return;
+
+      const sorted = sameGroup
+        .map((l) => ({ ep: parseInt(l.episode || '0'), mb: sizeToMB(l.size) }))
+        .filter((x) => x.mb !== null)
+        .sort((a, b) => a.ep - b.ep);
+
+      const prev = sorted.filter((x) => x.ep < ep).pop();
+      const next = sorted.find((x) => x.ep > ep);
+      let avgMB: number | null = null;
+      if (prev && next) avgMB = ((prev.mb as number) + (next.mb as number)) / 2;
+      else if (prev) avgMB = prev.mb;
+      else if (next) avgMB = next.mb;
+      else avgMB = sorted.reduce((s, x) => s + (x.mb as number), 0) / sorted.length;
+
+      if (avgMB) {
+        updatedLinks[i] = { ...updatedLinks[i], size: `~${mbToSize(avgMB)}` };
+        const label = link.episode ? `S${link.season}E${link.episode}` : link.title || `Link ${i+1}`;
+        estimated.push(label);
+        const fi = failed.indexOf(label);
+        if (fi !== -1) failed.splice(fi, 1);
+      }
+    });
+
+    setLinks(updatedLinks);
+    setRefreshing(false);
+    setRefreshReport({ updated, estimated, failed });
   };
 
   const parseBulkLinks = (text: string): MovieLink[] => {
@@ -407,11 +503,54 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
   };
   const handleGenreChange = (g: string) => setSelectedGenres(selectedGenres.includes(g) ? selectedGenres.filter((x) => x !== g) : [...selectedGenres, g]);
 
+  const loadDraft = () => {
+    const saved = localStorage.getItem(draftKey);
+    if (!saved) return;
+    const parsed = JSON.parse(saved);
+    setDraftData(parsed);
+    setShowDraftDialog(true);
+  };
+
+  const applyDraft = () => {
+    if (!draftData) return;
+    setTitle(draftData.title || '');
+    setDescription(draftData.description || '');
+    setRelease(draftData.release || '');
+    setDirector(draftData.director || '');
+    setDuration(draftData.duration || '');
+    setLanguage(draftData.language || '');
+    setImdb(draftData.imdb || '');
+    setImdbId(draftData.imdbId || '');
+    setType(draftData.type || 'Movie');
+    setSelectedGenres(draftData.selectedGenres || []);
+    setCast(draftData.cast || []);
+    setLinks(draftData.links || []);
+    setOptions(draftData.options || []);
+    setMetaTags(draftData.metaTags || [{ key: '', value: '' }]);
+    setShowDraftDialog(false);
+    setDraftData(null);
+  };
+
+  const clearDraft = () => {
+    localStorage.removeItem(draftKey);
+    setDraftTime(null);
+    setShowDraftDialog(false);
+    setDraftData(null);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="relative">
       {/* Sticky Save Bar */}
       <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-3 bg-neutral-950/90 backdrop-blur border-b border-white/10">
-        <span className="text-sm text-gray-400">{title || 'New Movie'}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-400">{title || 'New Movie'}</span>
+          {draftTime && (
+            <button type="button" onClick={loadDraft} className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs transition-colors">
+              <Clock className="w-3 h-3" />
+              Draft: {draftTime}
+            </button>
+          )}
+        </div>
         <Button type="submit" disabled={loading || selectedGenres.length === 0} size="sm">
           {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</> : 'Save'}
         </Button>
@@ -507,11 +646,15 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         {/* ── Right: Links (sticky panel) ── */}
         <div className="flex flex-col lg:sticky lg:top-[49px] lg:h-[calc(100vh-49px)]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
-            <span className="text-sm font-medium">Download Links <span className="text-gray-400">({links.length})</span></span>
+            <span className="text-sm font-medium"> Links <span className="text-gray-400">({links.length})</span></span>
             <div className="flex gap-2">
               <Button type="button" variant="outline" size="sm" onClick={() => setShowOptionDialog(true)}><Plus className="w-3.5 h-3.5 mr-1" />Option</Button>
               <Button type="button" variant="outline" size="sm" onClick={() => setShowBulk((v) => !v)}><ClipboardList className="w-3.5 h-3.5 mr-1" />Bulk</Button>
-              <Button type="button" size="sm" onClick={handleAddLink}><Plus className="w-3.5 h-3.5 mr-1" />Add Link</Button>
+              <Button type="button" variant="outline" size="sm" onClick={handleRefreshAllSizes} disabled={refreshing || links.length === 0}>
+                {refreshing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 mr-1" />}
+                {refreshing ? '' : 'Refresh'}
+              </Button>
+              <Button type="button" size="sm" onClick={handleAddLink}><Plus className="w-3.5 h-3.5 mr-1" />Add</Button>
             </div>
           </div>
 
@@ -599,6 +742,46 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* Refresh Sizes Report */}
+      <AlertDialog open={!!refreshReport} onOpenChange={(o) => { if (!o) setRefreshReport(null); }}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Size Refresh Report</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-3 text-sm">
+                {refreshReport && refreshReport.updated.length > 0 && (
+                  <div>
+                    <p className="text-green-400 font-medium mb-1">✅ Updated ({refreshReport.updated.length})</p>
+                    <div className="max-h-28 overflow-y-auto space-y-0.5">
+                      {refreshReport.updated.map((l, i) => <div key={i} className="text-xs font-mono bg-white/5 px-2 py-0.5 rounded">{l}</div>)}
+                    </div>
+                  </div>
+                )}
+                {refreshReport && refreshReport.estimated.length > 0 && (
+                  <div>
+                    <p className="text-yellow-400 font-medium mb-1">⚡ Estimated ({refreshReport.estimated.length})</p>
+                    <div className="max-h-28 overflow-y-auto space-y-0.5">
+                      {refreshReport.estimated.map((l, i) => <div key={i} className="text-xs font-mono bg-white/5 px-2 py-0.5 rounded">~{l}</div>)}
+                    </div>
+                  </div>
+                )}
+                {refreshReport && refreshReport.failed.length > 0 && (
+                  <div>
+                    <p className="text-red-400 font-medium mb-1">❌ Failed ({refreshReport.failed.length})</p>
+                    <div className="max-h-28 overflow-y-auto space-y-0.5">
+                      {refreshReport.failed.map((l, i) => <div key={i} className="text-xs font-mono bg-white/5 px-2 py-0.5 rounded">{l}</div>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setRefreshReport(null)}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Bulk Duplicate Warning */}
       <AlertDialog open={!!bulkDupWarning} onOpenChange={(o) => { if (!o) setBulkDupWarning(null); }}>
         <AlertDialogContent>
@@ -656,6 +839,39 @@ export default function MovieForm({ onSubmit, loading, initialData }: MovieFormP
               if (pendingSubmitData) await onSubmit(pendingSubmitData);
               setDupMovieWarning(null); setPendingSubmitData(null);
             }}>Save Anyway</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Draft Preview Dialog */}
+      <AlertDialog open={showDraftDialog} onOpenChange={setShowDraftDialog}>
+        <AlertDialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <AlertDialogHeader>
+            <AlertDialogTitle>📝 بازیابی Draft</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-4 text-sm pt-2">
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div><strong className="text-gray-400">Current Title:</strong> <span className="text-white">{title || '—'}</span></div>
+                  <div><strong className="text-gray-400">Draft Title:</strong> <span className="text-amber-400">{draftData?.title || '—'}</span></div>
+                  <div><strong className="text-gray-400">Current Release:</strong> <span className="text-white">{release || '—'}</span></div>
+                  <div><strong className="text-gray-400">Draft Release:</strong> <span className="text-amber-400">{draftData?.release || '—'}</span></div>
+                  <div><strong className="text-gray-400">Current Type:</strong> <span className="text-white">{type}</span></div>
+                  <div><strong className="text-gray-400">Draft Type:</strong> <span className="text-amber-400">{draftData?.type || 'Movie'}</span></div>
+                  <div><strong className="text-gray-400">Current Links:</strong> <span className="text-white">{links.length}</span></div>
+                  <div><strong className="text-gray-400">Draft Links:</strong> <span className="text-amber-400">{draftData?.links?.length || 0}</span></div>
+                  <div><strong className="text-gray-400">Current Cast:</strong> <span className="text-white">{cast.length}</span></div>
+                  <div><strong className="text-gray-400">Draft Cast:</strong> <span className="text-amber-400">{draftData?.cast?.length || 0}</span></div>
+                  <div><strong className="text-gray-400">Current Genres:</strong> <span className="text-white">{selectedGenres.length}</span></div>
+                  <div><strong className="text-gray-400">Draft Genres:</strong> <span className="text-amber-400">{draftData?.selectedGenres?.length || 0}</span></div>
+                </div>
+                <p className="text-amber-400 text-xs">⚠️ Applying draft will replace all current data with saved draft.</p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="outline" size="sm" onClick={clearDraft}>Delete Draft</Button>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={applyDraft}>Apply Draft</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
