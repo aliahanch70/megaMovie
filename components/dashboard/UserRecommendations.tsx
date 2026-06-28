@@ -17,6 +17,10 @@ interface Movie {
   movie_images?: { url: string; label: string }[];
 }
 
+interface Favorite {
+  movie_id: string;
+}
+
 interface ViewHistory {
   productId: string;
   viewedAt: string;
@@ -38,7 +42,8 @@ export default function UserRecommendations({ userId }: { userId: string }) {
         const { data: favData } = await supabase
           .from('favorites')
           .select('movie_id')
-          .eq('user_id', userId);
+          .eq('user_id', userId)
+          .returns<Favorite[]>();
 
         if (favData && favData.length > 0) {
           const { data: favMovies } = await supabase
@@ -57,7 +62,7 @@ export default function UserRecommendations({ userId }: { userId: string }) {
           .sort((a, b) => new Date(b.viewedAt).getTime() - new Date(a.viewedAt).getTime())
           .slice(0, 10);
 
-        const viewedIds = [...new Set(userViews.map(v => v.productId))];
+        const viewedIds = Array.from(new Set(userViews.map(v => v.productId)));
         
         if (viewedIds.length > 0) {
           const { data: viewedMovies } = await supabase
