@@ -11,10 +11,13 @@ export default function ProductCard( { product }: { product: any }) {
                     src={product.movie_images[0]?.url}
                     alt={product.title}
                     fill
+                    sizes="(max-width: 768px) 38vw, 250px"
                     className="object-cover "
                     draggable={false}
                     style={{ userSelect: 'none', pointerEvents: 'none' }}
                   />
+
+                  
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold truncate text-white text-xs md:text-lg">

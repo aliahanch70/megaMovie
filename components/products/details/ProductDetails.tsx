@@ -36,7 +36,7 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             language,
             created_at,
             movie_images (url, label, order),
-            movie_links (title, url, quality, size, encode,website, option_values),
+            movie_links (title, url, quality, size, encode, website, option_values, season, episode, subtitle, subtitle_type),
             movie_specifications (label, value),
             movie_options (name, values),
             profiles (full_name),
@@ -104,7 +104,7 @@ export default function ProductDetails({ id, initialData }: ProductDetailsProps)
             {product.movie_links?.length > 0 && (
               <ProductLinks
                 links={product.movie_links}
-                options={product.movie_options || []}
+                type={product.type}
               />
             )}
           </div>

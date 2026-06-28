@@ -14,6 +14,10 @@ export interface MovieLink {
   encode: string;
   website: string;
   option_values: { [key: string]: string };
+  season?: string;
+  episode?: string;
+  subtitle?: boolean;
+  subtitle_type?: string;
 }
 
 export interface Movie {
@@ -49,7 +53,7 @@ export async function getProduct(id: string): Promise<Movie | null> {
         language,
         created_at,
         movie_images (url, label, order),
-        movie_links (title, url, quality, size, encode,website, option_values),
+        movie_links (title, url, quality, size, encode, website, option_values, season, episode, subtitle, subtitle_type),
         imdb,
         type,
         imdb_id
@@ -88,7 +92,7 @@ export async function getAllProductIds(): Promise<string[]> {
 
   try {
     const { data } = await supabase.from('movies').select('id');
-    return (data || []).map((movie) => movie.id);
+    return ((data || []) as { id: string }[]).map((movie) => movie.id);
   } catch (error) {
     console.error('خطا در دریافت IDهای فیلم‌ها:', error);
     return [];
@@ -107,7 +111,7 @@ export async function getRelatedProducts(
       .from('movies')
       .select('genres')
       .eq('id', movieId)
-      .single();
+      .single() as unknown as { data: { genres: string[] } | null; error: any };
 
     if (currentError) {
       console.error('خطا در گرفتن ژانرهای فیلم فعلی:', currentError);

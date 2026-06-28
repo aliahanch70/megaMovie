@@ -28,8 +28,12 @@ interface MovieData {
     quality: string;
     size: string;
     encode: string;
-    optionValues: { [key: string]: string }; // تغییر نام از option_values
-    website?: string; // اضافه کردن website
+    optionValues: { [key: string]: string };
+    website?: string;
+    season?: string;
+    episode?: string;
+    subtitle?: boolean;
+    subtitleType?: string;
   }[];
   imdb?: number | null; // اضافه کردن imdb
   type?: string; // اضافه کردن type
@@ -91,7 +95,11 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             size,
             encode,
             website,
-            option_values
+            option_values,
+            season,
+            episode,
+            subtitle,
+            subtitle_type
           `)
           .eq('movie_id', id);
 
@@ -102,7 +110,8 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             ...movieDataWithOptions,
             movie_links: linksData.map((link) => ({
               ...link,
-              optionValues: link.option_values || {}, // تطبیق نام
+              optionValues: link.option_values || {},
+              subtitleType: (link as any).subtitle_type || '',
             })),
           };
           setInitialData(combinedData);
@@ -170,7 +179,11 @@ export default function ProductEditPage({ params }: ProductEditPageProps) {
             size: link.size || '',
             encode: link.encode || '',
             option_values: link.optionValues || {},
-            website: link.website || '', // اضافه کردن website
+            website: link.website || '',
+            season: link.season || null,
+            episode: link.episode || null,
+            subtitle: link.subtitle || false,
+            subtitle_type: link.subtitleType || null,
           }))
         );
       }

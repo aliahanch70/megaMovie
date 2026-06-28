@@ -10,9 +10,26 @@ import Carousel from '@/components/Carousel';
 import Slideshow2 from '@/components/SlideShow2';
 import VideoStories from '@/components/story/videoStories3';
 import ColorExtractor from '@/components/ColorExtractor';
+import { createServerClient } from '@supabase/ssr';
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies });
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        // بخش setAll را در Server Component به صورت توخالی رها کنید
+        setAll(cookiesToSet) {
+          // در Server Components، تغییر کوکی مجاز نیست.
+          // این بخش را خالی بگذارید تا خطا رفع شود.
+        },
+      },
+    }
+  );
 
   const { data: slides } = await supabase
     .from('slides')
@@ -20,12 +37,12 @@ export default async function Home() {
     .order('order_number');
 
   // Fetch products for each category
-// 1. دریافت سال جاری
-const currentYear = new Date().getFullYear(); // مقدار این متغیر در حال حاضر 2025 خواهد بود
+  // 1. دریافت سال جاری
+  const currentYear = new Date().getFullYear(); // مقدار این متغیر در حال حاضر 2025 خواهد بود
 
 
   // 2. ساخت کوئری Supabase با فیلتر سال جاری
-  const {  data: offers, error } = await supabase
+  const { data: offers, error } = await supabase
     .from('movies') // نام جدول شما
     .select('id, title, release, genres, movie_images (url),imdb') // فیلدهایی که نیاز دارید
     .eq('release', currentYear) // فیلتر کردن: فقط فیلم‌هایی که فیلد release برابر با currentYear است
@@ -41,7 +58,7 @@ const currentYear = new Date().getFullYear(); // مقدار این متغیر د
     .order('created_at', { ascending: false })
     .limit(10);
 
-    const { data: movies } = await supabase
+  const { data: movies } = await supabase
     .from('movies')
     .select('id, title, release, genres, movie_images (url),imdb , type')  // Add category here
     .eq('type', 'Movie')
@@ -64,7 +81,7 @@ const currentYear = new Date().getFullYear(); // مقدار این متغیر د
     <div className="min-h-screen bg-black">
       <div className="container mx-auto py-8">
         <Slideshow2 slides={slides || []} />
-       
+
 
         {/* New movies */}
         <section className="mb-12">
@@ -89,13 +106,13 @@ const currentYear = new Date().getFullYear(); // مقدار این متغیر د
           {/* <h2 className="text-2xl font-semibold mb-4">Books</h2> */}
           {/* <ProductScroll products={books || []} /> */}
         </section>
-        
+
         {/* <VideoStories /> */}
 
-        
 
 
-        
+
+
       </div>
     </div>
   );

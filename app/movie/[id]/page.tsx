@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+import { createServerClient } from '@supabase/ssr'; // ۱. استفاده از SSR جدید
 
 import { getProduct, getRelatedProducts } from '@/lib/api/products';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -37,8 +38,23 @@ export async function generateMetadata(
 
 export default async function ProductDetailsPage({ params }: ProductDetailsPageProps) {
   const { id } = await params;
-  const supabase = createServerComponentClient({ cookies });
-  const productPromise = getProduct(id);
+const cookieStore = await cookies();
+
+  // ۳. ایجاد کلاینت SSR
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {
+          // در کامپوننت‌های سرور، نوشتن کوکی مجاز نیست. این تابع را خالی بگذارید.
+        },
+      },
+    }
+  );  const productPromise = getProduct(id);
   const relatedPromise = getRelatedProducts(id);
 
   let user = null;

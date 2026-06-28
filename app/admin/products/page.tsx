@@ -68,6 +68,10 @@ function AdminMoviesContent() {
             encode: link.encode,
             option_values: link.optionValues || {},
             website: link.website,
+            season: link.season || null,
+            episode: link.episode || null,
+            subtitle: link.subtitle || false,
+            subtitle_type: link.subtitleType || null,
           }))
         );
       }

@@ -48,49 +48,51 @@ export default function Slideshow2({ slides }: { slides: Slide[] }) {
   if (!slides.length) return null;
 
   return (
-    <div 
+    <div
       className="relative  w-full overflow-hidden rounded-lg mb-12"
-    
+
     >
-        <Carousel arrows autoplay={{ dotDuration: true }} autoplaySpeed={5000}>
-      {slides.map((slide, index) => (
-        <div className="" key={index}>
-          <Link href={
-            slide.button_link ? slide.button_link : '/' 
+      <Carousel arrows autoplay={{ dotDuration: true }} autoplaySpeed={5000}>
+        {slides.map((slide, index) => (
+          <div className="" key={index}>
+            <Link href={
+              slide.button_link ? slide.button_link : '/'
             }>
-            
-                <div >
-                
-             
-                     <img
-                     src={slide.image_url}
-                     alt={slide.title}
-                     style={contentStyle}
-                     className={`object-cover w-full h-[200px] md:h-[500px] transition-transform duration-500 ${
-                        isHovered ? 'scale-105' : 'scale-100'
-                      }`}
-                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
-              <div className="text-center text-white p-8 relative z-20">
-                <h2 className="text-4xl font-bold mb-4">{slide.title}</h2>
-                <p className="text-xl mb-6">{slide.description}</p>
-                {slide.button_text && slide.button_link && (
-                  <Button 
-                    variant="secondary" 
-                    size="lg" 
-                    className="relative z-30 hover:scale-105 transition-transform pointer-events-none"
-                  >
-                    {slide.button_text}
-                  </Button>
-                )}
-              </div>
-            </div>
-                   
+
+              <div >
+
+                <Image
+                  src={slide.image_url}
+                  alt={slide.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 380px"
+                  style={contentStyle}
+                  className={`object-cover w-full h-[200px] md:h-[500px] transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'
+                    }`}
+                />
+
+               
+                <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                  <div className="text-center text-white p-8 relative z-20">
+                    <h2 className="text-4xl font-bold mb-4">{slide.title}</h2>
+                    <p className="text-xl mb-6">{slide.description}</p>
+                    {slide.button_text && slide.button_link && (
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        className="relative z-30 hover:scale-105 transition-transform pointer-events-none"
+                      >
+                        {slide.button_text}
+                      </Button>
+                    )}
+                  </div>
                 </div>
-            
+
+              </div>
+
             </Link>
 
-        {/* <div
+            {/* <div
           key={slide.id}
           className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ${
             index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
@@ -123,11 +125,11 @@ export default function Slideshow2({ slides }: { slides: Slide[] }) {
             </div>
           </div>
         </div> */}
-        
-        </div>
-      ))}
+
+          </div>
+        ))}
       </Carousel>
-      
+
       {/* <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-30">
         {slides.map((_, index) => (
           <button
@@ -139,7 +141,7 @@ export default function Slideshow2({ slides }: { slides: Slide[] }) {
           />
         ))}
       </div> */}
-      
+
     </div>
   );
 }

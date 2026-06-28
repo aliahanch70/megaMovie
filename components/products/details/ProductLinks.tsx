@@ -1,167 +1,224 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Copy, Check, Download, ChevronDown, ChevronUp } from "lucide-react";
 
-interface ProductLinksProps {
-  links: Array<{
-    title: string;
-    url: string;
-    price: number;
-    city: string;
-    warranty: string;
-    option_values?: Record<string, string>;
-    quality?: string;
-    size?: string;
-    encode?: string;
-    website?: string;
-  }>;
-  options?: Array<{
-    name: string;
-    values: string[];
-  }>;
+interface LinkItem {
+  title: string;
+  url: string;
+  quality?: string;
+  size?: string;
+  encode?: string;
+  website?: string;
+  season?: string;
+  episode?: string;
+  subtitle?: boolean;
+  subtitleType?: string;
+  subtitle_type?: string;
+  option_values?: Record<string, string>;
 }
 
-export default function ProductLinks({ links, options }: ProductLinksProps) {
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+interface ProductLinksProps {
+  links: LinkItem[];
+  type?: string | null;
+}
 
-  // فیلتر کردن لینک‌ها بر اساس انتخاب‌های کاربر
-  const filteredLinks = links.filter((link) => {
-    if (!selectedOptions || !link.option_values) return true;
-    return Object.entries(selectedOptions).every(
-      ([key, value]) => !value || link.option_values?.[key] === value
-    );
-  });
+function uniqueSorted(arr: string[]): string[] {
+  const seen: Record<string, boolean> = {};
+  const result: string[] = [];
+  for (const item of arr) {
+    if (!seen[item]) { seen[item] = true; result.push(item); }
+  }
+  return result.sort();
+}
 
-  // گروه‌بندی لینک‌ها بر اساس یه option خاص (مثلاً اولین option یا city)
-  const groupByOption = options?.[0]?.name || "city";
-  const groupedLinks = filteredLinks.reduce((acc, link) => {
-    const key = link.option_values?.[groupByOption] || (groupByOption === 'city' ? link.city : "Unknown");
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(link);
-    return acc;
-  }, {} as Record<string, typeof filteredLinks>);
+function getQualityLabel(link: LinkItem): string {
+  return [link.quality, link.encode].filter(Boolean).join(" ") || "Unknown";
+}
 
-  console.log("Grouped Links:", groupedLinks);
-  console.log("Selected Options:", selectedOptions);
-  console.log("Filtered Links:", filteredLinks);
-  console.log("Options:", options);
-  console.log("Links:", links);
+function CopyButton({ links }: { links: LinkItem[] }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(links.map((l) => l.url).join("\n")).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      }}
+      className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-sm text-white transition-colors"
+    >
+      {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+      {copied ? "Copied!" : "Copy all links"}
+    </button>
+  );
+}
+
+function QualityBlock({ qualityLabel, links }: { qualityLabel: string; links: LinkItem[] }) {
+  const [open, setOpen] = useState(false);
+  const subType = links[0]?.subtitleType || links[0]?.subtitle_type;
+  const hasSub = links[0]?.subtitle;
+  const size = links[0]?.size;
+  const episodeCount = links.length;
 
   return (
-    <Card className="p-6">
-      <Label className="text-lg font-medium">Download Box</Label>
-      {options && options.length > 0 && (
-        <div className="mb-4 space-y-4">
-          <div className="flex flex-wrap gap-4">
-            {options.map((option) => (
-              <div key={option.name} className="w-[200px]">
-                <Label>{option.name}</Label>
-                <Select
-                  value={selectedOptions[option.name] || "all"}
-                  onValueChange={(value) => {
-                    setSelectedOptions((prev) => ({
-                      ...prev,
-                      [option.name]: value === "all" ? "" : value,
-                    }));
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={`Select ${option.name}`} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All {option.name}s</SelectItem>
-                    {option.values.map((value) => (
-                      <SelectItem key={value} value={value}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+    <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
+      {/* Quality Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 text-white"
+        >
+          {open ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+        </button>
+        <div className="flex items-center gap-3 flex-wrap justify-end">
+          {hasSub && subType && (
+            <span className="px-3 py-0.5 rounded-full bg-blue-500 text-white text-xs font-medium">
+              {subType === "Soft" ? "Softsub" : subType === "Hard" ? "Hardsub" : subType}
+            </span>
+          )}
+          <span className="text-white font-bold text-sm">{qualityLabel}</span>
+          <span className="text-gray-400 text-xs">:کیفیت</span>
+        </div>
+      </div>
+
+      {open && (
+        <>
+          {/* Info Bar */}
+          <div className="flex items-center justify-end gap-6 px-4 py-2 border-b border-white/10 text-xs text-gray-400">
+            {size && (
+              <div className="flex items-center gap-1.5">
+                <span>{size}</span>
+                <span>:حجم</span>
+                <Download className="w-3.5 h-3.5" />
               </div>
-            ))}
+            )}
+            <div className="flex items-center gap-1.5">
+              <span>{episodeCount}</span>
+              <span>:تعداد قسمت</span>
+              <Copy className="w-3.5 h-3.5" />
+            </div>
           </div>
+
+          {/* Episode Buttons Grid */}
+          <div className="p-4 space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+              {links
+                .sort((a, b) => (parseInt(a.episode || "0") || 0) - (parseInt(b.episode || "0") || 0))
+                .map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 bg-transparent hover:bg-white/10 text-white text-sm transition-colors text-center"
+                  >
+                    {link.episode ? `Episode ${parseInt(link.episode)}` : link.title || `Link ${i + 1}`}
+                  </a>
+                ))}
+            </div>
+            <div className="flex justify-end">
+              <CopyButton links={links} />
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function SeasonBlock({ seasonLabel, links }: { seasonLabel: string; links: LinkItem[] }) {
+  const [open, setOpen] = useState(true);
+
+  const qualityGroups = links.reduce((acc, link) => {
+    const q = getQualityLabel(link);
+    if (!acc[q]) acc[q] = [];
+    acc[q].push(link);
+    return acc;
+  }, {} as Record<string, LinkItem[]>);
+
+  const qualityKeys = uniqueSorted(Object.keys(qualityGroups));
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-neutral-900 overflow-hidden">
+      {/* Season Header */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/5 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          {open ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-gray-400 px-3 py-1 rounded-full border border-white/10">
+            {links.length} links
+          </span>
+          <span className="text-white font-bold">{seasonLabel}</span>
+        </div>
+      </button>
+
+      {open && (
+        <div className="px-4 pb-4 space-y-3">
+          {qualityKeys.map((q) => (
+            <QualityBlock key={q} qualityLabel={q} links={qualityGroups[q]} />
+          ))}
         </div>
       )}
+    </div>
+  );
+}
 
-      
-      <div className="space-y-6">
-        {options && options.length > 0 ? (
-          // وقتی options وجود دارد، از Accordion استفاده کن
-          Object.entries(groupedLinks).map(([groupKey, groupLinks], index) => (
-            <div key={groupKey}>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value={groupKey}>
-                  <AccordionTrigger
-                    className="text-lg font-medium"
-                  >
-                    {groupByOption.charAt(0).toUpperCase() + groupByOption.slice(1)}: {groupKey} ({groupLinks.length})
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4">
-                      {groupLinks.map((link, linkIndex) => (
-                        <Button
-                          key={linkIndex}
-                          variant="outline"
-                          className="w-full justify-between py-6"
-                          asChild
-                        >
-                          <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center text-lg justify-between w-full"
-                          >
-                            <div className="flex flex-col">
-                              <span>{link.title} - {link.website}</span>
-                              <span className="text-sm text-gray-500">
-                                {link.quality} • {link.size} • {link.encode}
-                              </span>
-                            </div>
-                            <ExternalLink className="h-4 w-4 ml-2" />
-                          </a>
-                        </Button>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          ))
-        ) : (
-          // وقتی options وجود ندارد، همه لینک‌ها را نمایش بده
-          <div className="space-y-4">
-            {filteredLinks.map((link, linkIndex) => (
-              <Button
-                key={linkIndex}
-                variant="outline"
-                className="w-full justify-between py-6"
-                asChild
-              >
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-lg justify-between w-full"
-                >
-                  <div className="flex flex-col">
-                    <span>{link.title} - {link.website}</span>
-                    <span className="text-sm text-gray-500">
-                      {link.quality} • {link.size} • {link.encode}
-                    </span>
-                  </div>
-                  <ExternalLink className="h-4 w-4 ml-2" />
-                </a>
-              </Button>
-            ))}
-          </div>
-        )}
-      </div>
-    </Card>
+function SeriesLinks({ links }: { links: LinkItem[] }) {
+  const seasons = links.reduce((acc, link) => {
+    const s = link.season ? `Season ${parseInt(link.season)}` : "Other";
+    if (!acc[s]) acc[s] = [];
+    acc[s].push(link);
+    return acc;
+  }, {} as Record<string, LinkItem[]>);
+
+  const seasonKeys = Object.keys(seasons).sort((a, b) => {
+    const na = parseInt(a.replace(/\D/g, "")) || 99;
+    const nb = parseInt(b.replace(/\D/g, "")) || 99;
+    return na - nb;
+  });
+
+  return (
+    <div className="space-y-3">
+      {seasonKeys.map((s) => (
+        <SeasonBlock key={s} seasonLabel={s} links={seasons[s]} />
+      ))}
+    </div>
+  );
+}
+
+function MovieLinks({ links }: { links: LinkItem[] }) {
+  const qualityGroups = links.reduce((acc, link) => {
+    const q = getQualityLabel(link);
+    if (!acc[q]) acc[q] = [];
+    acc[q].push(link);
+    return acc;
+  }, {} as Record<string, LinkItem[]>);
+
+  const qualityKeys = uniqueSorted(Object.keys(qualityGroups));
+
+  return (
+    <div className="space-y-3">
+      {qualityKeys.map((q) => (
+        <QualityBlock key={q} qualityLabel={q} links={qualityGroups[q]} />
+      ))}
+    </div>
+  );
+}
+
+export default function ProductLinks({ links, type }: ProductLinksProps) {
+  if (!links?.length) return null;
+
+  const isSeries = type === "Series";
+
+  return (
+    <div className="space-y-3">
+      <h2 className="text-lg font-semibold text-white">Download Links</h2>
+      {isSeries ? <SeriesLinks links={links} /> : <MovieLinks links={links} />}
+    </div>
   );
 }
