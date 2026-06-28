@@ -7248,5 +7248,23 @@
     "viewedAt": "2026-06-28T11:37:48.040Z",
     "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "ipAddress": "188.126.67.32"
+  },
+  {
+    "userRole": "admin",
+    "userId": "28373cbd-50ce-41d8-83a8-ed69a49e236e",
+    "productId": "5ad90b21-7e51-4b7e-8238-e1ad6b5ff521",
+    "productName": "Project Hail Mary",
+    "category": "Adventure, Comedy, Drama",
+    "viewedAt": "2026-06-28T11:41:16.347Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
+  },
+  {
+    "productId": "5ad90b21-7e51-4b7e-8238-e1ad6b5ff521",
+    "productName": "Project Hail Mary",
+    "category": "Adventure, Comedy, Drama",
+    "viewedAt": "2026-06-28T11:41:17.224Z",
+    "imageUrl": "https://m.media-amazon.com/images/M/MV5BNTkwNzJiYTctNzI3NC00NjE1LTlhYjktY2Q5MTdmMWFmNzcxXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "ipAddress": "188.126.67.32"
   }
 ]
